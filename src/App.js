@@ -1,13 +1,20 @@
-import React from 'react';
-import './App.css';
-import LoginForm from './Components/LoginForm/LoginForm'
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { getUser } from './ducks/reducers/user'
+import routes from './routes'
 
-function App() {
-  return (
-    <div className="App">
-      <LoginForm />
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    this.props.getUser()
+  }
+  
+  render() {
+    return (
+      <div>
+        {routes}
+      </div>
+    );
+  }
 }
 
-export default App;
+export default connect(null, {getUser})(App);

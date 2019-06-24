@@ -37,6 +37,7 @@ export default function(state = initialState, action) {
                 loading: true
             }
         case LOGIN_USER + '_FULFILLED':
+            console.log(999999, payload)
             return {
                 ...state,
                 data: payload.data,
