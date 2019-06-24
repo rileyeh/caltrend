@@ -21,7 +21,8 @@ class AddMealForm extends Component {
     render() {
         
         return (
-            <div>
+            <div style={styles.body}>
+                <h3>add meal</h3>
                 <input
                     name='date'
                     type='text'
@@ -39,3 +40,12 @@ class AddMealForm extends Component {
 }
 
 export default AddMealForm
+
+let styles = {
+    body: {
+        width: '40vw',
+        border: '1px solid red',
+        display: 'flex',
+        flexDirection: 'column'
+    }
+}
