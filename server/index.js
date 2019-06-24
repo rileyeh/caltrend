@@ -4,6 +4,7 @@ const massive = require('massive')
 const session = require('express-session')
 
 const AuthCtrl = require('./controllers/auth')
+const MealCtrl = require('./controllers/meals')
 
 const app = express()
 
@@ -28,6 +29,8 @@ app.post('/auth/register', AuthCtrl.register)
 app.post('/auth/login', AuthCtrl.login)
 app.get('/auth/logout', AuthCtrl.logout)
 app.get('/auth/currentUser', AuthCtrl.currentUser)
+
+app.get('/api/meals', MealCtrl.getMeals)
 
 
 app.listen(SERVER_PORT, () => console.log(`running on port ${SERVER_PORT}`))
