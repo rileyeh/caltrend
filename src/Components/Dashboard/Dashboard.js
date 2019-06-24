@@ -48,7 +48,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <div>Dashboard</div>
-                <div>Welcome, {this.props.user.name}</div>
+                {/* <div>Welcome, {this.props.user.name}</div> */}
                 <Nav />
                 <Link to='/' onClick={this.handleLogout}>Logout</Link>
                 <button onClick={this.showAddMealForm}>Add Meal</button>

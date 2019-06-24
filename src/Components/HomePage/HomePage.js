@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import LoginForm from '../LoginForm/LoginForm'
+import logo from '../../assets/Logo.svg'
 
 class HomePage extends Component {
     constructor(props) {
         super()
 
         this.state = {
-            loginform: false
+            loginForm: null
         }
     }
 
@@ -18,17 +19,34 @@ class HomePage extends Component {
 
     openLogin = () => {
         this.setState({
-            loginform: true
+            loginForm: true
+        })
+    }
+
+    closeLogin = () => {
+        this.setState({
+            loginForm: false
         })
     }
 
     render() {
         return (
             <div style={styles.body}>
-                <h1 style={styles.title}>caltrend</h1>
-                <button onClick={this.openLogin} style={styles.loginButton}>Login</button>
-                {this.state.loginform && <LoginForm />}
+                <div style={styles.header} >
+                    <div style={styles.logo}>
+                        <img src={logo} alt='cal logo' style={styles.logoImage}/>
+                        <h1 style={styles.title}>caltrend</h1>
+                    </div>
+                    <div>
+                        <button onClick={this.openLogin} style={styles.button}>login/register</button>
+                    </div>
+                </div>
 
+                {this.state.loginForm && <LoginForm />}
+
+                <div style={styles.main} onClick={this.closeLogin}>
+                    
+                </div>
             </div>
         )
     }
@@ -48,20 +66,34 @@ export default connect(mapStateToProps)(HomePage)
 let styles = {
     body: {
         width: '100vw',
-        height: '100%',
+        height: '100vh',
         margin: 0,
-        padding: 0,
-        position: 'relative'
+        padding: 0
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    logo: {
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: 10
+    },
+    logoImage: {
+        height: 45,
+        marginRight: 5
     },
     title: {
-        width: '100%',
-        margin: '10px auto',
-        textAlign: 'center'
+        color: '#219653'
     },
-    loginButton: {
+    button: {
         borderRadius: 8,
-        position: 'absolute',
-        top: 10,
-        right: 10
+        border: 'none',
+        marginRight: 10,
+        background: '#2DB969',
+        color: 'white',
+        height: 25,
+        width: 90
     }
 }

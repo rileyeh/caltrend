@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Register from '../Register/Register'
 
 import { login } from '../../ducks/reducers/user'
 
@@ -10,7 +11,8 @@ class LoginForm extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            register: false
         }
     }
 
@@ -27,14 +29,24 @@ class LoginForm extends Component {
         this.props.login({ email, password })
     }
 
+    toggleRegister = () => {
+        let { register } = this.state
+          this.setState({
+              register: !register
+        })
+    }
+
     render() {
         return (
+            <div style={styles.body}>
+                {this.state.register ? <Register /> :
             <div style={styles.formBody}>
                 <input
                     name='email'
                     type='text'
                     placeholder='email'
                     onChange={this.handleChange}
+                    value={this.state.email}
                     style={styles.emailInput} />
                 <br />
                 <input
@@ -42,9 +54,18 @@ class LoginForm extends Component {
                     type='password'
                     placeholder='password'
                     onChange={this.handleChange}
+                    value={this.state.password}
                     style={styles.passwordInput} />
                 <br />
                 <Link to='/dashboard'><button onClick={this.handleSubmit}>login</button></Link>
+                <div>
+                <p>
+                    Need an account?
+                    <button onClick={this.toggleRegister}>Register</button>
+                </p>
+            </div>
+            </div>
+            }
             </div>
         )
     }
@@ -53,10 +74,17 @@ class LoginForm extends Component {
 export default connect(null, { login })(LoginForm)
 
 let styles = {
+    body: {
+        width: '100vw',
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        position: 'relative'
+    },
     formBody: {
         width: '40vw',
         height: '60vh',
-        margin: '5% auto',
+        margin: '0 auto',
         borderRadius: 10,
         boxShadow: '10px 10px 30px #636363',
         display: 'flex',

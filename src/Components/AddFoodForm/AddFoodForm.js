@@ -7,7 +7,7 @@ class AddFoodForm extends Component {
 
         this.state = {
             food: '',
-            foodList: [] 
+            resultsList: [] 
         }
     }
 
@@ -20,11 +20,12 @@ class AddFoodForm extends Component {
 
     search = async (val) => {
         const res = await axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${val}&max=25&sort=n&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
-        const foodList = res.data.list.item
+        const resultsList = res.data.list.item
+        console.log(434343, resultsList)
         this.setState({
-          foodList: [foodList]
+          resultsList
         })
-        console.log(9393, this.state.foodList)
+        console.log(9393, this.state.resultsList)
       }
     
       handleSearchSubmit = () => {
@@ -32,27 +33,41 @@ class AddFoodForm extends Component {
       }
 
     render() {
-        let mappedFoods = this.state.foodList.map((food, i) => {
-            console.log(6767676, food)
+        let mappedResults = this.state.resultsList.map((food, i) => {
             return (
               <div key={i}>
                     <p>{food.name}</p>
+                    <button>+</button>
                 </div>
             )
           })            
 
         return (
-            <div>
-                <input 
-                  onChange={e => this.handleChange(e)}
-                  name='food'
-                  type='text'
-                  value={this.state.food} />
-                <button onClick={this.handleSearchSubmit}>search</button>
-                {mappedFoods}
+            <div style={styles.body}>
+              <div style={styles.searchBar}>
+                  <input 
+                    onChange={e => this.handleChange(e)}
+                    name='food'
+                    type='text'
+                    value={this.state.food} />
+                  <button onClick={this.handleSearchSubmit}>search</button>
+                </div>
+
+                {mappedResults}
             </div>
         )
     }
 }
 
 export default AddFoodForm
+
+let styles = {
+  body: {
+      width: '100%',
+      border: '1px solid blue'
+  },
+  searchBar: {
+    display: 'flex',
+    justifyContent: 'space-evenly'
+  }
+}
