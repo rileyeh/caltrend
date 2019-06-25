@@ -4,13 +4,10 @@ import { connect } from 'react-redux'
 import { logout } from '../../ducks/reducers/user'
 
 class Nav extends Component {
-    constructor(props) {
-        super(props)
-    }
 
-    componentDidMount() {
-        console.log(99999, this.props)
-    }
+    // componentDidMount() {
+    //     console.log(99999, this.props)
+    // }
 
     render() {
         return (
@@ -24,7 +21,6 @@ class Nav extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(11111, state)
     return {
         user_id: state.user.user_id
       }

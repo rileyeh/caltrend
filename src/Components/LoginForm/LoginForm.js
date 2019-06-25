@@ -24,7 +24,6 @@ class LoginForm extends Component {
     }
 
     handleSubmit = () => {
-        console.log(66666, this.props)
         let { email, password } = this.state
         this.props.login({ email, password })
     }
