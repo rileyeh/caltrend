@@ -49,9 +49,7 @@ module.exports = {
             }
 
             delete user.password 
-
-            console.log(3333333, user)
-
+            
             req.session.user = user 
             res.send(req.session.user)
 

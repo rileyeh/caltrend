@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getUser } from '../../ducks/reducers/user'
 import LoginForm from '../LoginForm/LoginForm'
@@ -30,7 +29,7 @@ class Register extends Component {
       .post('/auth/register', { name, email, password })
       .then(res => {
         this.props.getUser(res.data);
-        this.props.history.push('/');
+        this.props.history.push('/dashboard');
       })
       .catch(err => {
         alert('User Already Exist Try Logging In');
@@ -76,7 +75,7 @@ class Register extends Component {
                 value={this.state.password}
                 style={styles.passwordInput}
                 />
-            <Link to='/dashboard'><button onClick={() => this.register()}>Register</button></Link>
+            <button onClick={() => this.register()}>Register</button>
             
             <div>
                 <p>

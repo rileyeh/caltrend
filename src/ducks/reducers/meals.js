@@ -1,4 +1,3 @@
-import axios from 'axios'
 
 const WRITE_MEAL_ID = 'WRITE_MEAL_ID'
 

@@ -13,9 +13,9 @@ class HomePage extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log(2222222, this.props.user_id)
-    }
+    // componentDidMount() {
+    //     console.log(2222222, this.props.user_id)
+    // }
 
     openLogin = () => {
         this.setState({
@@ -53,7 +53,6 @@ class HomePage extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(12121212, state.user.data)
     return {
         user_id: state.user.data
       }

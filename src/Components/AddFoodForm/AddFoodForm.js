@@ -9,7 +9,8 @@ class AddFoodForm extends Component {
         this.state = {
             food: '',
             resultsList: [],
-            foodList: []
+            foodList: [],
+            dropDown: false
         }
     }
 
@@ -31,10 +32,11 @@ class AddFoodForm extends Component {
       add = async (ndbno) => {
         const res = await axios.get(`https://api.nal.usda.gov/ndb/V2/reports?ndbno=${ndbno}&type=b&format=json&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
         const food = res.data.foods[0]
-        console.log('HERE IS THE FOOD OBJECT WE ARE ADDING', res.data.foods)
         this.setState(prevState => ({
-          foodList: [...prevState.foodList, { 'food': food }]
+          foodList: [...prevState.foodList, { 'food': food }],
+          resultsList: []
         }))
+        
         let food_name = food.food.desc.name
         let calories = +food.food.nutrients[0].value
         let protein = +food.food.nutrients[1].value
@@ -42,9 +44,8 @@ class AddFoodForm extends Component {
         let carbs = +food.food.nutrients[3].value
         let fiber = +food.food.nutrients[4].value
         let sugar = +food.food.nutrients[5].value
-        console.log('THE REDUX MEAL ID COMING TO THE FOOD FORM', this.props)
         let meal_id = +this.props.meal_id.meal_id
-        // i think we are going to have to get all these req.body keys from state
+
         axios.post('/api/newFood', {
           food_name, 
           calories, 
@@ -56,7 +57,7 @@ class AddFoodForm extends Component {
           meal_id
         })
         .then(res => {
-          console.log('did something hopefully')
+          console.log('response from the add food form', res)
         })
       }
  
@@ -72,6 +73,13 @@ class AddFoodForm extends Component {
         this.add(ndbno)
       }
 
+      toggleDropDown = () => {
+        let { dropDown } = this.state
+        this.setState({
+          dropDown: !dropDown
+        })
+      }
+
     render() {
         let mappedResults = this.state.resultsList.map((food, i) => {
             return (
@@ -85,13 +93,16 @@ class AddFoodForm extends Component {
         let mappedFood = this.state.foodList.map((item, i) => {
           return (
             <div key={i}>
-              <p>{item.food.food.desc.name}</p>
+              <p>{item.food.food.desc.name}<span /><button onClick={this.toggleDropDown}>^</button></p>
+              {this.state.dropDown &&
+              <div>
               <p>calories: {item.food.food.nutrients[0].value}</p>
               <p>protein: {item.food.food.nutrients[1].value}</p>
               <p>fat: {item.food.food.nutrients[2].value}</p>
               <p>carbohydrates: {item.food.food.nutrients[3].value}</p>
               <p>fiber: {item.food.food.nutrients[4].value}</p>
               <p>sugar: {item.food.food.nutrients[5].value}</p>
+              </div>}
             </div>
           )
         })

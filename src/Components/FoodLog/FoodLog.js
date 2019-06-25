@@ -11,31 +11,45 @@ class FoodLog extends Component {
     }
 
     componentDidMount() {
-        axios.get('/api/meals').then(res =>
-            console.log('HERE IS THE RES DATA', res.data))
-            // this.setState({
-            //     meals: res.data
-            // }))
-            let meal_id = 23
-        axios.post('/api/food', meal_id).then(res => {
-            console.log('RESPONSE THAT WILL HOPEFULLY BE THE FOODS THAT MATCH MEAL 23', res)
-        })
+        axios.get('/api/meals').then(res => {
+
+            let mealArray = res.data
+
+                mealArray.forEach(elem => {
+                    elem.foods = []
+                    axios.post('/api/food', elem).then(res => {
+                        elem.foods = res.data
+                        this.setState({
+                            meals: mealArray,
+                        })
+                    })
+                })
+        }).catch(err => console.log('error in the food log', err))
     }
 
     render() {
-        let mappedMeals = this.state.meals.map(meal => {
-            console.log(12345678, meal)
-            return(
-                <div key={meal.meal_id}>
-                    <p>date: {meal.date_created}</p>
-                    <p>number: {meal.meal_number}</p>
-                </div>
-            )
-        })
         return (
             <div>
                 FoodLog
-                {mappedMeals}
+                {this.state.meals.length !== 0 && 
+
+                this.state.meals.map((meal, i) => {
+        
+                    let mappedFoods = this.state.meals[i].foods.map((food, i) => {
+                        return (
+                            <div key={i}>{food.food_name}</div>
+                        )
+                    })
+        
+                    return (
+                        <div key={meal.meal_id}>
+                            <p>date: {meal.date_created}</p>
+                          <p>number: {meal.meal_number}</p>
+                        {mappedFoods}
+                        </div>
+                    )
+                   
+                })}
             </div>
         )
     }

@@ -13,7 +13,8 @@ class AddMealForm extends Component {
         this.state = {
             date: '',
             meal: '',
-            foodForm: false 
+            foodForm: false,
+            showDone: false
         }
     }
 
@@ -27,8 +28,6 @@ class AddMealForm extends Component {
     handleSubmit = () => {
         let { date, meal } = this.state
         axios.post('/api/meals', { date, meal }).then(res => {
-            console.log(76547654, 'meal added')
-            console.log(13245676543, res)
 
             let id = res.data[0].meal_id
 
@@ -36,7 +35,8 @@ class AddMealForm extends Component {
             // this.props.history.push('/')
 
             this.setState({
-                foodForm: true
+                foodForm: true,
+                showDone: true
             })
         })
     }
@@ -45,7 +45,7 @@ class AddMealForm extends Component {
         
         return (
             <div style={styles.body}>
-                <Link to='/foodlog'>done</Link>
+                
                 <h3>add meal</h3>
                 <input
                     name='date'
@@ -57,7 +57,13 @@ class AddMealForm extends Component {
                     type='text'
                     placeholder='meal'
                     onChange={this.handleChange}/>
-                <button onClick={this.handleSubmit}>add foods</button>
+
+                    {this.state.showDone 
+                        ? 
+                        <button><Link to='/foodlog'>done</Link></button>
+                        :
+                        <button onClick={this.handleSubmit}>add foods</button>}
+                
                 {this.state.foodForm && <AddFoodForm />}
             </div>
         )

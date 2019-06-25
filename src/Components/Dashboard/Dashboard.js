@@ -17,11 +17,9 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        console.log(5555, this.props)
         axios
           .get('/auth/currentUser')
           .then(res => {
-              console.log(77777, res)
             this.props.getUser(res.data)
           })
           .catch(err => {
@@ -48,7 +46,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <div>Dashboard</div>
-                {/* <div>Welcome, {this.props.user.name}</div> */}
+                {this.props.user && <div>Welcome, {this.props.user.name}</div>}
                 <Nav />
                 <Link to='/' onClick={this.handleLogout}>Logout</Link>
                 <button onClick={this.showAddMealForm}>Add Meal</button>
@@ -59,8 +57,8 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(4444, state)
     let { data: user } = state.user
+    console.log(4444, user)
     return { user }
   }
 
