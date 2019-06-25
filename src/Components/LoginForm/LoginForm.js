@@ -30,9 +30,9 @@ class LoginForm extends Component {
     }
 
     toggleRegister = () => {
-        let { register } = this.state
+        // let { register } = this.state
           this.setState({
-              register: !register
+              register: true
         })
     }
 
