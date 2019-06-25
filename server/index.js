@@ -5,6 +5,7 @@ const session = require('express-session')
 
 const AuthCtrl = require('./controllers/auth')
 const MealCtrl = require('./controllers/meals')
+const FoodCtrl = require('./controllers/food')
 
 const app = express()
 
@@ -30,7 +31,11 @@ app.post('/auth/login', AuthCtrl.login)
 app.get('/auth/logout', AuthCtrl.logout)
 app.get('/auth/currentUser', AuthCtrl.currentUser)
 
-app.get('/api/meals', MealCtrl.getMeals)
+app.get('/api/meals', MealCtrl.getMealsByUser)
+app.post('/api/meals', MealCtrl.createMeal)
+
+app.post('/api/food', FoodCtrl.getFoodByMeal)
+app.post('/api/newFood', FoodCtrl.createFood)
 
 
 app.listen(SERVER_PORT, () => console.log(`running on port ${SERVER_PORT}`))

@@ -11,13 +11,15 @@ create table foods (
     calories int,
     carbs int,
     protein int,
-    fat int
+    fat int,
+    fiber int,
+    sugar int,
+    meal_id int references meals(meal_id)
 );
 
 create table meals (
     meal_id serial primary key,
-    date_created date, 
+    date_created varchar, 
     meal_number int,
-    user_id int references users(user_id),
-    food_id int references foods(food_id)
+    user_id int references users(user_id)
 );

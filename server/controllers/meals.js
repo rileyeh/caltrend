@@ -1,16 +1,23 @@
 module.exports = {
-    getMeals : async (req, res) => {
+    getMealsByUser: async (req, res) => {
         const db = req.app.get('db')
-        let meals = await db.getMeals()
+        const { user_id } = req.session.user
+        console.log(3201857, user_id)
+        let meals = await db.meals.getMealsByUser(user_id)
         res.status(200).send(meals)
     },
-    createMeal:  (req, res) => {
+    createMeal: async (req, res) => {
         const db = req.app.get('db')
-        const { date, meal, food } = req.body
+        const { date, meal} = req.body
         const { user_id } = req.session.user
         console.log(10101010, user_id)
         console.log(282828282, req.body)
-        res.send(user_id)
+        let newMeal = await db.meals.createMeal({
+            user_id, 
+            date_created: date, 
+            meal_number: meal
+        })
+        res.status(200).send(newMeal)
     }
 }
 

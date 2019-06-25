@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import AddFoodForm from '../AddFoodForm/AddFoodForm'
+import axios from 'axios'
 
 class AddMealForm extends Component {
     constructor(props) {
@@ -18,6 +19,14 @@ class AddMealForm extends Component {
         })
     }
 
+    handleSubmit = () => {
+        let { date, meal } = this.state
+        axios.post('/api/meals', { date, meal }).then(res => {
+            console.log(76547654, 'meal added')
+            // this.props.history.push('/')
+        })
+    }
+
     render() {
         
         return (
@@ -33,7 +42,8 @@ class AddMealForm extends Component {
                     type='text'
                     placeholder='meal'
                     onChange={this.handleChange}/>
-                <AddFoodForm />
+                <button onClick={this.handleSubmit}>submit</button>
+                <AddFoodForm meal_id={this.meal}/>
             </div>
         )
     }
