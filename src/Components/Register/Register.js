@@ -45,9 +45,9 @@ class Register extends Component {
   }
 
   render() {
-    if (this.props.id) {
-      return <Redirect to="/" />;
-    }
+    // if (this.props.id) {
+    //   return <Redirect to="/" />;
+    // }
     return (
       <div>
         {this.state.login ? <LoginForm /> :

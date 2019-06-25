@@ -12,9 +12,14 @@ class FoodLog extends Component {
 
     componentDidMount() {
         axios.get('/api/meals').then(res =>
-            this.setState({
-                meals: res.data
-            }))
+            console.log('HERE IS THE RES DATA', res.data))
+            // this.setState({
+            //     meals: res.data
+            // }))
+            let meal_id = 23
+        axios.post('/api/food', meal_id).then(res => {
+            console.log('RESPONSE THAT WILL HOPEFULLY BE THE FOODS THAT MATCH MEAL 23', res)
+        })
     }
 
     render() {

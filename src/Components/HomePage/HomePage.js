@@ -53,7 +53,7 @@ class HomePage extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(12121212, state)
+    console.log(12121212, state.user.data)
     return {
         user_id: state.user.data
       }

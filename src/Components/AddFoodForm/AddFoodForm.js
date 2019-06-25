@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 class AddFoodForm extends Component {
     constructor(props) {
@@ -22,29 +23,41 @@ class AddFoodForm extends Component {
     search = async (val) => {
         const res = await axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${val}&max=25&sort=n&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
         const resultsList = res.data.list.item
-        console.log(434343, resultsList)
         this.setState({
           resultsList
         })
-        console.log(9393, this.state.resultsList)
       }
 
       add = async (ndbno) => {
         const res = await axios.get(`https://api.nal.usda.gov/ndb/V2/reports?ndbno=${ndbno}&type=b&format=json&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
         const food = res.data.foods[0]
-        console.log(23232323232, food)
-
-        let { meal_id } = this.props
-        axios.post('/api/food', { meal_id }).then(res => {
-          return console.log('food added')
+        console.log('HERE IS THE FOOD OBJECT WE ARE ADDING', res.data.foods)
+        this.setState(prevState => ({
+          foodList: [...prevState.foodList, { 'food': food }]
+        }))
+        let food_name = food.food.desc.name
+        let calories = +food.food.nutrients[0].value
+        let protein = +food.food.nutrients[1].value
+        let fat = +food.food.nutrients[2].value
+        let carbs = +food.food.nutrients[3].value
+        let fiber = +food.food.nutrients[4].value
+        let sugar = +food.food.nutrients[5].value
+        console.log('THE REDUX MEAL ID COMING TO THE FOOD FORM', this.props)
+        let meal_id = +this.props.meal_id.meal_id
+        // i think we are going to have to get all these req.body keys from state
+        axios.post('/api/newFood', {
+          food_name, 
+          calories, 
+          carbs, 
+          protein, 
+          fat, 
+          fiber, 
+          sugar, 
+          meal_id
         })
-
-        let newFoodList = []
-        newFoodList.push(food)
-        this.setState({
-          foodList: [newFoodList]
+        .then(res => {
+          console.log('did something hopefully')
         })
-        console.log(56565, this.state.foodList[0])
       }
  
     
@@ -70,16 +83,15 @@ class AddFoodForm extends Component {
           })  
 
         let mappedFood = this.state.foodList.map((item, i) => {
-          console.log(12345, item)
           return (
             <div key={i}>
-              <p>{item[0].food.desc.name}</p>
-              <p>calories: {item[0].food.nutrients[0].value}</p>
-              <p>protein: {item[0].food.nutrients[1].value}</p>
-              <p>fat: {item[0].food.nutrients[2].value}</p>
-              <p>carbohydrates: {item[0].food.nutrients[3].value}</p>
-              <p>fiber: {item[0].food.nutrients[4].value}</p>
-              <p>sugar: {item[0].food.nutrients[5].value}</p>
+              <p>{item.food.food.desc.name}</p>
+              <p>calories: {item.food.food.nutrients[0].value}</p>
+              <p>protein: {item.food.food.nutrients[1].value}</p>
+              <p>fat: {item.food.food.nutrients[2].value}</p>
+              <p>carbohydrates: {item.food.food.nutrients[3].value}</p>
+              <p>fiber: {item.food.food.nutrients[4].value}</p>
+              <p>sugar: {item.food.food.nutrients[5].value}</p>
             </div>
           )
         })
@@ -109,7 +121,14 @@ class AddFoodForm extends Component {
     }
 }
 
-export default AddFoodForm
+let mapStateToProps = state => {
+  console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state.meals.meal_id)
+  return {
+      meal_id: state.meals
+  }
+}
+
+export default connect(mapStateToProps)(AddFoodForm)
 
 let styles = {
   body: {

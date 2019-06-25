@@ -10,8 +10,8 @@ module.exports = {
         const db = req.app.get('db')
         const { date, meal} = req.body
         const { user_id } = req.session.user
-        console.log(10101010, user_id)
-        console.log(282828282, req.body)
+        // console.log(10101010, user_id)
+        // console.log(282828282, req.body)
         let newMeal = await db.meals.createMeal({
             user_id, 
             date_created: date, 
