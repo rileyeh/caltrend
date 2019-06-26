@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AddFoodForm from '../AddFoodForm/AddFoodForm'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { writeMealId } from '../../ducks/reducers/meals'
+import { writeMealInfo } from '../../ducks/reducers/meals'
 import { Link } from 'react-router-dom'
 
 
@@ -14,7 +14,6 @@ class AddMealForm extends Component {
             date: '',
             meal: '',
             foodForm: false,
-            showDone: false
         }
     }
 
@@ -30,14 +29,18 @@ class AddMealForm extends Component {
         axios.post('/api/meals', { date, meal }).then(res => {
 
             let id = res.data[0].meal_id
+            let date = res.data[0].date_created
+            let number = res.data[0].meal_number
 
-            this.props.writeMealId(id)
+            let obj = {
+                id,
+                date,
+                number
+            }
+
+            this.props.writeMealInfo(obj)
             // this.props.history.push('/')
 
-            this.setState({
-                foodForm: true,
-                showDone: true
-            })
         })
     }
 
@@ -57,14 +60,9 @@ class AddMealForm extends Component {
                     type='text'
                     placeholder='meal'
                     onChange={this.handleChange}/>
-
-                    {this.state.showDone 
-                        ? 
-                        <button><Link to='/foodlog'>done</Link></button>
-                        :
-                        <button onClick={this.handleSubmit}>add foods</button>}
                 
-                {this.state.foodForm && <AddFoodForm />}
+                <Link to='foodsform'><button onClick={this.handleSubmit}>add foods</button></Link>
+                
             </div>
         )
     }
@@ -77,7 +75,7 @@ let mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { writeMealId })(AddMealForm)
+export default connect(mapStateToProps, { writeMealInfo })(AddMealForm)
 
 // export default AddMealForm
 
