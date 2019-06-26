@@ -14,17 +14,11 @@ class Nav extends Component {
             <div>
                 <p>Nav</p>
                 <Link to='foodlog'>Food Log</Link>
-                { this.props.user_id && <Link to="/" onClick={this.props.logout}>Logout</Link> }
+                <Link to="/" onClick={this.props.logout}>Logout</Link>
             </div>
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        user_id: state.user.user_id
-      }
-  }
 
-
-export default connect(mapStateToProps, { logout })(Nav)
+export default connect(null, { logout })(Nav)

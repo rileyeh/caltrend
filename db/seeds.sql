@@ -14,6 +14,8 @@ create table foods (
     fat int,
     fiber int,
     sugar int,
+    quantity int,
+    unit varchar,
     meal_id int references meals(meal_id)
 );
 
@@ -21,5 +23,6 @@ create table meals (
     meal_id serial primary key,
     date_created varchar, 
     meal_number int,
+    foods text,
     user_id int references users(user_id)
 );

@@ -6,7 +6,8 @@ class FoodLog extends Component {
         super(props)
 
         this.state = {
-            meals: []
+            meals: [],
+            dropDown: false
         }
     }
 
@@ -27,6 +28,13 @@ class FoodLog extends Component {
         }).catch(err => console.log('error in the food log', err))
     }
 
+    toggleDropDown = () => {
+        let { dropDown } = this.state
+        this.setState({
+          dropDown: !dropDown
+        })
+      }
+
     render() {
         return (
             <div>
@@ -36,8 +44,21 @@ class FoodLog extends Component {
                 this.state.meals.map((meal, i) => {
         
                     let mappedFoods = this.state.meals[i].foods.map((food, i) => {
+                        console.log('props on food', food)
                         return (
-                            <div key={i}>{food.food_name}</div>
+                            <div key={i}>
+                            <h4>{food.food_name}<span><button onClick={this.toggleDropDown}>^</button></span></h4>
+                            {this.state.dropDown &&
+                            <div>
+                                <p>calories: {food.calories}</p>
+                                <p>protein: {food.protein}</p>
+                                <p>fat: {food.fat}</p>
+                                <p>carbohydrates: {food.carbs}</p>
+                                <p>fiber: {food.fiber}</p>
+                                <p>sugar: {food.sugar}</p>
+                            </div>
+                            }
+                            </div>
                         )
                     })
         
