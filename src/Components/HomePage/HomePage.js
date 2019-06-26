@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import LoginForm from '../LoginForm/LoginForm'
 import logo from '../../assets/Logo.svg'
@@ -30,6 +31,9 @@ class HomePage extends Component {
     }
 
     render() {
+        if (this.props.user_id) {
+            return <Redirect to="/dashboard" />
+          }
         return (
             <div style={styles.body}>
                 <div style={styles.header} >
@@ -53,6 +57,7 @@ class HomePage extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state)
     return {
         user_id: state.user.data
       }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { getUser, logout } from '../../ducks/reducers/user'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import AddMealForm from '../AddMealForm/AddMealForm'
 
 import Nav from '../Nav/Nav'
@@ -27,10 +27,6 @@ class Dashboard extends Component {
           });
       }
 
-    handleLogout = () => {
-      this.props.logout()
-    }
-
     showAddMealForm = () => {
       let { mealForm } = this.state
       this.setState({
@@ -43,12 +39,14 @@ class Dashboard extends Component {
     // we're going to be working with req.query.q 
 
     render() {
+      if (!this.props.user) {
+        return <Redirect to='/' />
+      }
         return (
             <div>
                 <div>Dashboard</div>
                 {this.props.user && <div>Welcome, {this.props.user.name}</div>}
                 <Nav />
-                <Link to='/' onClick={this.handleLogout}>Logout</Link>
                 <button onClick={this.showAddMealForm}>Add Meal</button>
                 {this.state.mealForm && <AddMealForm/>}      
             </div>

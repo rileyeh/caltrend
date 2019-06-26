@@ -9,9 +9,20 @@ class AddFoodForm extends Component {
         this.state = {
             food: '',
             resultsList: [],
+            currentFood: {
+              food: {
+                nutrients: []
+              }
+            },
             foodList: [],
-            dropDown: false
+            dropDown: false,
+            edit: false,
+            search: false
         }
+    }
+
+    componentDidUpdate() {
+      console.log(2143542, this.state.currentFood)
     }
 
     handleChange = e => {
@@ -29,23 +40,35 @@ class AddFoodForm extends Component {
         })
       }
 
-      add = async (ndbno) => {
-        const res = await axios.get(`https://api.nal.usda.gov/ndb/V2/reports?ndbno=${ndbno}&type=b&format=json&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
-        const food = res.data.foods[0]
-        this.setState(prevState => ({
-          foodList: [...prevState.foodList, { 'food': food }],
-          resultsList: []
-        }))
-        
-        let food_name = food.food.desc.name
-        let calories = +food.food.nutrients[0].value
-        let protein = +food.food.nutrients[1].value
-        let fat = +food.food.nutrients[2].value
-        let carbs = +food.food.nutrients[3].value
-        let fiber = +food.food.nutrients[4].value
-        let sugar = +food.food.nutrients[5].value
-        let meal_id = +this.props.meal_id.meal_id
+    addToState = async (ndbno) => {
+      const res = await axios.get(`https://api.nal.usda.gov/ndb/V2/reports?ndbno=${ndbno}&type=b&format=json&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
+      const food = res.data.foods[0]
+      console.log(555, food)
+      this.setState(prevState => ({
+        currentFood: food,
+        foodList: [...prevState.foodList, { 'food': food }],
+        resultsList: [],
+        edit: true,
+        search: false
+      })
+      )}
 
+
+      addToDatabase = () => {
+        console.log(6666, this.state.foodList)
+
+        let food_name = this.state.foodList[0].food.food.desc.name
+        let calories = +this.state.foodList[0].food.food.nutrients[0].value
+        let protein = +this.state.foodList[0].food.food.nutrients[1].value
+        let fat = +this.state.foodList[0].food.food.nutrients[2].value
+        let carbs = +this.state.foodList[0].food.food.nutrients[3].value
+        let fiber = +this.state.foodList[0].food.food.nutrients[4].value
+        let sugar = +this.state.foodList[0].food.food.nutrients[5].value
+        let quantity = 20
+        let unit = 'g'
+        let meal_id = +this.props.meal_id
+  
+  
         axios.post('/api/newFood', {
           food_name, 
           calories, 
@@ -54,31 +77,43 @@ class AddFoodForm extends Component {
           fat, 
           fiber, 
           sugar, 
+          quantity,
+          unit,
           meal_id
         })
         .then(res => {
           console.log('response from the add food form', res)
         })
-      }
- 
-    
-      handleSearchSubmit = () => {
-        this.search(this.state.food)
-        this.setState({
-          food: ''
-        })
+
+        this.toggleEdit()
       }
 
-      handleAddFood = (ndbno) => {
-        this.add(ndbno)
-      }
+  
+    handleSearchSubmit = () => {
+      this.search(this.state.food)
+      this.setState({
+        food: '',
+        search: true
+      })
+    }
 
-      toggleDropDown = () => {
-        let { dropDown } = this.state
-        this.setState({
-          dropDown: !dropDown
-        })
-      }
+    handleAddFood = (ndbno) => {
+      this.addToState(ndbno)
+    }
+
+    toggleDropDown = () => {
+      let { dropDown } = this.state
+      this.setState({
+        dropDown: !dropDown
+      })
+    }
+
+    toggleEdit = () => {
+      let { edit } = this.state 
+      this.setState({
+        edit: !edit
+      })
+    }
 
     render() {
         let mappedResults = this.state.resultsList.map((food, i) => {
@@ -93,9 +128,10 @@ class AddFoodForm extends Component {
         let mappedFood = this.state.foodList.map((item, i) => {
           return (
             <div key={i}>
-              <p>{item.food.food.desc.name}<span /><button onClick={this.toggleDropDown}>^</button></p>
+              <p>{item.food.food.desc.name}<span><button onClick={this.toggleDropDown}>^</button></span></p>
               {this.state.dropDown &&
               <div>
+              <p>{item.food.food.nutrients[0].measures[0].eqv}{item.food.food.nutrients[0].measures[0].eunit}</p>
               <p>calories: {item.food.food.nutrients[0].value}</p>
               <p>protein: {item.food.food.nutrients[1].value}</p>
               <p>fat: {item.food.food.nutrients[2].value}</p>
@@ -106,6 +142,19 @@ class AddFoodForm extends Component {
             </div>
           )
         })
+
+        let currentFoodInfo =this.state.currentFood.food.nutrients.filter((item, i) => {
+          return item.nutrient_id < 300
+        }).map((item, i) => {
+          console.log('THIS IS THE ITEM FROM NUTRIENTS', item)
+          return (
+            <div key={i}>
+              <p>{item.name}: {item.value}</p>
+            </div>
+          )
+        })
+      
+
         
         return (
             <div style={styles.body}>
@@ -118,24 +167,30 @@ class AddFoodForm extends Component {
                   <button onClick={this.handleSearchSubmit}>search</button>
                 </div>
 
+                {this.state.edit
+                ?
                 <div>
-                  <h4>your food:</h4>
+                  {this.state.currentFood.food.desc.name}
+                  {currentFoodInfo}
+                  <button onClick={this.addToDatabase()}>add to meal</button>
+                </div>
+                :
+                <div>
                   {mappedFood}
                 </div>
+              }
 
-                <div>
-                  <h4>search results:</h4>
-                  {mappedResults}
-                </div>
+              {this.state.search && <div>{mappedResults}</div>}
+
             </div>
         )
     }
 }
 
 let mapStateToProps = state => {
-  console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state.meals.meal_id)
+  console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state)
   return {
-      meal_id: state.meals
+      meal_id: state.meals.meal_id
   }
 }
 
