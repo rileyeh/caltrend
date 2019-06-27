@@ -15,6 +15,12 @@ module.exports = {
             meal_number: meal
         })
         res.status(200).send(newMeal)
+    },
+    deleteMeal: async (req, res) => {
+        const db= req.app.get('db')
+        const {id} = req.params
+        let meals = await db.meals.deleteMeal(id)
+        res.status(200).send(meals)
     }
 }
 

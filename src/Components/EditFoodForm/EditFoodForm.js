@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -36,17 +37,44 @@ class EditFoodForm extends Component {
             carbs: this.props.carbs,
             fiber: this.props.fiber,
             sugar: this.props.sugar,
-            quantity: this.props.eqv,
-            unit: this.props.eunit
+            quantity: this.props.quantity,
+            unit: this.props.label
         })
     }
 
     // remember, these nutrients on state are objects, to get to the actual amount, you have to user calories.value and then calories.label
 
-    componentDidUpdate() {
-        let {quantity, unit} = this.state
+    updateNutrientInfo = () => {
+        let {calories, protein, fat, carbs, fiber, sugar, quantity, unit} = this.state
+        let nutrientsArray = [calories, protein, fat, carbs, fiber, sugar]
+        // function changeValues() {
+        //     this.setState({
+        //     calories: nutrientsArray[0], 
+        //     protein: nutrientsArray[1], 
+        //     fat: nutrientsArray[2], 
+        //     carbs: nutrientsArray[3], 
+        //     fiber: nutrientsArray[4], 
+        //     sugar: nutrientsArray[5]
+        // })}
 
+        if (this.state.unit === this.props.label) {
+            nutrientsArray.forEach(nutrient => {
+                if(nutrient) {
+                    let { value } = nutrient
+                    return value = (value / this.props.quantity) * quantity
+                } //might have to put something here for the nutrients that are undefined. but maybe not because they will just be skipped because they aren't truthy
+            })
+            this.setState({
+                calories: nutrientsArray[0], 
+                protein: nutrientsArray[1], 
+                fat: nutrientsArray[2], 
+                carbs: nutrientsArray[3], 
+                fiber: nutrientsArray[4], 
+                sugar: nutrientsArray[5]
+            })
+        }
 
+        this.toggleEdit()
     }
 
     addToDatabase = () => {
@@ -77,6 +105,7 @@ class EditFoodForm extends Component {
           console.log('response from the add food form', res)
         })
 
+
       }
 
       toggleEdit = () => {
@@ -96,17 +125,26 @@ class EditFoodForm extends Component {
                 <span>
                 <input 
                 name='quantity'
-                placeholder={this.state.quantity}
+                placeholder={this.props.quantity}
                 value={this.state.quantity}
                 onChange={this.handleChange}/>
 
                 <select
-                name='label'
-                placeholder= {this.state.label}
+                name='unit'
+                placeholder= {this.props.label}
                 value={this.state.label}
                 onChange={this.handleChange}>
+                    <option>{this.props.label}</option>
                     <option>{this.props.unit}</option>
-                    {this.props.unit == 'g' 
+                    <option>g</option>
+                    <option>oz</option>
+                    <option>lbs</option>
+                    <option>ml</option>
+                    <option>cups</option>
+                    <option>T</option>
+                    <option>t</option>
+
+                    {/* {this.props.unit == 'g' 
                     ? 
                     <span>
                         <option>g</option>
@@ -118,18 +156,18 @@ class EditFoodForm extends Component {
                         <option>ml</option>
                         <option>cups</option>
                     </span>
-                    }
+                    } */}
                     
                     
                 </select>
                 <button onClick={this.toggleEdit}>cancel</button>
-                <button onClick={this.toggleEdit}>update</button>
+                <button onClick={this.updateNutrientInfo}>update</button>
                 </span>
                 :
                 <span>
                     {this.state.quantity} {this.state.unit}
                     <button onClick={this.toggleEdit}>pencil</button>
-                    <button onClick={this.addToDatabase}>add</button>
+                    <Link to='/foodsform'><button onClick={this.addToDatabase}>add</button></Link>
                 </span>
                 }
         

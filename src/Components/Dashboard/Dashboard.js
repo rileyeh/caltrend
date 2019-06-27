@@ -56,7 +56,6 @@ class Dashboard extends Component {
 
 function mapStateToProps(state) {
     let { data: user } = state.user
-    console.log(4444, user)
     return { user }
   }
 
