@@ -11,7 +11,7 @@ module.exports = {
     },
     createFood: async (req, res) => {
         const db = req.app.get('db')
-        const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit, meal_id } = req.body
+        const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit , meal_id } = req.body
         let newFood = await db.food.createFood({
             food_name, 
             calories, 
