@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import EditFoodForm from '../EditFoodForm/EditFoodForm'
 import { setCurrentFood } from '../../ducks/reducers/meals'
+import { Link, Redirect } from 'react-router-dom'
 
 class AddFoodForm extends Component {
     constructor(props) {
@@ -18,8 +18,8 @@ class AddFoodForm extends Component {
             },
             foodList: [],
             dropDown: false,
-            edit: false,
-            search: false
+            search: false,
+            redirect: false
         }
     }
 
@@ -75,9 +75,18 @@ class AddFoodForm extends Component {
         foodList: [...prevState.foodList, { 'food': food }],
         resultsList: [],
         edit: true,
-        search: false
+        search: false,
+      }))
+    
+      this.toggleRedirect()
+
+    }
+
+    toggleRedirect = () => {
+      this.setState({
+        redirect: true
       })
-      )}
+    }
 
     handleSearchSubmit = () => {
       this.search(this.state.food)
@@ -98,14 +107,10 @@ class AddFoodForm extends Component {
       })
     }
 
-    toggleEdit = () => {
-      let { edit } = this.state 
-      this.setState({
-        edit: !edit
-      })
-    }
-
     render() {
+      if (this.state.redirect) {
+        return <Redirect to='/editfood' />;
+      }
         let mappedResults = this.state.resultsList.map((food, i) => {
             return (
               <div key={i}>
@@ -115,27 +120,31 @@ class AddFoodForm extends Component {
             )
           })  
 
-        // let mappedFood = this.state.foodList.map((item, i) => {
-        //   return (
-        //     <div key={i}>
-        //       <p>{item.food.food.desc.name}</p>
+        let mappedFood = this.state.foodList.map((item, i) => {
+          return (
+            <div key={i}>
+
+              <p>we're mapping</p>
+
+              {/* <p>{item.food.food.desc.name}</p> */}
               
-        //       {/* <p>{item.food.food.nutrients[0].measures[0].eqv}{item.food.food.nutrients[0].measures[0].eunit}</p>
+              {/* <p>{item.food.food.nutrients[0].measures[0].eqv}{item.food.food.nutrients[0].measures[0].eunit}</p> */}
 
+{/* 
+               <div>
+                <p>calories: {item.food.food.nutrients[0].value}</p>
+                 <p>protein: {item.food.food.nutrients[1].value}</p>
+                 <p>fat: {item.food.food.nutrients[2].value}</p>
+                <p>carbohydrates: {item.food.food.nutrients[3].value}</p>
+                 <p>fiber: {item.food.food.nutrients[4].value}</p>
+                <p>sugar: {item.food.food.nutrients[5].value}</p>
+              </div>  */}
 
-        //       <div>
-        //         <p>calories: {item.food.food.nutrients[0].value}</p>
-        //         <p>protein: {item.food.food.nutrients[1].value}</p>
-        //         <p>fat: {item.food.food.nutrients[2].value}</p>
-        //         <p>carbohydrates: {item.food.food.nutrients[3].value}</p>
-        //         <p>fiber: {item.food.food.nutrients[4].value}</p>
-        //         <p>sugar: {item.food.food.nutrients[5].value}</p>
-        //       </div> */}
-        //     </div>
-        //   )
-        // })
+            </div>
+          )
+         })
 
-        let currentFoodInfo =this.state.currentFood.food.nutrients.filter(item => {
+        let currentFoodInfo=this.state.currentFood.food.nutrients.filter(item => {
           return item.nutrient_id < 300
         }).map((item, i) => {
           console.log('THIS IS THE ITEM FROM NUTRIENTS', item)
@@ -153,23 +162,12 @@ class AddFoodForm extends Component {
             <div style={styles.body}>
 
                 <h3>{this.props.date} Meal {this.props.number}</h3>
+                <Link to='/foodlog'>done</Link>
 
-              {this.state.edit 
-                ?
-
-                <EditFoodForm />
-                // <div>
-                //   <h1>edit is true</h1>
-                //   {this.state.currentFood.food.desc.name}
-                //   {currentFoodInfo}
-                //   <button onClick={this.addToDatabase()}>add to meal</button>
-                // </div>
-                
-                :
                 <div>
-                  {/* <div>
+                  <div>
                     {mappedFood}
-                  </div> */}
+                  </div>
 
                   < div style={styles.searchBar}>
                     <input 
@@ -179,8 +177,7 @@ class AddFoodForm extends Component {
                       value={this.state.food} />
                     <button onClick={this.handleSearchSubmit}>search</button>
                   </div>
-                </div>
-              }               
+                </div>             
               
                 <div>{mappedResults}</div>
 

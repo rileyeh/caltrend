@@ -28,6 +28,12 @@ class FoodLog extends Component {
         }).catch(err => console.log('error in the food log', err))
     }
 
+    deleteMeal = (id) => {
+        axios.delete(`/api/meal/:${id}`).then(res => {
+            console.log(56789, res)
+        })
+    }
+
     toggleDropDown = () => {
         let { dropDown } = this.state
         this.setState({
@@ -47,7 +53,11 @@ class FoodLog extends Component {
                         console.log('props on food', food)
                         return (
                             <div key={i}>
-                            <h4>{food.food_name}<span><button onClick={this.toggleDropDown}>^</button></span></h4>
+                            <h4>{food.food_name}
+                            <span>
+                                <button onClick={this.toggleDropDown}>^</button>
+                                <button onClick={() => this.deleteMeal(food.meal_id)}>delete</button>
+                            </span></h4>
                             {this.state.dropDown &&
                             <div>
                                 <p>calories: {food.calories}</p>

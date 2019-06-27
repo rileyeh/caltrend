@@ -26,14 +26,18 @@ app.use(session({
     }
 }))
 
+// auth
 app.post('/auth/register', AuthCtrl.register)
 app.post('/auth/login', AuthCtrl.login)
 app.get('/auth/logout', AuthCtrl.logout)
 app.get('/auth/currentUser', AuthCtrl.currentUser)
 
+// meals
 app.get('/api/meals', MealCtrl.getMealsByUser)
 app.post('/api/meals', MealCtrl.createMeal)
+app.delete('/api/meal/:id', MealCtrl.deleteMeal)
 
+// foods
 app.post('/api/food', FoodCtrl.getFoodByMeal)
 app.post('/api/newFood', FoodCtrl.createFood)
 
