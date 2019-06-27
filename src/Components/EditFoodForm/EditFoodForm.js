@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -9,6 +9,7 @@ class EditFoodForm extends Component {
 
         this.state = {
             edit: false,
+            add: false,
             name: '',
             calories: 0,
             protein: 0,
@@ -78,13 +79,41 @@ class EditFoodForm extends Component {
     }
 
     addToDatabase = () => {
+       
+        let calories 
+        let protein 
+        let fat 
+        let carbs 
+        let fiber 
+        let sugar 
+
+        if (this.state.calories) {
+            calories = this.state.calories.value
+        } else {calories = 0}
+
+        if (this.state.protein) {
+            protein = this.state.protein.value
+        } else {protein = 0}
+
+        if (this.state.fat) {
+            fat = this.state.fat.value
+        } else {fat = 0}
+
+        if (this.state.carbs) {
+            carbs = this.state.carbs.value
+        } else {carbs = 0}
+
+        if (this.state.fiber) {
+            fiber = this.state.fiber.value
+        } else {fiber = 0}
+
+        if (this.state.sugar) {
+            sugar = this.state.sugar.value
+        } else {sugar = 0}
+
+
+
         let food_name = this.state.name
-        let calories = this.state.calories
-        let protein = this.state.protein
-        let fat = this.state.fat
-        let carbs = this.state.carbs
-        let fiber = this.state.fiber
-        let sugar = this.state.sugar
         let quantity = this.state.quantity
         let unit = this.state.unit
         let meal_id = this.props.id
@@ -105,6 +134,7 @@ class EditFoodForm extends Component {
           console.log('response from the add food form', res)
         })
 
+        this.toggleAdd()
 
       }
 
@@ -115,7 +145,17 @@ class EditFoodForm extends Component {
           })
       }
 
+      toggleAdd = () => {
+          this.setState({
+              add: true
+          })
+      }
+
     render() {
+        if (this.state.add) {
+            return <Redirect to='/foodsform'/>;
+          }
+
         return (
             <div>
                 <h4>{this.props.name}</h4>
@@ -167,7 +207,7 @@ class EditFoodForm extends Component {
                 <span>
                     {this.state.quantity} {this.state.unit}
                     <button onClick={this.toggleEdit}>pencil</button>
-                    <Link to='/foodsform'><button onClick={this.addToDatabase}>add</button></Link>
+                    <button onClick={this.addToDatabase}>add</button>
                 </span>
                 }
         

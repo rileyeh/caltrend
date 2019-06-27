@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import AddFoodForm from '../AddFoodForm/AddFoodForm'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { writeMealInfo } from '../../ducks/reducers/meals'

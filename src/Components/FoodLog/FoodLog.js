@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import Nav from '../Nav/Nav'
+import AddMealForm from '../AddMealForm/AddMealForm'
+import {setCurrentFood} from '../../ducks/reducers/meals'
+import { Redirect } from 'react-router-dom'
 
 class FoodLog extends Component {
     constructor(props) {
@@ -7,14 +12,32 @@ class FoodLog extends Component {
 
         this.state = {
             meals: [],
-            dropDown: false
+            mealForm: false,
+            redirectToEdit: false
         }
     }
 
     componentDidMount() {
         axios.get('/api/meals').then(res => {
+            this.getFoodByMeal(res)
+        }).catch(err => console.log('error in the food log', err))
+    }
 
-            let mealArray = res.data
+    deleteMeal = (meal_id) => {
+        axios.delete(`/api/meal/${meal_id}`).then(res => {
+            // alert('meal deleted')
+            console.log('response from the db after delete', res)
+            this.getFoodByMeal(res)
+        }).catch(err => console.log('error in the food log', err))
+    }
+
+    editMeal = (meal_id) => {
+        console.log('hey hey hey, make an update function')
+    }
+
+    getFoodByMeal = res => {
+        if (res.data.length > 0) {
+        let mealArray = res.data
 
                 mealArray.forEach(elem => {
                     elem.foods = []
@@ -24,27 +47,50 @@ class FoodLog extends Component {
                             meals: mealArray,
                         })
                     })
-                })
-        }).catch(err => console.log('error in the food log', err))
-    }
-
-    deleteMeal = (id) => {
-        axios.delete(`/api/meal/:${id}`).then(res => {
-            console.log(56789, res)
+                })}
+        this.setState({
+            meals: []
         })
     }
 
-    toggleDropDown = () => {
-        let { dropDown } = this.state
+    deleteFood = (id) => {
+        axios.delete(`/api/food/${id}`).then(res => {
+            console.log(7489123847, res)
+        })
+    }
+
+      toggleAddMealForm = () => {
+        let { mealForm } = this.state
         this.setState({
-          dropDown: !dropDown
+          mealForm: !mealForm
         })
       }
 
+      redirectToEdit = obj => {
+          this.props.setCurrentFood(obj)
+          this.setState({
+              redirectToEdit: true
+          })
+      }
+
     render() {
+
+        if (this.state.redirectToEdit) {
+            return <Redirect to='/editfood' />;
+          }
+
+
         return (
             <div>
-                FoodLog
+                <Nav />
+                <h3>FoodLog</h3>
+                <button onClick={this.toggleAddMealForm}>Add Meal</button>
+                {this.state.mealForm && 
+                    <div>
+                        <button onClick={this.toggleAddMealForm}>cancel</button>
+                        <AddMealForm/>
+                    </div>}
+
                 {this.state.meals.length !== 0 && 
 
                 this.state.meals.map((meal, i) => {
@@ -53,13 +99,11 @@ class FoodLog extends Component {
                         console.log('props on food', food)
                         return (
                             <div key={i}>
-                            <h4>{food.food_name}
-                            <span>
-                                <button onClick={this.toggleDropDown}>^</button>
-                                <button onClick={() => this.deleteMeal(food.meal_id)}>delete</button>
-                            </span></h4>
-                            {this.state.dropDown &&
-                            <div>
+                            <h4>{food.food_name}</h4>
+                            <button onClick={() => this.redirectToEdit(food)}>edit</button>
+                            <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
+                            
+                            <div style={styles.nutrients}>
                                 <p>calories: {food.calories}</p>
                                 <p>protein: {food.protein}</p>
                                 <p>fat: {food.fat}</p>
@@ -67,16 +111,18 @@ class FoodLog extends Component {
                                 <p>fiber: {food.fiber}</p>
                                 <p>sugar: {food.sugar}</p>
                             </div>
-                            }
+                            
                             </div>
                         )
                     })
         
                     return (
-                        <div key={meal.meal_id}>
+                        <div key={meal.meal_id} style={styles.mealBox}>
                             <p>date: {meal.date_created}</p>
-                          <p>number: {meal.meal_number}</p>
-                        {mappedFoods}
+                            <p>number: {meal.meal_number}</p>
+                            <button onClick={() => this.deleteMeal(meal.meal_id)}>delete</button>
+                            <button onClick={() => this.editMeal(meal.meal_id)}>edit</button>
+                            {mappedFoods}
                         </div>
                     )
                    
@@ -86,4 +132,18 @@ class FoodLog extends Component {
     }
 }
 
-export default FoodLog
+function mapStateToProps(state) {
+    console.log('state from the food log', state)
+    return state
+}
+
+export default connect(mapStateToProps, {setCurrentFood})(FoodLog)
+
+let styles = {
+    mealBox: {
+        borderBottom: '4px solid green'
+    },
+    nutrients: {
+        display: 'flex'
+    }
+}
