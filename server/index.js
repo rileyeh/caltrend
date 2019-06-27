@@ -34,12 +34,14 @@ app.get('/auth/currentUser', AuthCtrl.currentUser)
 
 // meals
 app.get('/api/meals', MealCtrl.getMealsByUser)
+app.get('/api/meal/:id', MealCtrl.getOneMeal)
 app.post('/api/meals', MealCtrl.createMeal)
-app.delete('/api/meal/:id', MealCtrl.deleteMeal)
+app.delete('/api/meal/:meal_id', MealCtrl.deleteMeal)
 
 // foods
 app.post('/api/food', FoodCtrl.getFoodByMeal)
 app.post('/api/newFood', FoodCtrl.createFood)
+app.delete('/api/food/:id', FoodCtrl.deleteFood)
 
 
 app.listen(SERVER_PORT, () => console.log(`running on port ${SERVER_PORT}`))

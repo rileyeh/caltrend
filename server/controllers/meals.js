@@ -5,6 +5,12 @@ module.exports = {
         let meals = await db.meals.getMealsByUser(user_id)
         res.status(200).send(meals)
     },
+    getOneMeal: async (req, res) => {
+        const db = req.app.get('db')
+        const {id} = req.params
+        let meal = await db.meals.getOneMeal(id)
+        res.status(200).send(meal)
+    },
     createMeal: async (req, res) => {
         const db = req.app.get('db')
         const { date, meal} = req.body
@@ -18,8 +24,10 @@ module.exports = {
     },
     deleteMeal: async (req, res) => {
         const db= req.app.get('db')
-        const {id} = req.params
-        let meals = await db.meals.deleteMeal(id)
+        const { meal_id } = req.params
+        const { user_id } = req.session.user
+        console.log('figuring stuff out', meal_id, user_id)
+        let meals = await db.meals.deleteMeal({meal_id, user_id})
         res.status(200).send(meals)
     }
 }

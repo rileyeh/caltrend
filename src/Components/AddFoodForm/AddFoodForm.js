@@ -71,15 +71,33 @@ class AddFoodForm extends Component {
 
       this.props.setCurrentFood(food)
 
-      this.setState(prevState => ({
-        foodList: [...prevState.foodList, { 'food': food }],
+      this.setState({
         resultsList: [],
         edit: true,
         search: false,
-      }))
+      })
     
       this.toggleRedirect()
 
+      console.log(88888, this.state)
+
+
+    }
+
+    componentDidMount() {
+      let id = this.props.id
+      console.log(33333, id)
+       axios.get(`/api/meal/${id}`).then(res => {
+        let currentMeal = res.data[0]
+        console.log(44444, res, 55555, currentMeal)
+        axios.post('/api/food', currentMeal).then(res => {
+          console.log(7777, res.data)
+          this.setState({
+            foodList: res.data
+          })
+        })
+      }).catch(err => console.log('error in the food log', err))
+      console.log(9999, this.state)
     }
 
     toggleRedirect = () => {
@@ -120,30 +138,7 @@ class AddFoodForm extends Component {
             )
           })  
 
-        let mappedFood = this.state.foodList.map((item, i) => {
-          return (
-            <div key={i}>
-
-              <p>we're mapping</p>
-
-              {/* <p>{item.food.food.desc.name}</p> */}
-              
-              {/* <p>{item.food.food.nutrients[0].measures[0].eqv}{item.food.food.nutrients[0].measures[0].eunit}</p> */}
-
-{/* 
-               <div>
-                <p>calories: {item.food.food.nutrients[0].value}</p>
-                 <p>protein: {item.food.food.nutrients[1].value}</p>
-                 <p>fat: {item.food.food.nutrients[2].value}</p>
-                <p>carbohydrates: {item.food.food.nutrients[3].value}</p>
-                 <p>fiber: {item.food.food.nutrients[4].value}</p>
-                <p>sugar: {item.food.food.nutrients[5].value}</p>
-              </div>  */}
-
-            </div>
-          )
-         })
-
+       
         let currentFoodInfo=this.state.currentFood.food.nutrients.filter(item => {
           return item.nutrient_id < 300
         }).map((item, i) => {
@@ -166,7 +161,17 @@ class AddFoodForm extends Component {
 
                 <div>
                   <div>
-                    {mappedFood}
+                    {this.state.foodList !== 0 && 
+
+                    this.state.foodList.map((food, i) => {
+                        return (
+                        <div key={i} style={styles.mealBox}>
+                          <h4>{food.food_name}</h4>
+                          <p>{food.calories} calories</p>
+                        </div>
+                      )
+                    }
+                    )}
                   </div>
 
                   < div style={styles.searchBar}>
@@ -205,5 +210,8 @@ let styles = {
   searchBar: {
     display: 'flex',
     justifyContent: 'space-evenly'
+  },
+  mealBox: {
+    border: '1px solid green'
   }
 }

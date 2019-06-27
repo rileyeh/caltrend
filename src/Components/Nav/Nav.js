@@ -13,7 +13,8 @@ class Nav extends Component {
         return (
             <div>
                 <p>Nav</p>
-                <Link to='foodlog'>Food Log</Link>
+                <Link to='/dashboard'>Home </Link>
+                <Link to='foodlog'>Food Log </Link>
                 <Link to="/" onClick={this.props.logout}>Logout</Link>
             </div>
         )
