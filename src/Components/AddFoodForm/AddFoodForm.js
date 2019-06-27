@@ -23,10 +23,6 @@ class AddFoodForm extends Component {
         }
     }
 
-    componentDidUpdate() {
-      console.log(2143542, this.state.currentFood)
-    }
-
     handleChange = e => {
         let { name, value } = e.target
         this.setState({
@@ -83,42 +79,6 @@ class AddFoodForm extends Component {
       })
       )}
 
-
-      addToDatabase = () => {
-        console.log(6666, this.state.foodList)
-
-        let food_name = this.state.foodList[0].food.food.desc.name
-        let calories = +this.state.foodList[0].food.food.nutrients[0].value
-        let protein = +this.state.foodList[0].food.food.nutrients[1].value
-        let fat = +this.state.foodList[0].food.food.nutrients[2].value
-        let carbs = +this.state.foodList[0].food.food.nutrients[3].value
-        let fiber = +this.state.foodList[0].food.food.nutrients[4].value
-        let sugar = +this.state.foodList[0].food.food.nutrients[5].value
-        let quantity = 20
-        let unit = 'g'
-        let meal_id = +this.props.data.id
-  
-  
-        axios.post('/api/newFood', {
-          food_name, 
-          calories, 
-          carbs, 
-          protein, 
-          fat, 
-          fiber, 
-          sugar, 
-          quantity,
-          unit,
-          meal_id
-        })
-        .then(res => {
-          console.log('response from the add food form', res)
-        })
-
-        this.toggleEdit()
-      }
-
-  
     handleSearchSubmit = () => {
       this.search(this.state.food)
       this.setState({
