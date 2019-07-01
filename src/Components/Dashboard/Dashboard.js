@@ -2,19 +2,13 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { getUser, logout } from '../../ducks/reducers/user'
-import { Link, Redirect } from 'react-router-dom'
-import AddMealForm from '../AddMealForm/AddMealForm'
+import { Redirect, Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Nav from '../Nav/Nav'
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-          mealForm: false
-        }
-    }
+   
 
     componentDidMount() {
         axios
@@ -26,16 +20,6 @@ class Dashboard extends Component {
             console.log('Not logged in');
           });
       }
-
-    showAddMealForm = () => {
-      let { mealForm } = this.state
-      this.setState({
-        mealForm: !mealForm
-      })
-    }
-
-    
-
     // we're going to be working with req.query.q 
 
     render() {
@@ -43,13 +27,19 @@ class Dashboard extends Component {
         return <Redirect to='/' />
       }
         return (
-            <div>
-                <div>Dashboard</div>
-                {this.props.user && <div>Welcome, {this.props.user.name}</div>}
-                <Nav />
-                <button onClick={this.showAddMealForm}>Add Meal</button>
-                {this.state.mealForm && <AddMealForm/>}      
-            </div>
+          <div>
+            <Nav />
+
+            <Body>
+                {this.props.user && <Greeting>Welcome, {this.props.user.name}</Greeting>}
+                <Graph></Graph>
+                <ButtonContainer>
+                  <ButtonLink to='addmeal'>Add<br/>Meal</ButtonLink>
+                  <ButtonLink to='/'>Log<br/>Weight</ButtonLink>
+                  <ButtonLink to='/'>Log<br/>Exercise</ButtonLink>
+                </ButtonContainer>    
+            </Body>
+          </div>
         )
     }
 }
@@ -60,3 +50,76 @@ function mapStateToProps(state) {
   }
 
 export default connect(mapStateToProps, { getUser, logout })(Dashboard)
+
+// let darkGreen = '#219653'
+// let mediumGreen = '#2DB969'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+
+const Body = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: ${lightAccent}
+
+ @media(min-width: 500px) {
+   align-items: flex-start;
+ }
+`
+
+const Greeting = styled.h1`
+  color: ${greenBlue};
+  font-weight: bold;
+  font-size: 30px;
+  padding: 20px 0;
+
+  @media(min-width: 500px) {
+    margin-left: 60px;
+    padding-top: 40px;
+  }
+
+  @media(min-width: 1000px) {
+    padding-top: 60px;
+  }
+`
+const Graph = styled.div`
+  border-bottom: 1px solid ${darkAccent};  
+  border-left: 1px solid ${darkAccent};
+  width: 250px;
+  height: 300px;
+
+  @media(min-width: 500px) {
+    margin: 60px;
+  }
+`
+const ButtonContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 20px 0 20px;
+
+  @media(min-width: 500px) {
+    justify-content: flex-start;
+  }
+`
+
+const ButtonLink = styled(Link)`
+  background: ${greenBlue}
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  color: ${lightAccent}
+  font-size: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
+  @media(min-width: 500px) {
+    margin: 0 30px;
+  }
+`

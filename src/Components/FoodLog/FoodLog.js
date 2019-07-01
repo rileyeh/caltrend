@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import Nav from '../Nav/Nav'
 import AddMealForm from '../AddMealForm/AddMealForm'
 import {setCurrentFood} from '../../ducks/reducers/meals'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
+import styled from 'styled-components'
+import pencil from '../../assets/Pencil.svg'
+import trash from '../../assets/Trash.svg'
 
 class FoodLog extends Component {
     constructor(props) {
@@ -83,50 +86,57 @@ class FoodLog extends Component {
         return (
             <div>
                 <Nav />
-                <h3>FoodLog</h3>
-                <button onClick={this.toggleAddMealForm}>Add Meal</button>
-                {this.state.mealForm && 
-                    <div>
-                        <button onClick={this.toggleAddMealForm}>cancel</button>
-                        <AddMealForm/>
-                    </div>}
 
-                {this.state.meals.length !== 0 && 
+                <Body>
+                    <TopSection>
+                        <Title>Food Log</Title>
+                        <AddButton to='addmeal' onClick={this.toggleAddMealForm}>Add Meal</AddButton>
+                    </TopSection>
 
-                this.state.meals.map((meal, i) => {
-        
-                    let mappedFoods = this.state.meals[i].foods.map((food, i) => {
-                        console.log('props on food', food)
+                    {this.state.mealForm && 
+                        <div>
+                            <button onClick={this.toggleAddMealForm}>cancel</button>
+                            <AddMealForm toggleAddMealForm={this.toggleAddMealForm}/>
+                        </div>}
+
+                    {this.state.meals.length !== 0 && 
+
+                    this.state.meals.map((meal, i) => {
+            
+                        let mappedFoods = this.state.meals[i].foods.map((food, i) => {
+                            console.log('props on food', food)
+                            return (
+                                <div key={i}>
+                                <h5>{food.food_name}</h5>
+                                <MealButtons onClick={() => this.redirectToEdit(food)}>edit</MealButtons>
+                                <MealButtons onClick={() => this.deleteFood(food.food_id)}>delete</MealButtons>
+                                
+                                <Nutrients>
+                                    <p>calories<br/>{food.calories}</p>
+                                    <p>protein<br/>{food.protein}</p>
+                                    <p>fat<br/>{food.fat}</p>
+                                    <p>carbs<br/>{food.carbs}</p>
+                                    <p>fiber<br/>{food.fiber}</p>
+                                    <p>sugar<br/>{food.sugar}</p>
+                                </Nutrients>
+                                
+                                </div>
+                            )
+                        })
+            
                         return (
-                            <div key={i}>
-                            <h4>{food.food_name}</h4>
-                            <button onClick={() => this.redirectToEdit(food)}>edit</button>
-                            <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
-                            
-                            <div style={styles.nutrients}>
-                                <p>calories: {food.calories}</p>
-                                <p>protein: {food.protein}</p>
-                                <p>fat: {food.fat}</p>
-                                <p>carbohydrates: {food.carbs}</p>
-                                <p>fiber: {food.fiber}</p>
-                                <p>sugar: {food.sugar}</p>
-                            </div>
-                            
-                            </div>
+                            <Meal key={meal.meal_id} >
+                                <MealHeader>
+                                    <h3>{meal.date_created} Meal {meal.meal_number}</h3>
+                                    <Image src={pencil} alt='' onClick={() => this.editMeal(meal.meal_id)}/>
+                                    <Image src={trash} alt='' onClick={() => this.deleteMeal(meal.meal_id)}/>
+                                </MealHeader>
+                                {mappedFoods}
+                            </Meal>
                         )
-                    })
-        
-                    return (
-                        <div key={meal.meal_id} style={styles.mealBox}>
-                            <p>date: {meal.date_created}</p>
-                            <p>number: {meal.meal_number}</p>
-                            <button onClick={() => this.deleteMeal(meal.meal_id)}>delete</button>
-                            <button onClick={() => this.editMeal(meal.meal_id)}>edit</button>
-                            {mappedFoods}
-                        </div>
-                    )
-                   
-                })}
+                    
+                    })}
+                </Body>
             </div>
         )
     }
@@ -137,13 +147,84 @@ function mapStateToProps(state) {
     return state
 }
 
+// let darkGreen = '#219653'
+// let mediumGreen = '#2DB969'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+
 export default connect(mapStateToProps, {setCurrentFood})(FoodLog)
 
-let styles = {
-    mealBox: {
-        borderBottom: '4px solid green'
-    },
-    nutrients: {
-        display: 'flex'
+const Body = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const TopSection = styled.div`
+    width: 90vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+`
+
+const Title = styled.h3`
+color: ${greenBlue};
+font-weight: bold;
+font-size: 30px;
+padding: 20px 0;
+`
+
+const AddButton = styled(Link)`
+    width: 85px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    background: ${greenBlue};
+    color: ${lightAccent};
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const Nutrients = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    > p {
+        width: 100px;
+        text-align: center;
+        margin: 5px;
     }
-}
+`
+
+const Meal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid ${darkAccent}
+`
+
+const MealHeader = styled.div`
+    width: 80vw;
+    display: flex;
+    padding-top: 5px;
+
+`
+
+const MealButtons = styled.button`
+    width: 40px;
+    height: 20px;
+    background: ${greenBlue};
+    border: none;
+    margin: 5px;
+    border-radius: 5px;
+    color: ${lightAccent};
+`
+
+const Image = styled.img`
+    height: 30px;
+    width: 30px;
+`

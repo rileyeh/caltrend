@@ -3,6 +3,8 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { writeMealInfo } from '../../ducks/reducers/meals'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import Nav from '../Nav/Nav'
 
 
 class AddMealForm extends Component {
@@ -46,22 +48,27 @@ class AddMealForm extends Component {
     render() {
         
         return (
-            <div style={styles.body}>
+            <div>
+            <Nav />
+            <Body>
                 
-                <h3>add meal</h3>
-                <input
+                <Title>add meal</Title>
+                <Input
                     name='date'
                     type='text'
                     placeholder='date'
                     onChange={this.handleChange}/>
-                <input
+                <Input
                     name='meal'
                     type='text'
                     placeholder='meal'
                     onChange={this.handleChange}/>
-                
-                <Link to='foodsform'><button onClick={this.handleSubmit}>add foods</button></Link>
-                
+
+                <ButtonsContainer>
+                    <ButtonLink to='dashboard'>cancel</ButtonLink>
+                    <ButtonLink to='foodsform' onClick={this.handleSubmit}>add foods</ButtonLink>
+                </ButtonsContainer>
+            </Body>
             </div>
         )
     }
@@ -78,13 +85,63 @@ export default connect(mapStateToProps, { writeMealInfo })(AddMealForm)
 
 // export default AddMealForm
 
+// let darkGreen = '#219653'
+// let mediumGreen = '#2DB969'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+// let shadow = '#a3a3a3'
 
+const Body = styled.div`
+    background: ${lightAccent};
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+`
 
-let styles = {
-    body: {
-        width: '40vw',
-        border: '1px solid red',
-        display: 'flex',
-        flexDirection: 'column'
+const Title = styled.h3`
+    color: ${darkAccent};
+    font-weight: bold;
+    font-size: 30px;
+    padding: 20px 0;
+
+    @media(min-width: 500px) {
+    margin-left: 60px;
+    padding-top: 40px;
     }
-}
+
+    @media(min-width: 1000px) {
+    padding-top: 60px;
+    }
+`
+
+const Input = styled.input`
+    border: none;
+    border-bottom: 1px solid ${darkAccent};
+    border-radius: 0;
+    background: none;
+    width: 60%;
+    padding-top: 30px;
+`
+const ButtonsContainer = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    padding-top: 30px;
+`
+
+const ButtonLink = styled(Link)`
+    background: ${greenBlue}
+    border: none;
+    width: 95px;
+    height: 40px;
+    border-radius: 8px;
+    color: ${lightAccent};
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
