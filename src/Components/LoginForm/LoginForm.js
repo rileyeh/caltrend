@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Register from '../Register/Register'
+import styled from 'styled-components'
 
 import { login } from '../../ducks/reducers/user'
 
@@ -37,33 +38,34 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <div style={styles.body}>
+            <div>
                 {this.state.register ? <Register /> :
-            <div style={styles.formBody}>
-                <input
-                    name='email'
-                    type='text'
-                    placeholder='email'
-                    onChange={this.handleChange}
-                    value={this.state.email}
-                    style={styles.emailInput} />
-                <br />
-                <input
-                    name='password'
-                    type='password'
-                    placeholder='password'
-                    onChange={this.handleChange}
-                    value={this.state.password}
-                    style={styles.passwordInput} />
-                <br />
-                <Link to='/dashboard'><button onClick={this.handleSubmit}>login</button></Link>
-                <div>
-                <p>
-                    Need an account?
-                    <button onClick={this.toggleRegister}>Register</button>
-                </p>
-            </div>
-            </div>
+                    <Body>
+                        <TopBar>
+                            <h4>log in</h4>
+                            <label onClick={this.props.closeLogin}>X</label>
+                        </TopBar>
+
+                        <LoginInput
+                            name='email'
+                            type='text'
+                            placeholder='email'
+                            onChange={this.handleChange}
+                            value={this.state.email} />
+
+                        <LoginInput
+                            name='password'
+                            type='password'
+                            placeholder='password'
+                            onChange={this.handleChange}
+                            value={this.state.password} />
+
+                        <Link to='/dashboard'><AuthButton onClick={this.handleSubmit}>login</AuthButton></Link>
+
+                    
+                        <RegisterQ>need an account?<AuthButton onClick={this.toggleRegister}>register</AuthButton></RegisterQ>
+
+                    </Body>
             }
             </div>
         )
@@ -72,35 +74,60 @@ class LoginForm extends Component {
 
 export default connect(null, { login })(LoginForm)
 
-let styles = {
-    body: {
-        width: '100vw',
-        height: '100vh',
-        margin: 0,
-        padding: 0,
-        position: 'relative'
-    },
-    formBody: {
-        width: '40vw',
-        height: '60vh',
-        margin: '0 auto',
-        borderRadius: 10,
-        boxShadow: '10px 10px 30px #636363',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        lineHeight: 2,
-        fontFamily: 'Raleway, sans-serif'
-    },
-    emailInput: {
-        width: '60%',
-        marginTop: '40%',
-        border: 'none',
-        borderBottom: '1px solid grey'
-    },
-    passwordInput: {
-        width: '60%',
-        border: 'none',
-        borderBottom: '1px solid grey'
+let darkGreen = '#219653'
+let mediumGreen = '#2DB969'
+let lightGreen = '#36D97C'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+let lightShadow = '#f0f0f0'
+
+const Body = styled.div`
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const TopBar = styled.div`
+    width: 100%;
+    height: 50px;
+    background: ${darkAccent};
+    color: ${lightAccent};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 30px;
+`
+
+const LoginInput = styled.input`
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid ${darkAccent};
+    background: ${lightAccent};
+    width: 70%;
+    margin: 30px 0;
+    font-size: 16px;
+`
+
+const AuthButton = styled.button`
+    background: ${lightAccent};
+    color: ${greenBlue};
+    width: 75px;
+    height: 30px;
+    border: none;
+    font-size: 16px;
+    
+    &:hover {
+        border-radius: 8px;
+        background: ${darkAccent};
+        color: ${lightAccent}
     }
-}
+`
+
+const RegisterQ = styled.p`
+    font-size: 16px;
+    margin-top: 20px;
+`

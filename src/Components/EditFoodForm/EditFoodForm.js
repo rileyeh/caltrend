@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import Nav from '../Nav/Nav'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -41,39 +42,95 @@ class EditFoodForm extends Component {
             quantity: this.props.quantity,
             unit: this.props.label
         })
+
+        console.log(10439532, this.props.history)
     }
 
     // remember, these nutrients on state are objects, to get to the actual amount, you have to user calories.value and then calories.label
 
     updateNutrientInfo = () => {
-        let {calories, protein, fat, carbs, fiber, sugar, quantity, unit} = this.state
+        let {quantity, unit} = this.state
+        let {calories, protein, fat, carbs, fiber, sugar} = this.props
         let nutrientsArray = [calories, protein, fat, carbs, fiber, sugar]
-        // function changeValues() {
-        //     this.setState({
-        //     calories: nutrientsArray[0], 
-        //     protein: nutrientsArray[1], 
-        //     fat: nutrientsArray[2], 
-        //     carbs: nutrientsArray[3], 
-        //     fiber: nutrientsArray[4], 
-        //     sugar: nutrientsArray[5]
-        // })}
 
-        if (this.state.unit === this.props.label) {
-            nutrientsArray.forEach(nutrient => {
-                if(nutrient) {
-                    let { value } = nutrient
-                    return value = (value / this.props.quantity) * quantity
-                } //might have to put something here for the nutrients that are undefined. but maybe not because they will just be skipped because they aren't truthy
-            })
-            this.setState({
-                calories: nutrientsArray[0], 
-                protein: nutrientsArray[1], 
-                fat: nutrientsArray[2], 
-                carbs: nutrientsArray[3], 
-                fiber: nutrientsArray[4], 
-                sugar: nutrientsArray[5]
+        let valuesArray = nutrientsArray.map(nutrient => {
+            if(nutrient) {
+                let {value} = nutrient
+                return value
+            } 
+             return 0  
+        })
+
+        let updatedValues = []
+
+        // if it was muffin and they kept it as muffin
+        if (unit === this.props.label) {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.quantity) * quantity
             })
         }
+
+        // if the unit they chose matches the equivalency unit from the db/props
+        if (unit === this.props.unit) {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * quantity
+            })
+        }
+
+        // if we are going from grams to oz
+        if(unit === 'oz' && this.props.unit === 'g') {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * 28.35 * quantity
+            })
+        }
+
+        // if we are going from grams to pounds
+        if(unit === 'lbs' && this.props.unit === 'g') {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * 28.25 * 16 * quantity
+            })
+        }
+
+        // if we are going from ml to cups
+        if(unit === 'cups' && this.props.unit === 'ml') {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * 236.588 * quantity
+            })
+        }
+
+        // if we are going from ml to T
+        if(unit === 'T' && this.props.unit === 'ml') {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * 14.787 * quantity
+            })
+        }
+
+        // if we are going from ml to t
+        if(unit === 't' && this.props.unit === 'ml') {
+            updatedValues = valuesArray.map(value => {
+                return (value / this.props.eqv) * 1.29 * quantity
+            })
+        }
+
+        
+        if (unit === 'ml' && this.props.unit === 'g' 
+        || unit === 'c' && this.props.unit === 'g'
+        || unit === 'T' && this.props.unit === 'g'
+        || unit === 't' && this.props.unit === 'g'
+        || unit === 'g' && this.props.unit === 'ml'
+            || unit === 'oz' && this.props.unit === 'ml'
+            || unit === 'lbs' && this.props.unit === 'ml') {
+                return alert('does not compute (yet)')
+            }
+            
+        this.setState({
+            calories: {...calories, value:updatedValues[0].toFixed(2)}, 
+            protein: {...protein, value:updatedValues[1].toFixed(2)}, 
+            fat: {...fat, value:updatedValues[2].toFixed(2)}, 
+            carbs: {...carbs, value:updatedValues[3].toFixed(2)}, 
+            fiber: {...fiber, value:updatedValues[4].toFixed(2)}, 
+            sugar: {...sugar, value:updatedValues[5].toFixed(2)}
+        })
 
         this.toggleEdit()
     }
@@ -158,6 +215,8 @@ class EditFoodForm extends Component {
 
         return (
             <div>
+                <Nav />
+                
                 <h4>{this.props.name}</h4>
 
                 {this.state.edit
@@ -165,21 +224,20 @@ class EditFoodForm extends Component {
                 <span>
                 <input 
                 name='quantity'
-                placeholder={this.props.quantity}
+                placeholder={this.state.quantity}
                 value={this.state.quantity}
                 onChange={this.handleChange}/>
 
                 <select
                 name='unit'
-                placeholder= {this.props.label}
+                placeholder= 'select unit'
                 value={this.state.label}
                 onChange={this.handleChange}>
+                    <option>{this.state.unit}</option>
                     <option>{this.props.label}</option>
                     <option>{this.props.unit}</option>
-                    <option>g</option>
                     <option>oz</option>
                     <option>lbs</option>
-                    <option>ml</option>
                     <option>cups</option>
                     <option>T</option>
                     <option>t</option>
@@ -206,6 +264,7 @@ class EditFoodForm extends Component {
                 :
                 <span>
                     {this.state.quantity} {this.state.unit}
+                    <button onClick={() => this.props.history.push('foodsform')}>back to search</button>
                     <button onClick={this.toggleEdit}>pencil</button>
                     <button onClick={this.addToDatabase}>add</button>
                 </span>

@@ -3,6 +3,8 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { setCurrentFood } from '../../ducks/reducers/meals'
 import { Link, Redirect } from 'react-router-dom'
+import Nav from '../Nav/Nav'
+import styled from 'styled-components'
 
 class AddFoodForm extends Component {
     constructor(props) {
@@ -78,26 +80,18 @@ class AddFoodForm extends Component {
       })
     
       this.toggleRedirect()
-
-      console.log(88888, this.state)
-
-
     }
 
     componentDidMount() {
       let id = this.props.id
-      console.log(33333, id)
        axios.get(`/api/meal/${id}`).then(res => {
         let currentMeal = res.data[0]
-        console.log(44444, res, 55555, currentMeal)
         axios.post('/api/food', currentMeal).then(res => {
-          console.log(7777, res.data)
           this.setState({
             foodList: res.data
           })
         })
       }).catch(err => console.log('error in the food log', err))
-      console.log(9999, this.state)
     }
 
     toggleRedirect = () => {
@@ -131,60 +125,51 @@ class AddFoodForm extends Component {
       }
         let mappedResults = this.state.resultsList.map((food, i) => {
             return (
-              <div key={i}>
+              <List key={i} onClick={() => this.handleAddFood(food.ndbno)}>
                     <p>{food.name}</p>
-                    <button onClick={() => this.handleAddFood(food.ndbno)}>></button>
-                </div>
+                    <button>></button>
+                </List>
             )
           })  
 
-       
-        let currentFoodInfo=this.state.currentFood.food.nutrients.filter(item => {
-          return item.nutrient_id < 300
-        }).map((item, i) => {
-          console.log('THIS IS THE ITEM FROM NUTRIENTS', item)
-          return (
-            <div key={i}>
-              <p>{item.name}: {item.value}</p>
-            </div>
-          )
-        })
-      
-
-        
         return (
 
-            <div style={styles.body}>
+            <div>
 
-                <h3>{this.props.date} Meal {this.props.number}</h3>
-                <Link to='/foodlog'>done</Link>
+              <Nav />
 
-                <div>
-                  <div>
-                    {this.state.foodList !== 0 && 
+              <Body>
 
-                    this.state.foodList.map((food, i) => {
-                        return (
-                        <div key={i} style={styles.mealBox}>
-                          <h4>{food.food_name}</h4>
-                          <p>{food.calories} calories</p>
-                        </div>
-                      )
-                    }
-                    )}
-                  </div>
+                    <MealTitle>{this.props.date} Meal {this.props.number}</MealTitle>
+                  
+                    <div>
+                      {this.state.foodList !== 0 && 
 
-                  < div style={styles.searchBar}>
-                    <input 
-                      onChange={e => this.handleChange(e)}
-                      name='food'
-                      type='text'
-                      value={this.state.food} />
-                    <button onClick={this.handleSearchSubmit}>search</button>
-                  </div>
-                </div>             
-              
-                <div>{mappedResults}</div>
+                      this.state.foodList.map((food, i) => {
+                          return (
+                          <List key={i}>
+                            <h4>{food.food_name}</h4>
+                            <p>{food.calories} calories</p>
+                          </List>
+                        )
+                      })
+                      }
+                    </div>
+
+                    <Search>
+                      <SearchBar
+                        onChange={e => this.handleChange(e)}
+                        name='food'
+                        type='text'
+                        value={this.state.food} />
+                      <Button onClick={this.handleSearchSubmit}>search</Button>
+                      <ButtonLink to='/foodlog'>done</ButtonLink>
+                    </Search>            
+                
+                  <div>{mappedResults}</div>
+
+
+                </Body>
 
             </div>
         )
@@ -202,16 +187,91 @@ let mapStateToProps = state => {
 
 export default connect(mapStateToProps, { setCurrentFood })(AddFoodForm)
 
-let styles = {
-  body: {
-      width: '100%',
-      border: '1px solid blue'
-  },
-  searchBar: {
-    display: 'flex',
-    justifyContent: 'space-evenly'
-  },
-  mealBox: {
-    border: '1px solid green'
+// let darkGreen = '#219653'
+let mediumGreen = '#2DB969'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+// let shadow = '#a3a3a3'
+
+const Body = styled.div`
+  background: ${lightAccent}
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const MealTitle = styled.h1`
+  color: ${greenBlue};
+  font-weight: bold;
+  font-size: 30px;
+  padding: 20px 0;
+`
+
+const ButtonLink = styled(Link)`
+  background: ${greenBlue}
+  border: none;
+  width: 75px;
+  height: 40px;
+  border-radius: 8px;
+  color: ${lightAccent};
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Button = styled.button`
+  background: ${greenBlue}
+  border: none;
+  width: 75px;
+  height: 40px;
+  border-radius: 8px;
+  color: ${lightAccent};
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+`
+
+const Search = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100vw;
+  padding-bottom: 10px;
+`
+const SearchBar = styled.input`
+  border: none;
+  border-radius: 0px;
+  border-bottom: 1px solid ${darkAccent};
+  width: 40%;
+  background: ${lightAccent};
+`
+
+const List = styled.div`
+  background: ${lightAccent};
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
+  padding: 0 10px;
+  justify-content: space-evenly;
+  text-align: center;
+  border-bottom: 1px solid ${mediumGreen};
+  width: 90vw;
+  padding: 5px 0;
+  margin-bottom: 5px;
+
+  > h4 {
+    font-size: 14px;
   }
-}
+
+  > button {
+    background: none;
+    border: none;
+    color: ${greenBlue};
+    font-size: 20px;
+  }
+`
