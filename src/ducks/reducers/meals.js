@@ -1,41 +1,93 @@
 
-const WRITE_MEAL_INFO = 'WRITE_MEAL_INFO'
+const SET_MEALS_ARRAY = 'SET_MEALS_ARRAY'
+const SET_CURRENT_MEAL = 'SET_CURRENT_MEAL'
+const CLEAR_CURRENT_MEAL = 'CLEAR_CURRENT_MEAL'
 const SET_CURRENT_FOOD = 'SET_CURRENT_FOOD'
+const SET_FOOD_SEARCH = 'SET_FOOD_SEARCH'
+const CLEAR_FOOD_SEARCH = 'CLEAR_FOOD_SEARCH'
 
 const intitialState = {
-    data: '',
-    currentFood: {}
+    currentMeal: {},
+    currentFood: {},
+    mealsArray: [],
+    results: []
 }
 
 export default function(state = intitialState, action) {
     let { type, payload } = action 
 
     switch(type) {
-        case WRITE_MEAL_INFO: 
+        case SET_MEALS_ARRAY:
             return {
-                ...state,
-                data: payload
+                ...state, 
+                mealsArray: payload
+            }
+        case SET_CURRENT_MEAL:
+            return {
+                ...state, 
+                currentMeal: payload
+            }
+        case CLEAR_CURRENT_MEAL:
+            return {
+                ...state, 
+                currentMeal: {}
             }
         case SET_CURRENT_FOOD:
             return {
                 ...state, 
                 currentFood: payload
             }
+        case SET_FOOD_SEARCH:
+            return {
+                ...state,
+                results: payload
+        }
+        case CLEAR_FOOD_SEARCH:
+            return {
+                ...state, 
+                results: []
+            }
         default: 
             return state
     }
 }
 
-export function writeMealInfo(obj) {
+export function setMealsArray(arr) {
     return {
-    type: WRITE_MEAL_INFO,
-    payload: obj
+        type: SET_MEALS_ARRAY,
+        payload: arr
     }
 }
 
-export function setCurrentFood(obj){
+export function setCurrentFood(obj) {
     return {
         type: SET_CURRENT_FOOD,
         payload: obj
+    }
+}
+
+export function setCurrentMeal(obj) {
+    return {
+        type: SET_CURRENT_MEAL,
+        payload: obj
+    }
+}
+
+export function clearCurrentMeal() {
+    return {
+        type: CLEAR_CURRENT_MEAL
+    }
+}
+
+export function setFoodSearch(arr) {
+    return {
+        type: SET_FOOD_SEARCH,
+        payload: arr
+    }
+}
+
+export function clearFoodSearch() {
+    return {
+        type: CLEAR_FOOD_SEARCH
     }
 }

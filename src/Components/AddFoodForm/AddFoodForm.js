@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { setCurrentFood } from '../../ducks/reducers/meals'
+import { setCurrentFood, setFoodSearch } from '../../ducks/reducers/meals'
 import { Link, Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import styled from 'styled-components'
@@ -38,6 +38,8 @@ class AddFoodForm extends Component {
         this.setState({
           resultsList
         })
+
+        this.props.setFoodSearch(resultsList)
       }
 
     addToState = async (ndbno) => {
@@ -84,11 +86,14 @@ class AddFoodForm extends Component {
 
     componentDidMount() {
       let id = this.props.id
+      console.log('the id that came from props and is being sent to the axios call', id)
        axios.get(`/api/meal/${id}`).then(res => {
         let currentMeal = res.data[0]
+        console.log('the meal that were getting', currentMeal)
         axios.post('/api/food', currentMeal).then(res => {
           this.setState({
-            foodList: res.data
+            foodList: res.data,
+            resultsList: this.props.results
           })
         })
       }).catch(err => console.log('error in the food log', err))
@@ -179,13 +184,14 @@ class AddFoodForm extends Component {
 let mapStateToProps = state => {
   console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state)
   return {
-      id: state.meals.data.id,
-      date: state.meals.data.date,
-      number: state.meals.data.number
+      id: state.meals.currentMeal.id,
+      date: state.meals.currentMeal.date,
+      number: state.meals.currentMeal.number,
+      results: state.meals.results
   }
 }
 
-export default connect(mapStateToProps, { setCurrentFood })(AddFoodForm)
+export default connect(mapStateToProps, { setCurrentFood, setFoodSearch })(AddFoodForm)
 
 // let darkGreen = '#219653'
 let mediumGreen = '#2DB969'

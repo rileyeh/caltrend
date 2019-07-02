@@ -37,6 +37,7 @@ app.get('/api/meals', MealCtrl.getMealsByUser)
 app.get('/api/meal/:id', MealCtrl.getOneMeal)
 app.post('/api/meals', MealCtrl.createMeal)
 app.delete('/api/meal/:meal_id', MealCtrl.deleteMeal)
+app.put('/api/meal/:id', MealCtrl.updateMeal)
 
 // foods
 app.post('/api/food', FoodCtrl.getFoodByMeal)
