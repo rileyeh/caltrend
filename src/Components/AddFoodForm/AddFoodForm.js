@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { setCurrentFood, setFoodSearch } from '../../ducks/reducers/meals'
+import { setCurrentFood, setFoodSearch, clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Link, Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import styled from 'styled-components'
@@ -48,6 +48,7 @@ class AddFoodForm extends Component {
       console.log(555, result)
 
       let name = result.food.desc.name
+      let dbnum = +result.food.desc.ndbno
       let eqv = result.food.nutrients[0].measures[0].eqv
       let eunit = result.food.nutrients[0].measures[0].eunit
       let label = result.food.nutrients[0].measures[0].label
@@ -61,6 +62,7 @@ class AddFoodForm extends Component {
       
       let food = {
         name, 
+        dbnum,
         eqv,
         eunit,
         label,
@@ -168,7 +170,7 @@ class AddFoodForm extends Component {
                         type='text'
                         value={this.state.food} />
                       <Button onClick={this.handleSearchSubmit}>search</Button>
-                      <ButtonLink to='/foodlog'>done</ButtonLink>
+                      <ButtonLink onClick={() => this.props.clearCurrentMeal} to='/foodlog'>done</ButtonLink>
                     </Search>            
                 
                   <div>{mappedResults}</div>
@@ -191,7 +193,7 @@ let mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setCurrentFood, setFoodSearch })(AddFoodForm)
+export default connect(mapStateToProps, { setCurrentFood, setFoodSearch, clearCurrentMeal })(AddFoodForm)
 
 // let darkGreen = '#219653'
 let mediumGreen = '#2DB969'

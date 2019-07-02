@@ -6,8 +6,8 @@ import AddMealForm from '../AddMealForm/AddMealForm'
 import {setCurrentFood, setCurrentMeal, setMealsArray} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import pencil from '../../assets/Pencil.svg'
-import trash from '../../assets/Trash.svg'
+import pencilLight from '../../assets/PencilLight.svg'
+import trashLight from '../../assets/TrashLight.svg'
 
 class FoodLog extends Component {
     constructor(props) {
@@ -103,35 +103,40 @@ class FoodLog extends Component {
                     {this.state.meals.length !== 0 && 
 
                     this.state.meals.map((meal, i) => {
+
+                        let calories = 0
+                        let protein = 0
+                        let fat = 0
+                        let carbs = 0
+                        let fiber = 0
+                        let sugar = 0
             
-                        let mappedFoods = this.state.meals[i].foods.map((food, i) => {
-                            return (
-                                <div key={i}>
-                                <h5>{food.food_name}</h5>
-                                <MealButtons>edit</MealButtons>
-                                <MealButtons onClick={() => this.deleteFood(food.food_id)}>delete</MealButtons>
-                                
-                                <Nutrients>
-                                    <p>calories<br/>{food.calories}</p>
-                                    <p>protein<br/>{food.protein}</p>
-                                    <p>fat<br/>{food.fat}</p>
-                                    <p>carbs<br/>{food.carbs}</p>
-                                    <p>fiber<br/>{food.fiber}</p>
-                                    <p>sugar<br/>{food.sugar}</p>
-                                </Nutrients>
-                                
-                                </div>
-                            )
+                        this.state.meals[i].foods.forEach(food => {
+                            calories += +food.calories
+                            protein += +food.protein
+                            fat += +food.fat
+                            carbs += +food.carbs
+                            fiber += +food.fiber
+                            sugar += +food.sugar
                         })
             
                         return (
                             <Meal key={meal.meal_id} >
                                 <MealHeader>
-                                    <h3>{meal.date_created} Meal {meal.meal_number}</h3>
-                                    <Image src={pencil} alt='' onClick={() => this.editMeal(meal.meal_id)}/>
-                                    <Image src={trash} alt='' onClick={() => this.deleteMeal(meal.meal_id)}/>
+                                    <MealLink to='/meallog' onClick={() => this.props.setCurrentMeal(meal)}>{meal.date_created} Meal {meal.meal_number}</MealLink>
+                                    <ImageContainer>
+                                        <Image src={pencilLight} alt='' onClick={() => this.editMeal(meal.meal_id)}/>
+                                        <Image src={trashLight} alt='' onClick={() => this.deleteMeal(meal.meal_id)}/>
+                                    </ImageContainer>
                                 </MealHeader>
-                                {mappedFoods}
+                                <Nutrients>
+                                    <p><span>calories</span><br/>{calories.toFixed(2)}</p>
+                                    <p><span>protein</span><br/>{protein.toFixed(2)} g</p>
+                                    <p><span>fat</span><br/>{fat.toFixed(2)} g</p>
+                                    <p><span>carbs</span><br/>{carbs.toFixed(2)} g</p>
+                                    <p><span>fiber</span><br/>{fiber.toFixed(2)} g</p>
+                                    <p><span>sugar</span><br/>{sugar.toFixed(2)} g</p>
+                                </Nutrients>
                             </Meal>
                         )
                     
@@ -161,6 +166,8 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: ${lightAccent};
+    min-height: 100vh;
 `
 
 const TopSection = styled.div`
@@ -200,33 +207,45 @@ const Nutrients = styled.div`
         text-align: center;
         margin: 5px;
     }
+
+    > p > span {
+        font-weight: bold;
+    }
 `
 
 const Meal = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid ${darkAccent}
 `
 
 const MealHeader = styled.div`
-    width: 80vw;
+    width: 100vw;
+    height: 40px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding-top: 5px;
-
-`
-
-const MealButtons = styled.button`
-    width: 40px;
-    height: 20px;
+    padding: 0 10px;
     background: ${greenBlue};
-    border: none;
-    margin: 5px;
-    border-radius: 5px;
     color: ${lightAccent};
 `
 
+const MealLink = styled(Link)`
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: ${lightAccent}
+`
+
+const ImageContainer = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+
 const Image = styled.img`
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
+    margin: 0px 5px;
 `

@@ -20,7 +20,8 @@ class EditFoodForm extends Component {
             fiber: 0,
             sugar: 0,
             quantity: 0,
-            unit: ''
+            unit: '',
+            ndbno: 0
         }
     }
 
@@ -29,6 +30,8 @@ class EditFoodForm extends Component {
         this.setState({
             [name]: value
         })
+        console.log(10439532, this.state)
+
     }
 
     componentDidMount() {
@@ -41,10 +44,10 @@ class EditFoodForm extends Component {
             fiber: this.props.fiber,
             sugar: this.props.sugar,
             quantity: this.props.quantity,
-            unit: this.props.label
+            unit: this.props.label,
+            ndbno: this.props.ndbno
         })
 
-        console.log(10439532, this.props.history)
     }
 
     // remember, these nutrients on state are objects, to get to the actual amount, you have to user calories.value and then calories.label
@@ -184,6 +187,7 @@ class EditFoodForm extends Component {
 
 
         let food_name = this.state.name
+        let ndbno = this.state.ndbno
         let quantity = this.state.quantity
         let unit = this.state.unit
         let meal_id = this.props.id
@@ -198,10 +202,11 @@ class EditFoodForm extends Component {
           sugar, 
           quantity,
           unit,
-          meal_id
+          meal_id,
+          ndbno
         })
         .then(res => {
-          console.log('response from the add food form', res)
+          console.log('response from the edit food form', res)
         })
 
         this.props.clearFoodSearch()
@@ -369,6 +374,7 @@ let mapStateToProps = state => {
         // date: state.meals.data.date,
         // number: state.meals.data.number,
         name: state.meals.currentFood.name,
+        ndbno: state.meals.currentFood.dbnum,
         quantity: state.meals.currentFood.qty,
         label: state.meals.currentFood.label,
         eqv: state.meals.currentFood.eqv,

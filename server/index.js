@@ -43,6 +43,7 @@ app.put('/api/meal/:id', MealCtrl.updateMeal)
 app.post('/api/food', FoodCtrl.getFoodByMeal)
 app.post('/api/newFood', FoodCtrl.createFood)
 app.delete('/api/food/:id', FoodCtrl.deleteFood)
+app.put('/api/food/:id', FoodCtrl.updateFood)
 
 
 app.listen(SERVER_PORT, () => console.log(`running on port ${SERVER_PORT}`))
