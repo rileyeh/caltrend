@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
+import { clearFoodSearch } from '../../ducks/reducers/meals'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -113,15 +114,27 @@ class EditFoodForm extends Component {
         }
 
         
-        if (unit === 'ml' && this.props.unit === 'g' 
-        || unit === 'c' && this.props.unit === 'g'
-        || unit === 'T' && this.props.unit === 'g'
-        || unit === 't' && this.props.unit === 'g'
-        || unit === 'g' && this.props.unit === 'ml'
-            || unit === 'oz' && this.props.unit === 'ml'
-            || unit === 'lbs' && this.props.unit === 'ml') {
-                return alert('does not compute (yet)')
-            }
+        if (unit === 'ml' && this.props.unit === 'g'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 'c' && this.props.unit === 'g'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 'T' && this.props.unit === 'g'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 't' && this.props.unit === 'g'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 'g' && this.props.unit === 'ml'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 'oz' && this.props.unit === 'ml'){
+            return alert('does not compute (yet)')
+        }
+        if (unit === 'lbs' && this.props.unit === 'ml'){
+            return alert('does not compute (yet)')
+        }
             
         this.setState({
             calories: {...calories, value:updatedValues[0].toFixed(2)}, 
@@ -145,27 +158,27 @@ class EditFoodForm extends Component {
         let sugar 
 
         if (this.state.calories) {
-            calories = this.state.calories.value
+            calories = +this.state.calories.value
         } else {calories = 0}
 
         if (this.state.protein) {
-            protein = this.state.protein.value
+            protein = +this.state.protein.value
         } else {protein = 0}
 
         if (this.state.fat) {
-            fat = this.state.fat.value
+            fat = +this.state.fat.value
         } else {fat = 0}
 
         if (this.state.carbs) {
-            carbs = this.state.carbs.value
+            carbs = +this.state.carbs.value
         } else {carbs = 0}
 
         if (this.state.fiber) {
-            fiber = this.state.fiber.value
+            fiber = +this.state.fiber.value
         } else {fiber = 0}
 
         if (this.state.sugar) {
-            sugar = this.state.sugar.value
+            sugar = +this.state.sugar.value
         } else {sugar = 0}
 
 
@@ -190,6 +203,8 @@ class EditFoodForm extends Component {
         .then(res => {
           console.log('response from the add food form', res)
         })
+
+        this.props.clearFoodSearch()
 
         this.toggleAdd()
 
@@ -350,9 +365,9 @@ class EditFoodForm extends Component {
 let mapStateToProps = state => {
     console.log('STATE BY THE TIME WERE EDITING', state)
     return {
-        id: state.meals.data.id,
-        date: state.meals.data.date,
-        number: state.meals.data.number,
+        id: state.meals.currentMeal.id,
+        // date: state.meals.data.date,
+        // number: state.meals.data.number,
         name: state.meals.currentFood.name,
         quantity: state.meals.currentFood.qty,
         label: state.meals.currentFood.label,
@@ -367,4 +382,4 @@ let mapStateToProps = state => {
     }
 }
  
-export default connect(mapStateToProps)(EditFoodForm)
+export default connect(mapStateToProps, { clearFoodSearch })(EditFoodForm)

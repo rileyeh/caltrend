@@ -74,13 +74,13 @@ class LoginForm extends Component {
 
 export default connect(null, { login })(LoginForm)
 
-let darkGreen = '#219653'
-let mediumGreen = '#2DB969'
-let lightGreen = '#36D97C'
+// let darkGreen = '#219653'
+// let mediumGreen = '#2DB969'
+// let lightGreen = '#36D97C'
 let greenBlue ='#28b485'
 let darkAccent = '#333333'
 let lightAccent = '#F4F4F4'
-let lightShadow = '#f0f0f0'
+// let lightShadow = '#f0f0f0'
 
 const Body = styled.div`
     height: 90vh;

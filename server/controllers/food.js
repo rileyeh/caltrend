@@ -3,14 +3,17 @@ module.exports = {
         try {
             const db = req.app.get('db')
             const { meal_id } = req.body
-            let foods = await db.food.getFoodByMeal([meal_id])
+            console.log(54789809, meal_id)
+            let foods = await db.food.getFoodByMeal(meal_id)
+            console.log(23859, foods)
             res.status(200).send(foods)   
         } catch (error) {
             console.log('you have an error in the food controller', error)
         }
     },
     createFood: async (req, res) => {
-        const db = req.app.get('db')
+        try {
+            const db = req.app.get('db')
         const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit , meal_id } = req.body
         console.log('its the req.body from trying to create a new food', req.body)
         let newFood = await db.food.createFood({
@@ -26,11 +29,19 @@ module.exports = {
             meal_id
         })
         res.status(200).send(newFood)
+        } catch (error) {
+            console.log('you have an error in the food controller', error)            
+        }
     },
     deleteFood: async (req, res) => {
-        const db = req.app.get('db')
-        const {id} = req.params
-        let foods = await db.food.deleteFood(id)
-        res.status(200).send(foods)
+        try {
+            const db = req.app.get('db')
+            const {id} = req.params
+            let foods = await db.food.deleteFood(id)
+            res.status(200).send(foods)
+        } catch (error) {
+            console.log('you have an error in the food controller', error)            
+            
+        }
     }
 }

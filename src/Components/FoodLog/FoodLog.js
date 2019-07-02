@@ -3,7 +3,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import Nav from '../Nav/Nav'
 import AddMealForm from '../AddMealForm/AddMealForm'
-import {setCurrentFood} from '../../ducks/reducers/meals'
+import {setCurrentFood, setCurrentMeal, setMealsArray} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import pencil from '../../assets/Pencil.svg'
@@ -25,19 +25,7 @@ class FoodLog extends Component {
             this.getFoodByMeal(res)
         }).catch(err => console.log('error in the food log', err))
     }
-
-    deleteMeal = (meal_id) => {
-        axios.delete(`/api/meal/${meal_id}`).then(res => {
-            // alert('meal deleted')
-            console.log('response from the db after delete', res)
-            this.getFoodByMeal(res)
-        }).catch(err => console.log('error in the food log', err))
-    }
-
-    editMeal = (meal_id) => {
-        console.log('hey hey hey, make an update function')
-    }
-
+    
     getFoodByMeal = res => {
         if (res.data.length > 0) {
         let mealArray = res.data
@@ -47,14 +35,34 @@ class FoodLog extends Component {
                     axios.post('/api/food', elem).then(res => {
                         elem.foods = res.data
                         this.setState({
-                            meals: mealArray,
+                            meals: mealArray
                         })
+                        this.props.setMealsArray(this.state.meals)
                     })
-                })}
+                })
+        }
         this.setState({
             meals: []
         })
     }
+
+    deleteMeal = (meal_id) => {
+        axios.delete(`/api/meal/${meal_id}`).then(res => {
+            // alert('meal deleted')
+            console.log('response from the db after delete', res)
+            this.getFoodByMeal(res)
+        }).catch(err => console.log('error in the food log', err))
+    }
+
+    editMeal = id => {
+        let mealToEdit = this.state.meals.find(meal => meal.meal_id === id)
+        this.props.setCurrentMeal(mealToEdit)
+        this.setState({
+            redirectToEdit: true
+        })
+        // thinking we import setmeal from the redux state, and then we set the redux state using what we have here on state, finding the meal by the id which is omcing from the map, becasue thats wehre this function gets called
+    }
+
 
     deleteFood = (id) => {
         axios.delete(`/api/food/${id}`).then(res => {
@@ -69,17 +77,10 @@ class FoodLog extends Component {
         })
       }
 
-      redirectToEdit = obj => {
-          this.props.setCurrentFood(obj)
-          this.setState({
-              redirectToEdit: true
-          })
-      }
-
     render() {
 
         if (this.state.redirectToEdit) {
-            return <Redirect to='/editfood' />;
+            return <Redirect to='/addmeal' />;
           }
 
 
@@ -104,11 +105,10 @@ class FoodLog extends Component {
                     this.state.meals.map((meal, i) => {
             
                         let mappedFoods = this.state.meals[i].foods.map((food, i) => {
-                            console.log('props on food', food)
                             return (
                                 <div key={i}>
                                 <h5>{food.food_name}</h5>
-                                <MealButtons onClick={() => this.redirectToEdit(food)}>edit</MealButtons>
+                                <MealButtons>edit</MealButtons>
                                 <MealButtons onClick={() => this.deleteFood(food.food_id)}>delete</MealButtons>
                                 
                                 <Nutrients>
@@ -144,7 +144,9 @@ class FoodLog extends Component {
 
 function mapStateToProps(state) {
     console.log('state from the food log', state)
-    return state
+    return {
+        meals: state.meals.mealsArray
+    }
 }
 
 // let darkGreen = '#219653'
@@ -153,7 +155,7 @@ let greenBlue ='#28b485'
 let darkAccent = '#333333'
 let lightAccent = '#F4F4F4'
 
-export default connect(mapStateToProps, {setCurrentFood})(FoodLog)
+export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray})(FoodLog)
 
 const Body = styled.div`
     display: flex;

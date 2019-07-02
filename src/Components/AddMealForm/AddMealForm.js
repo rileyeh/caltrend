@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { writeMealInfo } from '../../ducks/reducers/meals'
+import { setCurrentMeal, clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Nav from '../Nav/Nav'
@@ -14,7 +14,19 @@ class AddMealForm extends Component {
         this.state = {
             date: '',
             meal: '',
-            foodForm: false,
+            edit: false
+        }
+    }
+
+    componentDidMount() {
+    console.log('LOOK ITS THE PROPS FROM ADD MEAL FORM', this.props)
+        console.log('the meal id', this.props.meal.meal_id)
+        if(this.props.meal.meal_id) {
+            this.setState({
+                date: this.props.meal.date_created,
+                meal: this.props.meal.meal_number,
+                edit: true
+            })
         }
     }
 
@@ -28,20 +40,27 @@ class AddMealForm extends Component {
     handleSubmit = () => {
         let { date, meal } = this.state
         axios.post('/api/meals', { date, meal }).then(res => {
-
-            let id = res.data[0].meal_id
+            console.log(999999, res)
+            let id = +res.data[0].meal_id
             let date = res.data[0].date_created
-            let number = res.data[0].meal_number
+            let number = +res.data[0].meal_number
 
             let obj = {
                 id,
                 date,
                 number
             }
-
-            this.props.writeMealInfo(obj)
+            console.log('the props on add meal form', this.props)
+            this.props.setCurrentMeal(obj)
             // this.props.history.push('/')
 
+        }).catch(err => console.log('error in add meal form', err))
+    }
+
+    updateMeal = id => {
+        let {date, meal} = this.state
+        axios.put(`/api/meal/${id}`, { date, meal }).then(res => {
+            console.log('the response from updating', res)
         })
     }
 
@@ -56,17 +75,23 @@ class AddMealForm extends Component {
                 <Input
                     name='date'
                     type='text'
-                    placeholder='date'
+                    value={this.state.date}
+                    placeholder= 'date'
                     onChange={this.handleChange}/>
                 <Input
                     name='meal'
                     type='text'
-                    placeholder='meal'
+                    value={this.state.meal}
+                    placeholder= 'meal'
                     onChange={this.handleChange}/>
 
                 <ButtonsContainer>
-                    <ButtonLink to='dashboard'>cancel</ButtonLink>
-                    <ButtonLink to='foodsform' onClick={this.handleSubmit}>add foods</ButtonLink>
+                    <ButtonLink onClick={this.props.clearCurrentMeal} to='dashboard'>cancel</ButtonLink>
+                    {this.state.edit ? 
+                        <ButtonLink onClick={() => this.updateMeal(this.props.meal.meal_id)} to='/foodlog'>update</ButtonLink>
+                        :
+                        <ButtonLink onClick={this.handleSubmit} to='foodsform'>add foods</ButtonLink>
+                }
                 </ButtonsContainer>
             </Body>
             </div>
@@ -75,13 +100,13 @@ class AddMealForm extends Component {
 }
 
 let mapStateToProps = state => {
-    console.log('LOOK ITS THE REDUX STATE', state.meals.meal_id)
+    console.log('THE REDUX STATE FROM ADD MEAL FORM', state)
     return {
-        meal_id: state.meals
+        meal: state.meals.currentMeal
     }
 }
 
-export default connect(mapStateToProps, { writeMealInfo })(AddMealForm)
+export default connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(AddMealForm)
 
 // export default AddMealForm
 
