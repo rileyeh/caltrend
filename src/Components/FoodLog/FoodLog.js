@@ -178,10 +178,11 @@ const TopSection = styled.div`
 `
 
 const Title = styled.h3`
-color: ${greenBlue};
-font-weight: bold;
-font-size: 30px;
-padding: 20px 0;
+    color: ${greenBlue};
+    font-weight: bold;
+    font-size: 30px;
+    padding: 20px 0;
+    background: ${lightAccent};
 `
 
 const AddButton = styled(Link)`

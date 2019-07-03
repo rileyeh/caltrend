@@ -7,7 +7,7 @@ import FoodLog from './Components/FoodLog/FoodLog'
 import AddFoodForm from './Components/AddFoodForm/AddFoodForm'
 import EditFoodForm from './Components/EditFoodForm/EditFoodForm'
 import AddMealForm from'./Components/AddMealForm/AddMealForm'
-import NewMealLog from './Components/MealLog/NewMealLog'
+import NewMealLog from './Components/MealLog/MealLog'
 import UpdateFood from './Components/UpdateFood/UpdateFood'
 
 export default (

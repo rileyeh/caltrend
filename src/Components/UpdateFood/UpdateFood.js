@@ -12,13 +12,14 @@ class EditFoodForm extends Component {
         this.state = {
             edit: false,
             add: false,
+            initialValues: [],
             name: '',
             calories: 0,
             protein: 0,
-            fat: 0,
             carbs: 0,
-            fiber: 0,
+            fat: 0,
             sugar: 0,
+            fiber: 0,
             quantity: 0,
             unit: '',
             eqv: 0,
@@ -53,23 +54,19 @@ class EditFoodForm extends Component {
             let sugar = result.food.nutrients.find(nutrient => nutrient.nutrient_id === '269')
             let fiber = result.food.nutrients.find(nutrient => nutrient.nutrient_id === '291')
 
-            console.log('heres what the nutrients look like', calories)
+            let nutrientsArray = [calories, protein, carbs, fat, sugar, fiber]
 
-            // we are just getting the food's plain information from the usda databse again, but we have the quantity and unit on redux state, so the props. these nutrients that we are getting back are objects with the value on them. that's what we'll manipulate. and that will be based on what we are getting from this.props.quantity and this.props.unit which match up with qty and label OR eqv and eunit. what we'll really look at is if this.props.unit === eunit or if this.props.unit === label. then, we'll do the calculations below (that came from box 2 on my ipad) based on which one it was. with this.props.quantity. then we'll update these variables that we've already set and then let setState run so that the state has the values according to what was put in.
-
-            let valuesArray = [
-                +calories.value,
-                +protein.value,
-                +carbs.value,
-                +fat.value,
-                +sugar.value,
-                +fiber.value,
-            ]
+            let valuesArray = nutrientsArray.map(nutrient => {
+                if(nutrient) {
+                    let {value} = nutrient
+                    return +value
+                } 
+                 return 0  
+            })
 
             let updatedValues = []
 
             // if it was muffin and they kept it as muffin
-            // right here i could check which values are strings and numbers before i force them all to be numbers i guess. but also, safe to just set them all as numbers just in case
             if (this.props.unit === label) {
                 updatedValues = valuesArray.map(value => {
                     return (value / +qty) * +this.props.quantity
@@ -84,6 +81,7 @@ class EditFoodForm extends Component {
             }
         
             this.setState({
+                initialValues: nutrientsArray,
                 name, 
                 eqv,
                 eunit,
@@ -116,13 +114,12 @@ class EditFoodForm extends Component {
     }
 
     updateNutrientInfo = () => {
-        let {calories, protein, fat, carbs, fiber, sugar, label, qty, eqv, eunit, quantity, unit} = this.state
-        let nutrientsArray = [calories, protein, fat, carbs, fiber, sugar]
+        let {initialValues, calories, protein, carbs, fat, sugar, fiber,  label, qty, eqv, eunit, quantity, unit} = this.state
 
-        let valuesArray = nutrientsArray.map(nutrient => {
+        let valuesArray = initialValues.map(nutrient => {
             if(nutrient) {
                 let {value} = nutrient
-                return value
+                return +value
             } 
              return 0  
         })
@@ -131,102 +128,60 @@ class EditFoodForm extends Component {
 
         // if it was muffin and they kept it as muffin
         if (unit === label) {
-            updatedValues = valuesArray.map(value => {
+             updatedValues = valuesArray.map(value => {
                 return (value / qty) * quantity
-            })
-        }
-
-        // if the unit they chose matches the equivalency unit from the db/props
-        if (unit === eunit) {
-            updatedValues = valuesArray.map(value => {
+            }) 
+        } else if (unit === eunit) { // if the unit they chose matches the equivalency unit from the db/props
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * quantity
             })
-        }
-
-        // if we are going from grams to oz
-        if(unit === 'oz' && eunit === 'g') {
-            updatedValues = valuesArray.map(value => {
+        } else if (unit === 'oz' && eunit === 'g') { // if we are going from grams to oz
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * 28.35 * quantity
             })
-        }
-
-        // if we are going from grams to pounds
-        if(unit === 'lbs' && eunit === 'g') {
-            updatedValues = valuesArray.map(value => {
+        } else if (unit === 'lbs' && eunit === 'g') { // if we are going from grams to pounds
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * 28.25 * 16 * quantity
             })
-        }
-
-        // if we are going from ml to cups
-        if(unit === 'cups' && eunit === 'ml') {
-            updatedValues = valuesArray.map(value => {
+        } else if (unit === 'cups' && eunit === 'ml') { // if we are going from ml to cups
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * 236.588 * quantity
             })
-        }
-
-        // if we are going from ml to T
-        if(unit === 'T' && eunit === 'ml') {
-            updatedValues = valuesArray.map(value => {
+        } else if (unit === 'T' && eunit === 'ml') { // if we are going from ml to T
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * 14.787 * quantity
             })
-        }
-
-        // if we are going from ml to t
-        if(unit === 't' && eunit === 'ml') {
-            updatedValues = valuesArray.map(value => {
+        } else if (unit === 't' && eunit === 'ml') { // if we are going from ml to t
+             updatedValues = valuesArray.map(value => {
                 return (value / eqv) * 1.29 * quantity
             })
-        }
-
-        
-        if (unit === 'ml' && eunit === 'g'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 'c' && eunit === 'g'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 'T' && eunit === 'g'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 't' && eunit === 'g'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 'g' && eunit === 'ml'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 'oz' && eunit === 'ml'){
-            return alert('does not compute (yet)')
-        }
-        if (unit === 'lbs' && eunit === 'ml'){
-            return alert('does not compute (yet)')
+        } else {
+            alert('does not compute')
         }
             
         this.setState({
             calories: {...calories, value:updatedValues[0].toFixed(2)}, 
             protein: {...protein, value:updatedValues[1].toFixed(2)}, 
-            fat: {...fat, value:updatedValues[2].toFixed(2)}, 
-            carbs: {...carbs, value:updatedValues[3].toFixed(2)}, 
-            fiber: {...fiber, value:updatedValues[4].toFixed(2)}, 
-            sugar: {...sugar, value:updatedValues[5].toFixed(2)}
+            carbs: {...carbs, value:updatedValues[2].toFixed(2)}, 
+            fat: {...fat, value:updatedValues[3].toFixed(2)}, 
+            sugar: {...sugar, value:updatedValues[4].toFixed(2)},
+            fiber: {...fiber, value:updatedValues[5].toFixed(2)}
         })
 
         this.toggleEdit()
     }
 
     updateDatabase = () => {
-
-        // the id should be a food_id 
-        // these are the things that need to be passed as req.body
-                let food_name = this.state.name
-                let calories = +this.state.calories.value
-                let carbs = +this.state.carbs.value
-                let protein = +this.state.protein.value
-                let fat = +this.state.fat.value
-                let fiber = +this.state.fiber.value
-                let sugar = +this.state.sugar.value
-                let quantity = +this.state.quantity
-                let unit = this.state.unit
-                let id = this.props.id
+        let food_name = this.state.name
+        let calories = +this.state.calories.value
+        let carbs = +this.state.carbs.value
+        let protein = +this.state.protein.value
+        let fat = +this.state.fat.value
+        let fiber = +this.state.fiber.value
+        let sugar = +this.state.sugar.value
+        let quantity = +this.state.quantity
+        let unit = this.state.unit
+        let id = this.props.id
 
         axios.put(`/api/food/${id}`, 
             {food_name, 
