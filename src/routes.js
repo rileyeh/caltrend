@@ -7,13 +7,13 @@ import FoodLog from './Components/FoodLog/FoodLog'
 import AddFoodForm from './Components/AddFoodForm/AddFoodForm'
 import EditFoodForm from './Components/EditFoodForm/EditFoodForm'
 import AddMealForm from'./Components/AddMealForm/AddMealForm'
-import MealLog from './Components/MealLog/MealLog'
+import NewMealLog from './Components/MealLog/NewMealLog'
 import UpdateFood from './Components/UpdateFood/UpdateFood'
 
 export default (
     <Switch>
         <Route path='/updatefood' component={UpdateFood} />
-        <Route path='/meallog' component={MealLog} />
+        <Route path='/meallog' component={NewMealLog} />
         <Route path='/foodlog' component={FoodLog} />
         <Route path='/addmeal' component={AddMealForm} />
         <Route path='/editfood' component={EditFoodForm} />

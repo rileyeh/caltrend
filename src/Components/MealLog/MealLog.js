@@ -3,10 +3,27 @@ import {connect} from 'react-redux'
 import styled from 'styled-components'
 import { setCurrentFood } from '../../ducks/reducers/meals'
 import { Link } from 'react-router-dom'
+import Nav from '../Nav/Nav'
 
 class MealLog extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            rerender: false
+        }
+    }
+  
+    componentDidMount() {
+        this.setState({
+            rerender: true
+        })
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            rerender: true
+        })
     }
 
     render() {
@@ -48,17 +65,22 @@ class MealLog extends Component {
 
         return (
             <div>
-                <h3>{this.props.date} Meal {this.props.number}</h3>
-                {mappedFoods}
-                <h4>Totals</h4>
-                <Nutrients>
-                    <p><span>calories</span><br/>{calories}</p>
-                    <p><span>protein</span><br/>{protein} g</p>
-                    <p><span>carbs</span><br/>{carbs} g</p>
-                    <p><span>fat</span><br/>{fat} g</p>
-                    <p><span>fiber</span><br/>{fiber} g</p>
-                    <p><span>sugar</span><br/>{sugar} g</p>
-                </Nutrients>
+            {this.state.rerender && 
+                <div>
+                    <Nav />
+                    <h3>{this.props.date} Meal {this.props.number}</h3>
+                    {mappedFoods}
+                    <h4>Totals</h4>
+                    <Nutrients>
+                        <p><span>calories</span><br/>{calories}</p>
+                        <p><span>protein</span><br/>{protein} g</p>
+                        <p><span>carbs</span><br/>{carbs} g</p>
+                        <p><span>fat</span><br/>{fat} g</p>
+                        <p><span>fiber</span><br/>{fiber} g</p>
+                        <p><span>sugar</span><br/>{sugar} g</p>
+                    </Nutrients>
+                </div>
+            }
             </div>
         )
     }

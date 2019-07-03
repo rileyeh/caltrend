@@ -3,7 +3,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import Nav from '../Nav/Nav'
 import AddMealForm from '../AddMealForm/AddMealForm'
-import {setCurrentFood, setCurrentMeal, setMealsArray} from '../../ducks/reducers/meals'
+import {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import pencilLight from '../../assets/PencilLight.svg'
@@ -91,7 +91,7 @@ class FoodLog extends Component {
                 <Body>
                     <TopSection>
                         <Title>Food Log</Title>
-                        <AddButton to='addmeal' onClick={this.toggleAddMealForm}>Add Meal</AddButton>
+                        <AddButton to='addmeal' onClick={this.props.clearCurrentMeal}>Add Meal</AddButton>
                     </TopSection>
 
                     {this.state.mealForm && 
@@ -157,10 +157,10 @@ function mapStateToProps(state) {
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'
-let darkAccent = '#333333'
+// let darkAccent = '#333333'
 let lightAccent = '#F4F4F4'
 
-export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray})(FoodLog)
+export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal})(FoodLog)
 
 const Body = styled.div`
     display: flex;
