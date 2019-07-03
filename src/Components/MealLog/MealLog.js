@@ -11,49 +11,77 @@ class MealLog extends Component {
         super(props)
 
         this.state = {
-            foods: []
+            foods: [],
+            rerender: false
         }
     }
 
     componentDidMount() {
         let meal_id = this.props.id
         axios.post('api/food', {meal_id}).then(res => {
-            console.log('new meal log comp mounted', res)
             this.setState({
-                foods: res.data
+                foods: res.data,
+                rerender: true
             })
+        }).catch(err => {
+            console.log('error in the meal log', err)
+        })
+    }
+
+    deleteFood = async id => {
+        let meal_id = this.props.id
+
+        await axios({
+            method: 'DELETE',
+            url: `/api/food/${id}`,
+            data: {
+                meal_id
+            }
+        }).then(res => {
+            this.setState({
+                foods: res.data,
+                rerender: true
+            })
+        }).catch(err => {
+            console.log('error in the meal log', err)
         })
     }
 
     render() {
+        console.log(98765, this.props.currentMeal)
         return (
             <div>
                 <Nav/>
+                <label onClick={() => this.props.history.push('/foodlog')}>&#60;</label>
                 <h4>Meal Log</h4>
                 <h3>{this.props.date} Meal {this.props.number}</h3>
-                <Link to='foodsform'><button onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</button></Link>
-                {this.state.foods.length !== 0 &&
+                <Link to='foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</Link>
+
+
+                {this.state.rerender &&
 
                     this.state.foods.map((food, i) => {
-                        console.log('each food from the new meal log', food)
+                        console.log('foods mapped in the food log', food)
                         return (
                             <div key={i}>
                                 <h5>{food.food_name}</h5>
                                 <p>{food.quantity}</p>
                                 <p>{food.unit}</p>
                                 <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
+                                <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
                                 <Nutrients>
                                     <p><span>calories</span><br/>{food.calories}</p>
                                     <p><span>protein</span><br/>{food.protein} g</p>
                                     <p><span>carbs</span><br/>{food.carbs} g</p>
                                     <p><span>fat</span><br/>{food.fat} g</p>
-                                    <p><span>fiber</span><br/>{food.fiber} g</p>
                                     <p><span>sugar</span><br/>{food.sugar} g</p>
+                                    <p><span>fiber</span><br/>{food.fiber} g</p>
                                 </Nutrients>
                             </div>
                         )
                     })
                 }
+
             </div>
         )
     }

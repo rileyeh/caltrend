@@ -41,14 +41,14 @@ class AddMealForm extends Component {
         let { date, meal } = this.state
         axios.post('/api/meals', { date, meal }).then(res => {
             console.log(999999, res)
-            let id = +res.data[0].meal_id
-            let date = res.data[0].date_created
-            let number = +res.data[0].meal_number
+            let meal_id = +res.data[0].meal_id
+            let date_created = res.data[0].date_created
+            let meal_number = +res.data[0].meal_number
 
             let obj = {
-                id,
-                date,
-                number
+                meal_id,
+                date_created,
+                meal_number
             }
             console.log('the props on add meal form', this.props)
             this.props.setCurrentMeal(obj)

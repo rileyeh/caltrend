@@ -87,18 +87,21 @@ class AddFoodForm extends Component {
     }
 
     componentDidMount() {
+      if(this.props.id) {
       let id = this.props.id
       console.log('the id that came from props and is being sent to the axios call', id)
        axios.get(`/api/meal/${id}`).then(res => {
         let currentMeal = res.data[0]
         console.log('the meal that were getting', currentMeal)
         axios.post('/api/food', currentMeal).then(res => {
+          console.log('the res we are supposed to be mapping', res)
           this.setState({
             foodList: res.data,
-            resultsList: this.props.results
+            resultsList: this.props.results,
           })
         })
       }).catch(err => console.log('error in the food log', err))
+    }
     }
 
     toggleRedirect = () => {
@@ -150,7 +153,7 @@ class AddFoodForm extends Component {
                     <MealTitle>{this.props.date} Meal {this.props.number}</MealTitle>
                   
                     <div>
-                      {this.state.foodList !== 0 && 
+                      {this.state.foodList.length !== 0 && 
 
                       this.state.foodList.map((food, i) => {
                           return (
@@ -186,9 +189,9 @@ class AddFoodForm extends Component {
 let mapStateToProps = state => {
   console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state)
   return {
-      id: state.meals.currentMeal.id,
-      date: state.meals.currentMeal.date,
-      number: state.meals.currentMeal.number,
+      id: state.meals.currentMeal.meal_id,
+      date: state.meals.currentMeal.date_created,
+      number: state.meals.currentMeal.meal_number,
       results: state.meals.results
   }
 }
