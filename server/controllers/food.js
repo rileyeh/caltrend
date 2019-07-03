@@ -5,7 +5,6 @@ module.exports = {
             const { meal_id } = req.body
             console.log(54789809, meal_id)
             let foods = await db.food.getFoodByMeal(meal_id)
-            console.log(23859, foods)
             res.status(200).send(foods)   
         } catch (error) {
             console.log('you have a read error in the food controller', error)

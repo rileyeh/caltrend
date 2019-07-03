@@ -24,7 +24,8 @@ class EditFoodForm extends Component {
             eqv: 0,
             eunit: '',
             qty: 0,
-            label: ''
+            label: '',
+            foodlog: false
         }
     }
 
@@ -115,7 +116,7 @@ class EditFoodForm extends Component {
     }
 
     updateNutrientInfo = () => {
-        let {quantity, unit, calories, protein, fat, carbs, fiber, sugar} = this.state
+        let {calories, protein, fat, carbs, fiber, sugar, label, qty, eqv, eunit, quantity, unit} = this.state
         let nutrientsArray = [calories, protein, fat, carbs, fiber, sugar]
 
         let valuesArray = nutrientsArray.map(nutrient => {
@@ -129,74 +130,74 @@ class EditFoodForm extends Component {
         let updatedValues = []
 
         // if it was muffin and they kept it as muffin
-        if (unit === this.state.label) {
+        if (unit === label) {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.qty) * quantity
+                return (value / qty) * quantity
             })
         }
 
         // if the unit they chose matches the equivalency unit from the db/props
-        if (unit === this.state.eunit) {
+        if (unit === eunit) {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * quantity
+                return (value / eqv) * quantity
             })
         }
 
         // if we are going from grams to oz
-        if(unit === 'oz' && this.state.eunit === 'g') {
+        if(unit === 'oz' && eunit === 'g') {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * 28.35 * quantity
+                return (value / eqv) * 28.35 * quantity
             })
         }
 
         // if we are going from grams to pounds
-        if(unit === 'lbs' && this.state.eunit === 'g') {
+        if(unit === 'lbs' && eunit === 'g') {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * 28.25 * 16 * quantity
+                return (value / eqv) * 28.25 * 16 * quantity
             })
         }
 
         // if we are going from ml to cups
-        if(unit === 'cups' && this.state.eunit === 'ml') {
+        if(unit === 'cups' && eunit === 'ml') {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * 236.588 * quantity
+                return (value / eqv) * 236.588 * quantity
             })
         }
 
         // if we are going from ml to T
-        if(unit === 'T' && this.state.eunit === 'ml') {
+        if(unit === 'T' && eunit === 'ml') {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * 14.787 * quantity
+                return (value / eqv) * 14.787 * quantity
             })
         }
 
         // if we are going from ml to t
-        if(unit === 't' && this.state.eunit === 'ml') {
+        if(unit === 't' && eunit === 'ml') {
             updatedValues = valuesArray.map(value => {
-                return (value / this.state.eqv) * 1.29 * quantity
+                return (value / eqv) * 1.29 * quantity
             })
         }
 
         
-        if (unit === 'ml' && this.state.eunit === 'g'){
+        if (unit === 'ml' && eunit === 'g'){
             return alert('does not compute (yet)')
         }
-        if (unit === 'c' && this.state.eunit === 'g'){
+        if (unit === 'c' && eunit === 'g'){
             return alert('does not compute (yet)')
         }
-        if (unit === 'T' && this.state.eunit === 'g'){
+        if (unit === 'T' && eunit === 'g'){
             return alert('does not compute (yet)')
         }
-        if (unit === 't' && this.state.eunit === 'g'){
+        if (unit === 't' && eunit === 'g'){
             return alert('does not compute (yet)')
         }
-        if (unit === 'g' && this.state.eunit === 'ml'){
+        if (unit === 'g' && eunit === 'ml'){
             return alert('does not compute (yet)')
         }
-        if (unit === 'oz' && this.state.eunit === 'ml'){
+        if (unit === 'oz' && eunit === 'ml'){
             return alert('does not compute (yet)')
         }
-        if (unit === 'lbs' && this.state.eunit === 'ml'){
+        if (unit === 'lbs' && eunit === 'ml'){
             return alert('does not compute (yet)')
         }
             
@@ -212,23 +213,37 @@ class EditFoodForm extends Component {
         this.toggleEdit()
     }
 
-    updateDatabase = id => {
+    updateDatabase = () => {
 
         // the id should be a food_id 
         // these are the things that need to be passed as req.body
                 let food_name = this.state.name
-                let calories = this.state.calories.value
-                let carbs = this.state.carbs.value
-                let protein = this.state.protein.value
-                let fat = this.state.calories.value
-                let fiber = this.state.calories.value
-                let sugar = this.state.calories.value
-                let quantity = this.state.calories.value
-                let unit = this.state.calories.value
+                let calories = +this.state.calories.value
+                let carbs = +this.state.carbs.value
+                let protein = +this.state.protein.value
+                let fat = +this.state.fat.value
+                let fiber = +this.state.fiber.value
+                let sugar = +this.state.sugar.value
+                let quantity = +this.state.quantity
+                let unit = this.state.unit
+                let id = this.props.id
 
-        axios.put(`/api/food/${id}`, {}).then(res => {
+        axios.put(`/api/food/${id}`, 
+            {food_name, 
+            calories, 
+            carbs, 
+            protein, 
+            fat, 
+            fiber, 
+            sugar, 
+            quantity, 
+            unit}).then(res => {
             console.log('response from food update', res)
         }).catch(err => console.log('error in updateFood comp with update funtion', err))
+
+        this.setState({
+            foodlog: true
+        })
     }
 
 
@@ -237,7 +252,13 @@ class EditFoodForm extends Component {
             return <Redirect to='/foodsform'/>;
           }
 
+          if (this.state.foodlog) {
+            return <Redirect to='meallog'/>
+        }
+
         return (
+            
+
             <div>
                 <Nav />
                 
@@ -255,7 +276,7 @@ class EditFoodForm extends Component {
                 <select
                 name='unit'
                 placeholder= 'select unit'
-                value={this.state.label}
+                value={this.state.unit}
                 onChange={this.handleChange}>
                     <option>{this.state.unit}</option>
                     <option>{this.state.label}</option>
@@ -288,7 +309,7 @@ class EditFoodForm extends Component {
                 :
                 <span>
                     {this.state.quantity} {this.state.unit}
-                    <button onClick={() => this.props.history.push('foodsform')}>back to search</button>
+                    <button onClick={() => this.props.history.push('meallog')}>back to meal log</button>
                     <button onClick={this.toggleEdit}>pencil</button>
                     <button onClick={this.updateDatabase}>add</button>
                 </span>
@@ -444,7 +465,7 @@ class EditFoodForm extends Component {
 let mapStateToProps = state => {
     console.log('STATE BY THE TIME WERE EDITING', state)
     return {
-        id: state.meals.currentMeal.id,
+        id: state.meals.currentFood.food_id,
         name: state.meals.currentFood.name,
         ndbno: state.meals.currentFood.ndbno,
         quantity: state.meals.currentFood.quantity,

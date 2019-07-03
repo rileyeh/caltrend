@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { getUser, logout } from '../../ducks/reducers/user'
+import { clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -34,7 +35,7 @@ class Dashboard extends Component {
                 {this.props.user && <Greeting>Welcome, {this.props.user.name}</Greeting>}
                 <Graph></Graph>
                 <ButtonContainer>
-                  <ButtonLink to='addmeal'>Add<br/>Meal</ButtonLink>
+                  <ButtonLink to='addmeal' onClick={this.props.clearCurrentMeal}>Add<br/>Meal</ButtonLink>
                   <ButtonLink to='/'>Log<br/>Weight</ButtonLink>
                   <ButtonLink to='/'>Log<br/>Exercise</ButtonLink>
                 </ButtonContainer>    
@@ -49,7 +50,7 @@ function mapStateToProps(state) {
     return { user }
   }
 
-export default connect(mapStateToProps, { getUser, logout })(Dashboard)
+export default connect(mapStateToProps, { getUser, logout, clearCurrentMeal })(Dashboard)
 
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
