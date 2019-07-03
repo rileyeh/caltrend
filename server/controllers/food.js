@@ -4,7 +4,7 @@ module.exports = {
             const db = req.app.get('db')
             const { meal_id } = req.body
             console.log(54789809, meal_id)
-            let foods = await db.food.getFoodByMeal(meal_id)
+            let foods = await db.food.getFoodByMeal([meal_id])
             res.status(200).send(foods)   
         } catch (error) {
             console.log('you have a read error in the food controller', error)
@@ -15,6 +15,7 @@ module.exports = {
             const db = req.app.get('db')
             const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit , meal_id, ndbno } = req.body
             console.log('its the req.body from trying to create a new food', req.body)
+            console.log('its the meal_id from trying to create a new food', meal_id)
             let newFood = await db.food.createFood({
                 food_name, 
                 calories, 
@@ -36,8 +37,12 @@ module.exports = {
     deleteFood: async (req, res) => {
         try {
             const db = req.app.get('db')
+            const {meal_id} = req.body
             const {id} = req.params
-            let foods = await db.food.deleteFood(id)
+            console.log('is the meal id coming through', meal_id)
+            console.log('what even is the req body here', req.body)
+            let foods = await db.food.deleteFood({id, meal_id})
+            console.log('are we getting the foods back', foods)
             res.status(200).send(foods)
         } catch (error) {
             console.log('you have a deleting error in the food controller', error)            

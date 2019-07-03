@@ -370,7 +370,7 @@ class EditFoodForm extends Component {
 let mapStateToProps = state => {
     console.log('STATE BY THE TIME WERE EDITING', state)
     return {
-        id: state.meals.currentMeal.id,
+        id: state.meals.currentMeal.meal_id,
         // date: state.meals.data.date,
         // number: state.meals.data.number,
         name: state.meals.currentFood.name,
