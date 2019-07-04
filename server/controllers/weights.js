@@ -2,8 +2,8 @@ module.exports = {
     getWeightLogs: async (req, res) => {
         try {
             const db =req.app.get('db')
-            const {id} = req.params
-            let weights = await db.weight.getWeightLogsByUser(id)
+            const {user_id} = req.session.user
+            let weights = await db.weight.getWeightLogsByUser(user_id)
             res.status(200).send(weights)
         } catch (error) {
             console.log('error with get in weight controller', error)
@@ -13,10 +13,12 @@ module.exports = {
         try {
             const db =req.app.get('db')
             const { pounds, date_created, exact_date } = req.body
+            const { user_id } = req.session.user
             let newWeight = await db.weight.createWeightLog({
                 pounds, 
                 date_created, 
-                exact_date})      
+                exact_date,
+                user_id})      
             res.status(200).send(newWeight)
         } catch (error) {
             console.log('error with post in weight controller', error)

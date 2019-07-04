@@ -10,9 +10,13 @@ import AddMealForm from'./Components/AddMealForm/AddMealForm'
 import NewMealLog from './Components/MealLog/MealLog'
 import UpdateFood from './Components/UpdateFood/UpdateFood'
 import AddWeightLog from './Components/AddWeightLog/AddWeightLog'
+import ViewWeightLog from './Components/ViewWeightLog/ViewWeightLog'
+import EditWeightForm from './Components/EditWeightForm/EditWeightForm'
 
 export default (
     <Switch>
+        <Route path='/editweight' component={EditWeightForm} />
+        <Route path='/weightlog' component={ViewWeightLog} />
         <Route path='/addweight' component={AddWeightLog} />
         <Route path='/updatefood' component={UpdateFood} />
         <Route path='/meallog' component={NewMealLog} />

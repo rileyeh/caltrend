@@ -120,8 +120,6 @@ let mapStateToProps = state => {
 
 export default connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(AddMealForm)
 
-// export default AddMealForm
-
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'

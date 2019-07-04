@@ -55,7 +55,8 @@ class Nav extends Component {
                 {this.state.menu &&
                 <Menu>
                     <StyledLink to='/dashboard'>Home </StyledLink>
-                    <StyledLink to='foodlog'>Food Log </StyledLink>
+                    <StyledLink to='/foodlog'>Food Log </StyledLink>
+                    <StyledLink to='/weightlog'>Weight Log </StyledLink>
                     <StyledLink to="/" onClick={this.props.logout}>Logout</StyledLink>
                 </Menu>
                 }

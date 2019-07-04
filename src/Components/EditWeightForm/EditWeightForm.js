@@ -5,9 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 import styled from 'styled-components'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
  
 
-class AddWeightLog extends Component {
+class EditWeightForm extends Component {
     constructor(props) {
         super(props)
 
@@ -32,6 +33,7 @@ class AddWeightLog extends Component {
     }
 
     handleSubmit = () => {
+        // gotta change this to an axios update
         let {pounds, date} = this.state
         let date_created = date.toDateString()
         let exact_date = date
@@ -49,10 +51,11 @@ class AddWeightLog extends Component {
         return (
             <div>
                 <Nav />
-                <h4>Add Weight Log</h4>
+                <h4>Edit Weight Log</h4>
                 <StyledDatePicker 
                     selected={this.state.date}
                     onChange={this.handleDateChange}
+                    value={this.props.edate}
                 />
                 <Input 
                     name='pounds'
@@ -60,14 +63,21 @@ class AddWeightLog extends Component {
                     value={this.state.pounds}
                     onChange={this.handleChange}
                 />
-                <button onClick={this.handleSubmit}>submit</button>
+                <button onClick={this.handleSubmit}>update</button>
 
             </div>
         )
     }
 }
 
-export default AddWeightLog
+function mapStateToProps(state) {
+    console.log('state by the time were editing', state)
+    return {
+        date: state.weight.currentWeight.date_created
+    }
+}
+
+export default connect(mapStateToProps)(EditWeightForm)
 
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
