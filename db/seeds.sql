@@ -26,3 +26,11 @@ create table meals (
     foods text,
     user_id int references users(user_id)
 );
+
+create table weights (
+    weight_id serial primary key,
+    pounds int,
+    date_created varchar,
+    exact_date varchar,
+    user_id int references users
+);

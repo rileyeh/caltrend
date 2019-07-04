@@ -6,6 +6,7 @@ const session = require('express-session')
 const AuthCtrl = require('./controllers/auth')
 const MealCtrl = require('./controllers/meals')
 const FoodCtrl = require('./controllers/food')
+const WeightCtrl = require('./controllers/weights')
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.get('/auth/currentUser', AuthCtrl.currentUser)
 // meals
 app.get('/api/meals', MealCtrl.getMealsByUser)
 app.get('/api/meal/:id', MealCtrl.getOneMeal)
+// app.get('/api/meals/:date', MealCtrl.getMealsByDate)
 app.post('/api/meals', MealCtrl.createMeal)
 app.delete('/api/meal/:meal_id', MealCtrl.deleteMeal)
 app.put('/api/meal/:id', MealCtrl.updateMeal)
@@ -45,5 +47,10 @@ app.post('/api/newFood', FoodCtrl.createFood)
 app.delete('/api/food/:id', FoodCtrl.deleteFood)
 app.put('/api/food/:id', FoodCtrl.updateFood)
 
+// weights
+app.get('/api/weight/:id', WeightCtrl.getWeightLogs)
+app.post('/api/weight', WeightCtrl.createWeightLog)
+app.delete('/api/weight/:id', WeightCtrl.deleteWeightLog)
+app.put('/api/weight/:id', WeightCtrl.updateWeightLog)
 
 app.listen(SERVER_PORT, () => console.log(`running on port ${SERVER_PORT}`))
