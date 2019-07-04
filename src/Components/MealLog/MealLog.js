@@ -52,10 +52,17 @@ class MealLog extends Component {
         return (
             <div>
                 <Nav/>
-                <label onClick={() => this.props.history.push('/foodlog')}>&#60;</label>
-                <h4>Meal Log</h4>
+
+                <TopBar>
+                    <label onClick={() => this.props.history.push('/foodlog')}>&#60;</label>
+                    <h3>Meal Log</h3>
+                </TopBar>
+
+                <Body>
+
                 <h3>{this.props.date} Meal {this.props.number}</h3>
-                <Link to='foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</Link>
+
+                <StyledLink to='foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</StyledLink>
 
 
                 {this.state.rerender &&
@@ -63,12 +70,18 @@ class MealLog extends Component {
                     this.state.foods.map((food, i) => {
                         console.log('foods mapped in the food log', food)
                         return (
-                            <div key={i}>
-                                <h5>{food.food_name}</h5>
-                                <p>{food.quantity}</p>
-                                <p>{food.unit}</p>
-                                <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
-                                <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
+                            <MealCard key={i}>
+                                <CardHeader>
+                                    <h5>{food.food_name}</h5>
+                                    <div style={ {'display' : 'flex'} }>
+                                        <p>{food.quantity}</p>
+                                        <p>{food.unit}</p>
+                                    </div>
+                                    <div>
+                                        <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
+                                        <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
+                                    </div>
+                                </CardHeader>
                                 <Nutrients>
                                     <p><span>calories</span><br/>{food.calories}</p>
                                     <p><span>protein</span><br/>{food.protein} g</p>
@@ -77,10 +90,11 @@ class MealLog extends Component {
                                     <p><span>sugar</span><br/>{food.sugar} g</p>
                                     <p><span>fiber</span><br/>{food.fiber} g</p>
                                 </Nutrients>
-                            </div>
+                            </MealCard>
                         )
                     })
                 }
+                </Body>
 
             </div>
         )
@@ -98,6 +112,64 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLog)
+
+let darkGreen = '#219653'
+let mediumGreen = '#2DB969'
+let greenBlue ='#28b485'
+let darkAccent = '#333333'
+let lightAccent = '#F4F4F4'
+
+const TopBar = styled.div`
+    width: 100vw;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    background: ${darkAccent};
+    color: ${lightAccent};
+
+    > h3 {
+        padding-left: 10px;
+    }
+`
+
+const Body = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    background: ${lightAccent};
+    min-height: 90vh;
+`
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    width: 150px;
+    height: 25px;
+    background: ${greenBlue};
+    color: ${lightAccent};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    margin: 10px 0;
+
+    &:hover {
+        background: ${darkAccent};
+    }
+`
+
+const MealCard = styled.div`
+    background: ${lightAccent};
+`
+
+const CardHeader = styled.div`
+    background: ${greenBlue};
+    color: ${lightAccent};
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+`
 
 const Nutrients = styled.div`
     display: flex;

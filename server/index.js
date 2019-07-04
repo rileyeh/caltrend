@@ -48,7 +48,7 @@ app.delete('/api/food/:id', FoodCtrl.deleteFood)
 app.put('/api/food/:id', FoodCtrl.updateFood)
 
 // weights
-app.get('/api/weight/:id', WeightCtrl.getWeightLogs)
+app.get('/api/weight', WeightCtrl.getWeightLogs)
 app.post('/api/weight', WeightCtrl.createWeightLog)
 app.delete('/api/weight/:id', WeightCtrl.deleteWeightLog)
 app.put('/api/weight/:id', WeightCtrl.updateWeightLog)
