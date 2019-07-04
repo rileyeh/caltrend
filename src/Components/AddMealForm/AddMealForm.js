@@ -5,6 +5,8 @@ import { setCurrentMeal, clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Nav from '../Nav/Nav'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 
 class AddMealForm extends Component {
@@ -12,15 +14,13 @@ class AddMealForm extends Component {
         super(props)
 
         this.state = {
-            date: '',
+            date: new Date(),
             meal: '',
             edit: false
         }
     }
 
     componentDidMount() {
-    console.log('LOOK ITS THE PROPS FROM ADD MEAL FORM', this.props)
-        console.log('the meal id', this.props.meal.meal_id)
         if(this.props.meal.meal_id) {
             this.setState({
                 date: this.props.meal.date_created,
@@ -37,9 +37,18 @@ class AddMealForm extends Component {
         })
     }
 
+    handleDateChange = date => {
+        this.setState({
+            date
+        }) 
+    }
+
     handleSubmit = () => {
         let { date, meal } = this.state
-        axios.post('/api/meals', { date, meal }).then(res => {
+        let date_created = date.toDateString()
+        let exact_date = date
+        console.log('the exact date type', typeof exact_date, exact_date)
+        axios.post('/api/meals', { date_created, meal, exact_date }).then(res => {
             console.log(999999, res)
             let meal_id = +res.data[0].meal_id
             let date_created = res.data[0].date_created
@@ -50,7 +59,6 @@ class AddMealForm extends Component {
                 date_created,
                 meal_number
             }
-            console.log('the props on add meal form', this.props)
             this.props.setCurrentMeal(obj)
             // this.props.history.push('/')
 
@@ -64,20 +72,22 @@ class AddMealForm extends Component {
         })
     }
 
-    render() {
-        
+    render() {        
         return (
             <div>
-            <Nav />
+            <Nav />                
             <Body>
-                
                 <Title>add meal</Title>
-                <Input
+                {/* <Input
                     name='date'
                     type='text'
                     value={this.state.date}
                     placeholder= 'date'
-                    onChange={this.handleChange}/>
+                    onChange={this.handleChange}/> */}
+                <StyledDatePicker 
+                    selected={this.state.date}
+                    onChange={this.handleDateChange}
+                />
                 <Input
                     name='meal'
                     type='text'
@@ -90,7 +100,10 @@ class AddMealForm extends Component {
                     {this.state.edit ? 
                         <ButtonLink onClick={() => this.updateMeal(this.props.meal.meal_id)} to='/foodlog'>update</ButtonLink>
                         :
-                        <ButtonLink onClick={this.handleSubmit} to='foodsform'>add foods</ButtonLink>
+                        <div>
+                            <button onClick={this.handleSubmit}>what's happening</button>
+                            <ButtonLink onClick={this.handleSubmit} to='foodsform'>add foods</ButtonLink>
+                        </div>
                 }
                 </ButtonsContainer>
             </Body>
@@ -100,7 +113,6 @@ class AddMealForm extends Component {
 }
 
 let mapStateToProps = state => {
-    console.log('THE REDUX STATE FROM ADD MEAL FORM', state)
     return {
         meal: state.meals.currentMeal
     }
@@ -148,7 +160,7 @@ const Input = styled.input`
     border-bottom: 1px solid ${darkAccent};
     border-radius: 0;
     background: none;
-    width: 60%;
+    width: 60vw;
     padding-top: 30px;
 `
 const ButtonsContainer = styled.div`
@@ -169,4 +181,14 @@ const ButtonLink = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+const StyledDatePicker = styled(DatePicker)`
+    margin: 0 auto;
+    color: ${darkAccent};
+    border: none;
+    border-bottom: 1px solid ${darkAccent};
+    border-radius: 0;
+    background: ${lightAccent}
+    width: 60vw;
+    padding-top: 30px;
 `

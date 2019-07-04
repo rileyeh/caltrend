@@ -5,6 +5,7 @@ import { getUser, logout } from '../../ducks/reducers/user'
 import { clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
+import CaloriesChart from '../Charts/CaloriesChart'
 
 import Nav from '../Nav/Nav'
 
@@ -19,7 +20,10 @@ class Dashboard extends Component {
           })
           .catch(err => {
             console.log('Not logged in');
-          });
+          })
+          let date = new Date()
+          date = date.toDateString()
+          console.log('testing new date', date)
       }
     // we're going to be working with req.query.q 
 
@@ -33,10 +37,10 @@ class Dashboard extends Component {
 
             <Body>
                 {this.props.user && <Greeting>Welcome, {this.props.user.name}</Greeting>}
-                <Graph></Graph>
+                <CaloriesChart />
                 <ButtonContainer>
                   <ButtonLink to='addmeal' onClick={this.props.clearCurrentMeal}>Add<br/>Meal</ButtonLink>
-                  <ButtonLink to='/'>Log<br/>Weight</ButtonLink>
+                  <ButtonLink to='/addweight'>Log<br/>Weight</ButtonLink>
                   <ButtonLink to='/'>Log<br/>Exercise</ButtonLink>
                 </ButtonContainer>    
             </Body>
@@ -55,7 +59,7 @@ export default connect(mapStateToProps, { getUser, logout, clearCurrentMeal })(D
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'
-let darkAccent = '#333333'
+// let darkAccent = '#333333'
 let lightAccent = '#F4F4F4'
 
 const Body = styled.div`
@@ -86,16 +90,16 @@ const Greeting = styled.h1`
     padding-top: 60px;
   }
 `
-const Graph = styled.div`
-  border-bottom: 1px solid ${darkAccent};  
-  border-left: 1px solid ${darkAccent};
-  width: 250px;
-  height: 300px;
+// const Graph = styled.div`
+//   border-bottom: 1px solid ${darkAccent};  
+//   border-left: 1px solid ${darkAccent};
+//   width: 250px;
+//   height: 300px;
 
-  @media(min-width: 500px) {
-    margin: 60px;
-  }
-`
+//   @media(min-width: 500px) {
+//     margin: 60px;
+//   }
+// `
 const ButtonContainer = styled.div`
   width: 100vw;
   display: flex;

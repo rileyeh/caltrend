@@ -9,6 +9,17 @@ module.exports = {
             console.log('error getting meal by user in the meals controller', error) 
         }
     },
+    // getMealsByDate: async (req, res) => {
+    //     try {
+    //         const db = req.app.get('db')
+    //         const { user_id } = req.session.user
+    //         const {date_created} = req.params
+    //         let meals = await db.meals.getMealsByDate({user_id, date_created})
+    //         res.status(200).send(meals)
+    //     } catch (error) {
+    //         console.log('error getting meal by date in the meals controller', error)             
+    //     }
+    // },
     getOneMeal: async (req, res) => {
         try {
             const db = req.app.get('db')
@@ -22,12 +33,13 @@ module.exports = {
     createMeal: async (req, res) => {
         try {
             const db = req.app.get('db')
-            const { date, meal} = req.body
+            const { date_created, meal, exact_date } = req.body
             const { user_id } = req.session.user
             let newMeal = await db.meals.createMeal({
                 user_id, 
-                date_created: date, 
-                meal_number: meal
+                date_created, 
+                meal_number: meal,
+                exact_date
             })
             res.status(200).send(newMeal)
         } catch (error) {
@@ -38,7 +50,6 @@ module.exports = {
         try {
             const db= req.app.get('db')
             const { meal_id } = req.params
-            console.log('its the mealid from re params on delete', meal_id)
             const { user_id } = req.session.user
             let meals = await db.meals.deleteMeal({meal_id, user_id})
             res.status(200).send(meals)

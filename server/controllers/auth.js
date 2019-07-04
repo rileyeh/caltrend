@@ -65,7 +65,6 @@ module.exports = {
     },
 
     currentUser: (req, res) => {
-        console.log(3333, req.session)
         res.send(req.session.user)
     }
 }
