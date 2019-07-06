@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import styled from 'styled-components'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
  
 
 class AddWeightLog extends Component {
@@ -46,6 +47,9 @@ class AddWeightLog extends Component {
         if (this.state.redirect) {
             return <Redirect to='/weightlog' />
         }
+        if (!this.props.user) {
+            return <Redirect to='/' />
+          }
         return (
             <div>
                 <Nav />
@@ -67,7 +71,14 @@ class AddWeightLog extends Component {
     }
 }
 
-export default AddWeightLog
+function mapStateToProps(state) {
+    let { data: user } = state.user
+    return {
+        user
+    }
+}
+
+export default connect(mapStateToProps)(AddWeightLog)
 
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'

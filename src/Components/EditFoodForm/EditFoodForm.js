@@ -233,6 +233,10 @@ class EditFoodForm extends Component {
             return <Redirect to='/foodsform'/>;
           }
 
+          if (!this.props.user) {
+            return <Redirect to='/' />
+          }
+
         return (
             <div>
                 <Nav />
@@ -368,7 +372,7 @@ class EditFoodForm extends Component {
 }
 
 let mapStateToProps = state => {
-    console.log('STATE BY THE TIME WERE EDITING', state)
+    let { data: user } = state.user
     return {
         id: state.meals.currentMeal.meal_id,
         // date: state.meals.data.date,
@@ -384,7 +388,8 @@ let mapStateToProps = state => {
         carbs: state.meals.currentFood.carbs,
         fat: state.meals.currentFood.fat,
         sugar: state.meals.currentFood.sugar,
-        fiber: state.meals.currentFood.fiber
+        fiber: state.meals.currentFood.fiber,
+        user
     }
 }
  

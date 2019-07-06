@@ -67,6 +67,10 @@ class EditWeightForm extends Component {
         if (this.state.redirect) {
             return <Redirect to='/weightlog' />
         }
+
+        if (!this.props.user) {
+            return <Redirect to='/' />
+          }
         return (
             <div>
                 <Nav />
@@ -91,12 +95,13 @@ class EditWeightForm extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state by the time were editing', state)
+    let { data: user } = state.user
     return {
         date: state.weight.currentWeight.date_created,
         edate: state.weight.currentWeight.exact_date,
         pounds: state.weight.currentWeight.pounds,
-        id: state.weight.currentWeight.weight_id
+        id: state.weight.currentWeight.weight_id,
+        user
     }
 }
 
