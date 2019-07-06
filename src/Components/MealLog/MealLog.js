@@ -112,11 +112,12 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLog)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
 let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const TopBar = styled.div`
     width: 100vw;
@@ -125,7 +126,7 @@ const TopBar = styled.div`
     align-items: center;
     padding-left: 10px;
     background: ${darkAccent};
-    color: ${lightAccent};
+    color: ${whiteAccent};
 
     > h3 {
         padding-left: 10px;
@@ -137,7 +138,7 @@ const Body = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 10px 0;
-    background: ${lightAccent};
+    background: ${whiteAccent};
     min-height: 90vh;
 `
 
@@ -145,8 +146,8 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     width: 150px;
     height: 25px;
-    background: ${greenBlue};
-    color: ${lightAccent};
+    background: ${darkBlue};
+    color: ${whiteAccent};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -159,12 +160,12 @@ const StyledLink = styled(Link)`
 `
 
 const MealCard = styled.div`
-    background: ${lightAccent};
+    background: ${whiteAccent};
 `
 
 const CardHeader = styled.div`
-    background: ${greenBlue};
-    color: ${lightAccent};
+    background: ${lightBlue};
+    color: ${whiteAccent};
     display: flex;
     flex-direction: column;
     text-align: center;

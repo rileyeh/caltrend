@@ -47,7 +47,6 @@ class AddMealForm extends Component {
         let { date, meal } = this.state
         let date_created = date.toDateString()
         let exact_date = date
-        console.log('the exact date type', typeof exact_date, exact_date)
         axios.post('/api/meals', { date_created, meal, exact_date }).then(res => {
             console.log(999999, res)
             let meal_id = +res.data[0].meal_id
@@ -101,7 +100,6 @@ class AddMealForm extends Component {
                         <ButtonLink onClick={() => this.updateMeal(this.props.meal.meal_id)} to='/foodlog'>update</ButtonLink>
                         :
                         <div>
-                            <button onClick={this.handleSubmit}>what's happening</button>
                             <ButtonLink onClick={this.handleSubmit} to='foodsform'>add foods</ButtonLink>
                         </div>
                 }
@@ -123,12 +121,17 @@ export default connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(Ad
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'
-let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
 // let shadow = '#a3a3a3'
 
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
+
 const Body = styled.div`
-    background: ${lightAccent};
+    background: ${whiteAccent};
     min-width: 100vw;
     min-height: 100vh;
     display: flex;
@@ -169,16 +172,20 @@ const ButtonsContainer = styled.div`
 `
 
 const ButtonLink = styled(Link)`
-    background: ${greenBlue}
+    background: ${darkBlue}
     border: none;
     width: 95px;
     height: 40px;
     border-radius: 8px;
-    color: ${lightAccent};
+    color: ${whiteAccent};
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    :hover {
+        background: ${darkAccent}
+    }
 `
 const StyledDatePicker = styled(DatePicker)`
     margin: 0 auto;
@@ -186,7 +193,7 @@ const StyledDatePicker = styled(DatePicker)`
     border: none;
     border-bottom: 1px solid ${darkAccent};
     border-radius: 0;
-    background: ${lightAccent}
+    background: ${whiteAccent}
     width: 60vw;
     padding-top: 30px;
 `

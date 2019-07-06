@@ -34,12 +34,22 @@ class AddFoodForm extends Component {
 
     search = async (val) => {
         const res = await axios.get(`https://api.nal.usda.gov/ndb/search/?format=json&q=${val}&max=25&sort=n&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`)
-        const resultsList = res.data.list.item
-        this.setState({
-          resultsList
+        const initialList = res.data.list.item
+        let resultsList = []
+        initialList.map(item => {
+          console.log('whats the type', item, typeof item)
+          console.log('whats the name', item.name)
+          let name = item.name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})
+          console.log('the sliced name', name)
+          resultsList.push(name)
         })
+        console.log('before we set the results', this.state.resultsList)
+        this.setState({
+          resultsList: initialList
+        })
+        console.log('after we set the results', this.state.resultsList)
 
-        this.props.setFoodSearch(resultsList)
+        this.props.setFoodSearch(initialList)
       }
 
     addToState = async (ndbno) => {
@@ -131,15 +141,7 @@ class AddFoodForm extends Component {
       if (this.state.redirect) {
         return <Redirect to='/editfood' />;
       }
-        let mappedResults = this.state.resultsList.map((food, i) => {
-            return (
-              <List key={i} onClick={() => this.handleAddFood(food.ndbno)}>
-                    <p>{food.name}</p>
-                    <button>></button>
-                </List>
-            )
-          })  
-
+       
         return (
 
             <div>
@@ -174,7 +176,22 @@ class AddFoodForm extends Component {
                       <ButtonLink onClick={() => this.props.clearCurrentMeal} to='/foodlog'>done</ButtonLink>
                     </Search>            
                 
-                  <div>{mappedResults}</div>
+                  <div>
+                    {this.state.resultsList.length !== 0 &&
+                       this.state.resultsList.map((food, i) => {
+                      console.log('state in the render', this.state.resultsList)
+                      let {name} = food
+                      name = name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})
+
+                        return (
+                          <List key={i} onClick={() => this.handleAddFood(food.ndbno)}>
+                                <p>{name}</p>
+                                <button>></button>
+                            </List>
+                        )
+                      })  
+                    }
+                  </div>
 
 
                 </Body>
@@ -272,9 +289,14 @@ const List = styled.div`
   width: 90vw;
   padding: 5px 0;
   margin-bottom: 5px;
+  color: ${darkAccent}
 
   > h4 {
     font-size: 14px;
+  }
+
+  > p {
+    color: ${darkAccent};
   }
 
   > button {
