@@ -199,8 +199,8 @@ export default connect(mapStateToProps, { setCurrentFood, setFoodSearch, clearCu
 // let darkGreen = '#219653'
 let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'
-let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+let darkAccent = '#5C5C5C'
+let lightAccent = '#F8F8F8'
 // let shadow = '#a3a3a3'
 
 const Body = styled.div`

@@ -19,6 +19,15 @@ class EditWeightForm extends Component {
         }
     }
 
+    componentDidMount() {
+        let {pounds, date} = this.props
+        date = new Date(date)
+        this.setState({
+            pounds,
+            date
+        })
+    }
+
     handleChange = e => {
         let { name, value } = e.target
         this.setState({
@@ -33,15 +42,25 @@ class EditWeightForm extends Component {
     }
 
     handleSubmit = () => {
-        // gotta change this to an axios update
-        let {pounds, date} = this.state
-        let date_created = date.toDateString()
-        let exact_date = date
-        axios.post('/api/weight', {pounds, date_created, exact_date}).then(res => {
-            this.setState({
-                redirect: true
-            })
-        }).catch(err => console.log('error adding weight log', err))
+        if (this.state.date === this.props.date) {
+            let { id, date: date_created, edate: exact_date } = this.props
+            let { pounds } = this.state
+            axios.put(`/api/weight/${id}`, { pounds, date_created, exact_date }).then(res => {
+                this.setState({
+                    redirect: true
+                })
+            }).catch(err => console.log('error editing weight log', err))
+        } else {
+            let {id} = this.props
+            let {pounds, date} = this.state
+            let date_created = date.toDateString()
+            let exact_date = date
+            axios.put(`/api/weight/${id}`, {pounds, date_created, exact_date}).then(res => {
+                this.setState({
+                    redirect: true
+                })
+            }).catch(err => console.log('error editing weight log', err))
+        }
     }
 
     render() {
@@ -51,11 +70,12 @@ class EditWeightForm extends Component {
         return (
             <div>
                 <Nav />
+                <label onClick={() => this.props.history.push('/weightlog')}>&#60;</label>
                 <h4>Edit Weight Log</h4>
                 <StyledDatePicker 
                     selected={this.state.date}
                     onChange={this.handleDateChange}
-                    value={this.props.edate}
+                    // value={this.state.date}
                 />
                 <Input 
                     name='pounds'
@@ -73,7 +93,10 @@ class EditWeightForm extends Component {
 function mapStateToProps(state) {
     console.log('state by the time were editing', state)
     return {
-        date: state.weight.currentWeight.date_created
+        date: state.weight.currentWeight.date_created,
+        edate: state.weight.currentWeight.exact_date,
+        pounds: state.weight.currentWeight.pounds,
+        id: state.weight.currentWeight.weight_id
     }
 }
 
@@ -81,9 +104,9 @@ export default connect(mapStateToProps)(EditWeightForm)
 
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
-let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+// let greenBlue ='#28b485'
+let darkAccent = '#5C5C5C'
+let lightAccent = '#F8F8F8'
 // let shadow = '#a3a3a3'
 
 const Input = styled.input`

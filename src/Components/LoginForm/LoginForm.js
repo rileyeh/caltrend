@@ -78,8 +78,8 @@ export default connect(null, { login })(LoginForm)
 // let mediumGreen = '#2DB969'
 // let lightGreen = '#36D97C'
 let greenBlue ='#28b485'
-let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+let darkAccent = '#5C5C5C'
+let lightAccent = '#F8F8F8'
 // let lightShadow = '#f0f0f0'
 
 const Body = styled.div`

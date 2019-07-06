@@ -2,32 +2,88 @@ import React, { Component } from 'react'
 import Chart from 'chart.js'
 import axios from 'axios'
 
+Chart.defaults.global.defaultFontFamily = "'Raleway', sans-serif"
+
+
 class CaloriesChart extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            dates: [],
+            meals: [],
+            calories: [],
+            weightLogs: [],
+            weights: []
+        }
+    }
+
     chartRef = React.createRef()
 
-    // so, we'll need a function, an axios call, that will go get meals by the date, and get food by meal. we'll map over the foods to get the calories(later we can do more nutrients). then the line chart will show dates on the x axis with calories on the y axis. this means that we'll need two arrays. an array of the dates. and an array of the calories added up. the calories will be similar to how i have food log working right now. to get the dates, i think that i can use some fancy stuff with the date object to get the last thirty days from the current day. and use .toDateString() so that everything matches.
-
-    // thinking i'll need to create a day view in the logs. then i'll do a similar thing over here.
-
-    componentDidMount() {
-        // let date =  'July 2nd'
-        // axios.get(`/api/meals/${date}`)
-
+    componentDidMount = async () => {
 
         const myChartRef = this.chartRef.current.getContext('2d')
+
+        await axios.get('/api/meals').then(res => {
+
+            let dates = res.data.map(meal => {
+                return meal.exact_date
+            })
+
+            dates = Array.from(new Set(dates.sort().map(date => new Date(date).toDateString())))
+        
+            this.setState({
+                dates
+            })
+        })
+
+        await axios.get('/api/mealsbydate').then(res => {
+            this.setState({
+                meals: res.data
+            })
+        })
+
+        await axios.get('/api/weight').then(res => {
+            this.setState({
+                weightLogs: res.data
+            })
+        })
+
+        let {dates, meals, weightLogs} = this.state
+
+        let calories = dates.map(date => {
+            return meals.reduce((acc, meal) => {
+                return (date === meal.date_created) ? acc + +meal.calories : acc
+            }, 0)
+        })
+
+        let weights = dates.map(date => {
+            return weightLogs.reduce((acc, log) => {
+                return (date === log.date_created) ? acc + +log.pounds : acc
+            }, 0)
+        })
+
+        this.setState({
+            calories,
+            weights
+        })
 
         new Chart(myChartRef, {
             type: 'line',
             data: {
-                labels: ['May 29th', 'May 30th', 'May 31st', 'June 1st', 'June 2nd'],
+                labels: this.state.dates,
                 datasets: [
                     {
                         label: 'calories',
-                        data: [2560, 2300, 2750, 2480, 3000]
+                        data: this.state.calories,
+                        borderColor: orange,
+                        fill: false
                     },
                     {
                         label: 'weight',
-                        data: [170, 172, 168, 170, 171]
+                        data: this.state.weights,
+                        borderColor: mediumBlue,
+                        fill: false
                     }
                 ]
             },
@@ -49,3 +105,11 @@ class CaloriesChart extends Component {
 }
 
 export default CaloriesChart
+
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
+

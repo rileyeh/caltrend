@@ -6,10 +6,19 @@ import { clearCurrentMeal } from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import CaloriesChart from '../Charts/CaloriesChart'
-
 import Nav from '../Nav/Nav'
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props) 
+
+    this.state = {
+      dates: [],
+      meals: [],
+      calories: [],
+      weights: []
+    }
+  }
    
 
     componentDidMount() {
@@ -24,8 +33,8 @@ class Dashboard extends Component {
           let date = new Date()
           date = date.toDateString()
           console.log('testing new date', date)
+
       }
-    // we're going to be working with req.query.q 
 
     render() {
       if (!this.props.user) {
@@ -58,17 +67,23 @@ export default connect(mapStateToProps, { getUser, logout, clearCurrentMeal })(D
 
 // let darkGreen = '#219653'
 // let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
-// let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+// let greenBlue ='#28b485'
+// let darkAccent = '#5C5C5C'
+
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const Body = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  background: ${lightAccent}
+  min-height: 95vh;
+  background: ${whiteAccent};
 
  @media(min-width: 500px) {
    align-items: flex-start;
@@ -76,7 +91,7 @@ const Body = styled.div`
 `
 
 const Greeting = styled.h1`
-  color: ${greenBlue};
+  color: ${lightBlue};
   font-weight: bold;
   font-size: 30px;
   padding: 20px 0;
@@ -90,16 +105,7 @@ const Greeting = styled.h1`
     padding-top: 60px;
   }
 `
-// const Graph = styled.div`
-//   border-bottom: 1px solid ${darkAccent};  
-//   border-left: 1px solid ${darkAccent};
-//   width: 250px;
-//   height: 300px;
 
-//   @media(min-width: 500px) {
-//     margin: 60px;
-//   }
-// `
 const ButtonContainer = styled.div`
   width: 100vw;
   display: flex;
@@ -112,17 +118,21 @@ const ButtonContainer = styled.div`
 `
 
 const ButtonLink = styled(Link)`
-  background: ${greenBlue}
+  background: ${darkBlue}
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  color: ${lightAccent}
+  color: ${whiteAccent}
   font-size: 14px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+
+  :hover {
+    background: ${orange};
+  }
 
   @media(min-width: 500px) {
     margin: 0 30px;

@@ -63,8 +63,8 @@ export default connect(mapStateToProps)(HomePage)
 let darkGreen = '#219653'
 let mediumGreen = '#2DB969'
 // let lightGreen = '#36D97C'
-// let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+// let darkAccent = '#5C5C5C'
+let lightAccent = '#F8F8F8'
 
 const Body = styled.div`
     background: ${lightAccent};
