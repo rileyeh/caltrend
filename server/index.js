@@ -36,7 +36,7 @@ app.get('/auth/currentUser', AuthCtrl.currentUser)
 // meals
 app.get('/api/meals', MealCtrl.getMealsByUser)
 app.get('/api/meal/:id', MealCtrl.getOneMeal)
-// app.get('/api/meals/:date', MealCtrl.getMealsByDate)
+app.get('/api/mealsbydate', MealCtrl.getMealsByDate)
 app.post('/api/meals', MealCtrl.createMeal)
 app.delete('/api/meal/:meal_id', MealCtrl.deleteMeal)
 app.put('/api/meal/:id', MealCtrl.updateMeal)

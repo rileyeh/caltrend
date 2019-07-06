@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logout } from '../../ducks/reducers/user'
 import styled from 'styled-components'
-import grayLogo from '../../assets/GrayLogo.svg'
+import whiteLogo from '../../assets/WhiteLogo.svg'
 
 
 class Nav extends Component {
@@ -44,7 +44,7 @@ class Nav extends Component {
             <div>
                 <Header>
                     <Logo to='/dashboard'>
-                        <LogoImage src={grayLogo} alt='cal logo'/>
+                        <LogoImage src={whiteLogo} alt='cal logo'/>
                         <LogoText>caltrend</LogoText>
                     </Logo>
 
@@ -66,17 +66,17 @@ class Nav extends Component {
     }
 }
 
-
 export default connect(null, { logout })(Nav)
 
-let darkGreen = '#219653'
-let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
-let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const Header = styled.div`
-    background: linear-gradient(to right bottom, ${mediumGreen}, ${greenBlue});
+    background: linear-gradient(to right bottom, ${lightBlue}, ${mediumBlue}, ${darkBlue});
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -84,6 +84,7 @@ const Header = styled.div`
     @media(min-width: 500px) {
         width: 120px;
         position: absolute;
+        border-bottom: none;
     }
 
     @media(min-width: 1000px) {
@@ -99,7 +100,7 @@ const Logo = styled(Link)`
 
     @media(min-width: 500px) {
         width: 120px;
-        background: ${mediumGreen}
+        background: ${darkAccent}
         flex-direction: column;
         padding-top: 20px;
     }
@@ -120,7 +121,7 @@ const LogoImage = styled.img`
 `
 
 const LogoText = styled.h1`
-    color: ${lightAccent};
+    color: ${whiteAccent};
     font-size: 24px;
 
     @media(min-width: 500px) {
@@ -137,12 +138,12 @@ const Menu = styled.div`
     height: 100vh;
     display: flex;
     flex-direction: column;
-    color: ${lightAccent};
+    color: ${whiteAccent};
     z-index: 4;
     padding-top: 40px;
 
     @media(min-width: 500px) {
-        background: linear-gradient(to bottom, ${mediumGreen}, ${greenBlue});
+        background: ${darkAccent};
         float: left;
         width: 120px;
         padding-top: 120px;
@@ -155,21 +156,22 @@ const Menu = styled.div`
 `
 
 const StyledLink = styled(Link)`
-    color: ${lightAccent};
+    color: ${whiteAccent};
     text-decoration: none;
     padding: 10px;
     margin: 0 auto;
     width: 90%;
-    border-bottom: 1px solid ${lightAccent}
+    border-bottom: 1px solid ${whiteAccent}
 
     :hover {
-        color: ${darkGreen}
+        color: ${orange}
     }
 
     @media(min-width: 500px) {
         font-size: 14px;
         padding: 20px 0;
         text-align: center;
+        color: ${whiteAccent};
     }
 
     @media(min-width: 1000px) {
@@ -179,7 +181,7 @@ const StyledLink = styled(Link)`
 `
 
 const Ham = styled.label`
-    color: ${lightAccent};
+    color: ${whiteAccent};
     margin-right: 20px;
     z-index: 5;
 

@@ -38,7 +38,7 @@ module.exports = {
     updateWeightLog: async (req, res) => {
         try {
             const db = req.app.get('db')
-            const {id} = req.params
+            const { id } = req.params
             const { pounds, date_created, exact_date} = req.body
             let weight = await db.weight.updateWeightLog({
                 pounds, 

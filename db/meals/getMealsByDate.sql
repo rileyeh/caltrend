@@ -1,9 +1,13 @@
-create table dates_meals as
-select distinct on (date_created)
-    meal_id, date_created, user_id, exact_date
-from meals
-where user_id = ${user_id};
-
-select * from dates_meals
-where exact_date
-order by exact_date;
+select 
+    f.food_id,
+    f.calories,
+    f.meal_id,
+    m.meal_id, 
+    m.date_created,
+    m.exact_date,
+    m.user_id
+from 
+    foods f
+inner join meals m on f.meal_id = m.meal_id
+where m.user_id = $1
+order by m.exact_date;

@@ -48,7 +48,6 @@ class MealLog extends Component {
     }
 
     render() {
-        console.log(98765, this.props.currentMeal)
         return (
             <div>
                 <Nav/>
@@ -113,11 +112,11 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLog)
 
-let darkGreen = '#219653'
-let mediumGreen = '#2DB969'
+// let darkGreen = '#219653'
+// let mediumGreen = '#2DB969'
 let greenBlue ='#28b485'
-let darkAccent = '#333333'
-let lightAccent = '#F4F4F4'
+let darkAccent = '#5C5C5C'
+let lightAccent = '#F8F8F8'
 
 const TopBar = styled.div`
     width: 100vw;

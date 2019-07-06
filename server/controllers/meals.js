@@ -9,17 +9,16 @@ module.exports = {
             console.log('error getting meal by user in the meals controller', error) 
         }
     },
-    // getMealsByDate: async (req, res) => {
-    //     try {
-    //         const db = req.app.get('db')
-    //         const { user_id } = req.session.user
-    //         const {date_created} = req.params
-    //         let meals = await db.meals.getMealsByDate({user_id, date_created})
-    //         res.status(200).send(meals)
-    //     } catch (error) {
-    //         console.log('error getting meal by date in the meals controller', error)             
-    //     }
-    // },
+    getMealsByDate: async (req, res) => {
+        try {
+            const db = req.app.get('db')
+            const { user_id } = req.session.user
+            let meals = await db.meals.getMealsByDate(user_id)
+            res.status(200).send(meals)
+        } catch (error) {
+            console.log('error getting meal by date in the meals controller', error)             
+        }
+    },
     getOneMeal: async (req, res) => {
         try {
             const db = req.app.get('db')
