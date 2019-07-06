@@ -83,6 +83,9 @@ class FoodLog extends Component {
             return <Redirect to='/addmeal' />;
           }
 
+          if (!this.props.user) {
+            return <Redirect to='/' />
+          }
 
         return (
             <div>
@@ -148,18 +151,20 @@ class FoodLog extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state from the food log', state)
+    let { data: user } = state.user
     return {
-        meals: state.meals.mealsArray
+        meals: state.meals.mealsArray,
+        user
     }
 }
+
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal})(FoodLog)
 
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
+// let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
 let orange = '#FF6830'
 

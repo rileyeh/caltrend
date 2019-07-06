@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { setCurrentMeal, clearCurrentMeal } from '../../ducks/reducers/meals'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import Nav from '../Nav/Nav'
 import DatePicker from 'react-datepicker'
@@ -71,7 +71,10 @@ class AddMealForm extends Component {
         })
     }
 
-    render() {        
+    render() { 
+        if (!this.props.user) {
+            return <Redirect to='/' />
+          }       
         return (
             <div>
             <Nav />                
@@ -111,24 +114,21 @@ class AddMealForm extends Component {
 }
 
 let mapStateToProps = state => {
+  let { data: user } = state.user
     return {
-        meal: state.meals.currentMeal
+        meal: state.meals.currentMeal,
+        user
     }
 }
 
 export default connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(AddMealForm)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
-// let shadow = '#a3a3a3'
-
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
-let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
+// let lightBlue = '#50B6BB'
+// let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+// let orange = '#FF6830'
 
 const Body = styled.div`
     background: ${whiteAccent};

@@ -41,7 +41,7 @@ class AddFoodForm extends Component {
           console.log('whats the name', item.name)
           let name = item.name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})
           console.log('the sliced name', name)
-          resultsList.push(name)
+          return resultsList.push(name)
         })
         console.log('before we set the results', this.state.resultsList)
         this.setState({
@@ -141,6 +141,10 @@ class AddFoodForm extends Component {
       if (this.state.redirect) {
         return <Redirect to='/editfood' />;
       }
+
+      if (!this.props.user) {
+        return <Redirect to='/' />
+      }
        
         return (
 
@@ -202,12 +206,13 @@ class AddFoodForm extends Component {
 }
 
 let mapStateToProps = state => {
-  console.log('LOOK ITS THE REDUX STATE FROM THE FOOD FORM', state)
+  let { data: user } = state.user
   return {
       id: state.meals.currentMeal.meal_id,
       date: state.meals.currentMeal.date_created,
       number: state.meals.currentMeal.meal_number,
-      results: state.meals.results
+      results: state.meals.results,
+      user
   }
 }
 

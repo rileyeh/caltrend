@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { setCurrentFood, setCurrentMeal } from '../../ducks/reducers/meals'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import axios from 'axios';
 
@@ -48,6 +48,9 @@ class MealLog extends Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect to='/' />
+          }
         return (
             <div>
                 <Nav/>
@@ -102,11 +105,13 @@ class MealLog extends Component {
 
 function mapStateToProps(state) {
     console.log('state in the meal log', state)
+    let { data: user } = state.user
     return {
         date: state.meals.currentMeal.date_created,
         number: state.meals.currentMeal.meal_number,
         id: state.meals.currentMeal.meal_id,
-        currentMeal: state.meals.currentMeal
+        currentMeal: state.meals.currentMeal,
+        user
     }
 }
 
@@ -115,9 +120,9 @@ export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLo
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
+// let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+// let orange = '#FF6830'
 
 const TopBar = styled.div`
     width: 100vw;

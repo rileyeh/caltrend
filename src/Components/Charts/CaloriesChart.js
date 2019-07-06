@@ -98,7 +98,7 @@ class CaloriesChart extends Component {
     render() {
         return(
             <div>
-                <canvas id='myChart' ref={this.chartRef} />
+                <canvas id='myChart' ref={this.chartRef} style={{'display': 'block', 'height': 300, 'width': 300}}/>
             </div>
         )
     }
@@ -106,10 +106,10 @@ class CaloriesChart extends Component {
 
 export default CaloriesChart
 
-let darkAccent = '#5C5C5C'
-let whiteAccent = '#F8F8F8'
-let lightBlue = '#50B6BB'
+// let darkAccent = '#5C5C5C'
+// let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
-let darkBlue = '#45969B'
+// let darkBlue = '#45969B'
 let orange = '#FF6830'
 

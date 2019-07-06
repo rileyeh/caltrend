@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Nav from '../Nav/Nav'
 import axios from 'axios'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setCurrentWeight } from '../../ducks/reducers/weight'
 
@@ -35,6 +35,9 @@ class ViewWeightLog extends Component {
     }
 
     render() {
+        if (!this.props.user) {
+            return <Redirect to='/' />
+          }
         return (
             <div>
                 <Nav />
@@ -67,8 +70,9 @@ class ViewWeightLog extends Component {
 }
 
 function mapStateToProps(state) {
+    let { data: user } = state.user
     return {
-        state
+        user
     }
 }
 

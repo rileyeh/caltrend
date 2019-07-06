@@ -46,7 +46,7 @@ class Dashboard extends Component {
 
             <Body>
                 {this.props.user && <Greeting>Welcome, {this.props.user.name}</Greeting>}
-                <CaloriesChart />
+                <StyledCaloriesChart />
                 <ButtonContainer>
                   <ButtonLink to='addmeal' onClick={this.props.clearCurrentMeal}>Add<br/>Meal</ButtonLink>
                   <ButtonLink to='/addweight'>Log<br/>Weight</ButtonLink>
@@ -65,15 +65,10 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, { getUser, logout, clearCurrentMeal })(Dashboard)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-// let greenBlue ='#28b485'
 // let darkAccent = '#5C5C5C'
-
-let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
+// let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
 let orange = '#FF6830'
 
@@ -105,11 +100,15 @@ const Greeting = styled.h1`
     padding-top: 60px;
   }
 `
+const StyledCaloriesChart = styled(CaloriesChart)`
+  padding: 10px 0;
+`
 
 const ButtonContainer = styled.div`
   width: 100vw;
   display: flex;
   justify-content: space-between;
+  margin: 10px 0;
   padding: 40px 20px 0 20px;
 
   @media(min-width: 500px) {
