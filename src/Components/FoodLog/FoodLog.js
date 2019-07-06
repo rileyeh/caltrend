@@ -6,8 +6,8 @@ import AddMealForm from '../AddMealForm/AddMealForm'
 import {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import pencilLight from '../../assets/PencilLight.svg'
-import trashLight from '../../assets/TrashLight.svg'
+import pencilLight from '../../assets/PencilDark.svg'
+import trashLight from '../../assets/TrashDark.svg'
 
 class FoodLog extends Component {
     constructor(props) {
@@ -91,7 +91,7 @@ class FoodLog extends Component {
                 <Body>
                     <TopSection>
                         <Title>Food Log</Title>
-                        <AddButton to='addmeal' onClick={this.props.clearCurrentMeal}>Add Meal</AddButton>
+                        <AddButton to='addmeal' onClick={this.props.clearCurrentMeal}>+</AddButton>
                     </TopSection>
 
                     {this.state.mealForm && 
@@ -154,48 +154,51 @@ function mapStateToProps(state) {
     }
 }
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
-// let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
-
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal})(FoodLog)
+
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const Body = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: ${lightAccent};
+    background: ${whiteAccent};
     min-height: 100vh;
 `
 
 const TopSection = styled.div`
     width: 90vw;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 `
 
 const Title = styled.h3`
-    color: ${greenBlue};
+    color: ${lightBlue};
     font-weight: bold;
     font-size: 30px;
     padding: 20px 0;
-    background: ${lightAccent};
+    background: ${whiteAccent};
 `
 
 const AddButton = styled(Link)`
-    width: 85px;
+    width: 30px;
     height: 30px;
     border-radius: 8px;
     border: none;
-    background: ${greenBlue};
-    color: ${lightAccent};
+    background: ${darkBlue};
+    color: ${whiteAccent};
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
 `
 
 const Nutrients = styled.div`
@@ -221,22 +224,26 @@ const Meal = styled.div`
 `
 
 const MealHeader = styled.div`
-    width: 100vw;
+    width: 95vw;
     height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 5px;
     padding: 0 10px;
-    background: ${greenBlue};
-    color: ${lightAccent};
+    color: ${darkBlue};
+    border-bottom: 1px solid ${orange};
 `
 
 const MealLink = styled(Link)`
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
-    color: ${lightAccent}
+    color: ${lightBlue}
+
+    :hover {
+        color: ${darkAccent}
+    }
 `
 
 const ImageContainer = styled.div`
