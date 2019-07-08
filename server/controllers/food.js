@@ -46,8 +46,9 @@ module.exports = {
     updateFood: async (req, res) => {
         try {
             const db = req.app.get('db')
-            const {id} = req.params
-            const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit } = req.body
+            const { id } = req.params
+            console.log('the req body for update', req.body, id)
+            const { food_name, calories, carbs, protein, fat, fiber, sugar, quantity, unit, meal_id } = req.body
             let foods = await db.food.updateFood({
                 id, 
                 food_name, 
@@ -58,8 +59,10 @@ module.exports = {
                 fiber, 
                 sugar, 
                 quantity, 
-                unit
+                unit,
+                meal_id
             })
+            console.log('what came back from the update', foods)
             res.status(200).send(foods)
         } catch (error) {
             console.log('you have an updating error in the food controller', error)                        

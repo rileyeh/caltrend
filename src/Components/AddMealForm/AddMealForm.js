@@ -86,7 +86,7 @@ class AddMealForm extends Component {
 
     handleCancel = () => {
         this.props.clearCurrentMeal()
-        this.props.history.goBack()
+        this.props.history.push('/foodlog')
     }
 
     render() { 

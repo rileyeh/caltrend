@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
-import { clearFoodSearch } from '../../ducks/reducers/meals'
+import { clearFoodSearch, setCurrentFood } from '../../ducks/reducers/meals'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -182,11 +182,12 @@ class EditFoodForm extends Component {
         let quantity = +this.state.quantity
         let unit = this.state.unit
         let id = this.props.id
+        let meal_id = this.props.currentMeal.meal_id
 
-        console.log('this should be a food id', id)
+        console.log('whats the state were trying to pull from', this.state)
 
-        axios.put(`/api/food/${id}`, 
-            {food_name, 
+        let updatedObj = {
+            food_name, 
             calories, 
             carbs, 
             protein, 
@@ -194,8 +195,33 @@ class EditFoodForm extends Component {
             fiber, 
             sugar, 
             quantity, 
-            unit}).then(res => {
-            console.log('response from food update', res)
+            unit,
+            meal_id
+        }
+
+
+        axios.put(`/api/food/${id}`, {
+            food_name, 
+            calories, 
+            carbs, 
+            protein, 
+            fat, 
+            fiber, 
+            sugar, 
+            quantity, 
+            unit,
+            meal_id}).then(res => {
+            this.props.setCurrentFood({
+                food_name, 
+                calories, 
+                carbs, 
+                protein, 
+                fat, 
+                fiber, 
+                sugar, 
+                quantity, 
+                unit,
+                meal_id})
         }).catch(err => console.log('error in updateFood comp with update funtion', err))
 
         this.setState({
@@ -424,8 +450,10 @@ class EditFoodForm extends Component {
 
 
 let mapStateToProps = state => {
+    console.log('state in update food', state)
     let { data: user } = state.user
     return {
+        currentMeal: state.meals.currentMeal,
         id: state.meals.currentFood.food_id,
         name: state.meals.currentFood.name,
         ndbno: state.meals.currentFood.ndbno,
@@ -435,4 +463,4 @@ let mapStateToProps = state => {
     }
 }
  
-export default connect(mapStateToProps, { clearFoodSearch })(EditFoodForm)
+export default connect(mapStateToProps, { clearFoodSearch, setCurrentFood })(EditFoodForm)
