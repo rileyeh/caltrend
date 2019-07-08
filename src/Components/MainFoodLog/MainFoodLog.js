@@ -13,7 +13,7 @@ class FoodLog extends Component {
         super(props)
 
         this.state = {
-            meals: [],
+            meals: [0],
             redirectToEdit: false
         }
     }
@@ -89,6 +89,8 @@ class FoodLog extends Component {
             return <Redirect to='/' />
           }
 
+          console.log('the state in main food log', this.state)
+
         return (
             <div>
                 <Nav />
@@ -100,7 +102,7 @@ class FoodLog extends Component {
                     </TopSection>
 
                     
-                    {this.state.meals.length !== 0 && 
+                    {this.state.meals[0] !== 0 ?
 
 
                     this.state.meals.map(meal => {
@@ -119,7 +121,9 @@ class FoodLog extends Component {
                                 </Nutrients>
                             </Meal>
                         )})
-                    
+                    :
+
+                    <h4>Click the "+" button above to start tracking!</h4>
                     
                     }
                 </Body>

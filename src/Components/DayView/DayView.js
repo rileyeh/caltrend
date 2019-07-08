@@ -91,7 +91,7 @@ class FoodLog extends Component {
     render() {
 
         if (this.state.redirectToEdit) {
-            return <Redirect to='/addmeal' />;
+            return <Redirect to='/addmeal' />
           }
 
           if (!this.props.user) {
