@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { logout } from '../../ducks/reducers/user'
 import styled from 'styled-components'
 import whiteLogo from '../../assets/WhiteLogo.svg'
+import blueLogo from '../../assets/LogoBlue.svg'
 
 
 class Nav extends Component {
@@ -44,7 +45,7 @@ class Nav extends Component {
             <div>
                 <Header>
                     <Logo to='/dashboard'>
-                        <LogoImage src={whiteLogo} alt='cal logo'/>
+                        {this.state.menu ? <LogoImage src={blueLogo} alt='cal logo'/> : <LogoImage src={whiteLogo} alt='cal logo'/>}
                         <LogoText>caltrend</LogoText>
                     </Logo>
 
@@ -68,6 +69,8 @@ class Nav extends Component {
 
 export default connect(null, { logout })(Nav)
 
+let shadow = '#787878'
+let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
@@ -124,6 +127,10 @@ const LogoText = styled.h1`
     color: ${whiteAccent};
     font-size: 24px;
 
+    :hover {
+        color: ${orange};
+    }
+
     @media(min-width: 500px) {
         font-size: 14px;
     }
@@ -134,19 +141,23 @@ const LogoText = styled.h1`
 `
 
 const Menu = styled.div`
-    background: ${darkAccent}
-    height: 100vh;
+    background: linear-gradient(to right bottom, ${shadow}, ${mediumShadow}, ${darkAccent});
+    min-height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     color: ${whiteAccent};
     z-index: 4;
-    padding-top: 40px;
+    padding-top: 60px;
+    position: absolute;
+    top:0
 
     @media(min-width: 500px) {
         background: ${darkAccent};
         float: left;
         width: 120px;
         padding-top: 120px;
+        position: static;
     }
 
     @media(min-width: 1000px) {
@@ -184,6 +195,10 @@ const Ham = styled.label`
     color: ${whiteAccent};
     margin-right: 20px;
     z-index: 5;
+
+    :hover {
+        color: ${orange};
+    }
 
     @media(min-width: 500px) {
         display: none;

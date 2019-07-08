@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { setCurrentMeal, clearCurrentMeal } from '../../ducks/reducers/meals'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import Nav from '../Nav/Nav'
 import DatePicker from 'react-datepicker'
@@ -16,16 +16,25 @@ class AddMealForm extends Component {
         this.state = {
             date: new Date(),
             meal: '',
-            edit: false
+            edit: false,
+            redirect: false
         }
     }
 
     componentDidMount() {
-        if(this.props.meal.meal_id) {
+        if(this.props.meal.date_created) {
+            let date = new Date(this.props.meal.date_created)
             this.setState({
-                date: this.props.meal.date_created,
+                date,
                 meal: this.props.meal.meal_number,
                 edit: true
+            })
+        }
+
+        if(this.props.meal.date) {
+            let date = new Date(this.props.meal.date)
+            this.setState({
+                date
             })
         }
     }
@@ -58,8 +67,12 @@ class AddMealForm extends Component {
                 date_created,
                 meal_number
             }
+            this.props.clearCurrentMeal()
             this.props.setCurrentMeal(obj)
             // this.props.history.push('/')
+            this.setState({
+                redirect: true
+            })
 
         }).catch(err => console.log('error in add meal form', err))
     }
@@ -68,24 +81,26 @@ class AddMealForm extends Component {
         let {date, meal} = this.state
         axios.put(`/api/meal/${id}`, { date, meal }).then(res => {
             console.log('the response from updating', res)
-        })
+        }).catch(err => console.log('error in add meal form', err))
+    }
+
+    handleCancel = () => {
+        this.props.clearCurrentMeal()
+        this.props.history.goBack()
     }
 
     render() { 
         if (!this.props.user) {
             return <Redirect to='/' />
-          }       
+          }     
+        if (this.state.redirect) {
+            return <Redirect to='foodsform' />
+        }  
         return (
-            <div>
+            <Page>
             <Nav />                
             <Body>
                 <Title>add meal</Title>
-                {/* <Input
-                    name='date'
-                    type='text'
-                    value={this.state.date}
-                    placeholder= 'date'
-                    onChange={this.handleChange}/> */}
                 <StyledDatePicker 
                     selected={this.state.date}
                     onChange={this.handleDateChange}
@@ -98,22 +113,23 @@ class AddMealForm extends Component {
                     onChange={this.handleChange}/>
 
                 <ButtonsContainer>
-                    <ButtonLink onClick={this.props.clearCurrentMeal} to='dashboard'>cancel</ButtonLink>
+                    <Button onClick={this.handleCancel}>cancel</Button>
                     {this.state.edit ? 
                         <ButtonLink onClick={() => this.updateMeal(this.props.meal.meal_id)} to='/foodlog'>update</ButtonLink>
                         :
                         <div>
-                            <ButtonLink onClick={this.handleSubmit} to='foodsform'>add foods</ButtonLink>
+                            <Button onClick={this.handleSubmit}>add foods</Button>
                         </div>
                 }
                 </ButtonsContainer>
             </Body>
-            </div>
+            </Page>
         )
     }
 }
 
 let mapStateToProps = state => {
+    console.log('redux state in add meal', state)
   let { data: user } = state.user
     return {
         meal: state.meals.currentMeal,
@@ -121,7 +137,7 @@ let mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(AddMealForm)
+export default withRouter(connect(mapStateToProps, { setCurrentMeal, clearCurrentMeal })(AddMealForm))
 
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
@@ -130,14 +146,24 @@ let whiteAccent = '#F8F8F8'
 let darkBlue = '#45969B'
 // let orange = '#FF6830'
 
+const Page = styled.div`
+    @media(min-width: 500px) {
+        display: flex;
+    }
+`
+
 const Body = styled.div`
     background: ${whiteAccent};
-    min-width: 100vw;
+    width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px 0;
+
+    @media(min-width: 500px) {
+        width: 90vw;
+    }
 `
 
 const Title = styled.h3`
@@ -171,6 +197,23 @@ const ButtonsContainer = styled.div`
     padding-top: 30px;
 `
 
+const Button = styled.button`
+    background: ${darkBlue}
+    border: none;
+    width: 95px;
+    height: 40px;
+    border-radius: 8px;
+    color: ${whiteAccent};
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    :hover {
+        background: ${darkAccent}
+    }
+`
+
 const ButtonLink = styled(Link)`
     background: ${darkBlue}
     border: none;
@@ -179,6 +222,7 @@ const ButtonLink = styled(Link)`
     border-radius: 8px;
     color: ${whiteAccent};
     text-decoration: none;
+    font-size: 16px;
     display: flex;
     justify-content: center;
     align-items: center;

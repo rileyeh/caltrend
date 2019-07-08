@@ -9,18 +9,6 @@ import CaloriesChart from '../Charts/CaloriesChart'
 import Nav from '../Nav/Nav'
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props) 
-
-    this.state = {
-      dates: [],
-      meals: [],
-      calories: [],
-      weights: []
-    }
-  }
-   
-
     componentDidMount() {
         axios
           .get('/auth/currentUser')
@@ -30,10 +18,6 @@ class Dashboard extends Component {
           .catch(err => {
             console.log('Not logged in');
           })
-          let date = new Date()
-          date = date.toDateString()
-          console.log('testing new date', date)
-
       }
 
     render() {
@@ -77,12 +61,8 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 95vh;
+  min-height: 100vh;
   background: ${whiteAccent};
-
- @media(min-width: 500px) {
-   align-items: flex-start;
- }
 `
 
 const Greeting = styled.h1`
@@ -92,12 +72,12 @@ const Greeting = styled.h1`
   padding: 20px 0;
 
   @media(min-width: 500px) {
-    margin-left: 60px;
-    padding-top: 40px;
+    font-size: 32px;
+    padding: 30px 0;
   }
 
   @media(min-width: 1000px) {
-    padding-top: 60px;
+    font-size: 36px;
   }
 `
 const StyledCaloriesChart = styled(CaloriesChart)`
@@ -105,15 +85,11 @@ const StyledCaloriesChart = styled(CaloriesChart)`
 `
 
 const ButtonContainer = styled.div`
-  width: 100vw;
+  min-width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
   padding: 40px 20px 0 20px;
-
-  @media(min-width: 500px) {
-    justify-content: flex-start;
-  }
 `
 
 const ButtonLink = styled(Link)`

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import Nav from '../Nav/Nav'
-import AddMealForm from '../AddMealForm/AddMealForm'
 import {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -15,43 +14,53 @@ class FoodLog extends Component {
 
         this.state = {
             meals: [],
-            mealForm: false,
             redirectToEdit: false
         }
     }
 
-    componentDidMount() {
-        axios.get('/api/meals').then(res => {
-            this.getFoodByMeal(res)
-        }).catch(err => console.log('error in the food log', err))
-    }
-    
-    getFoodByMeal = res => {
-        if (res.data.length > 0) {
-        let mealArray = res.data
+    // this might not need to be asynchronous
+    componentDidMount = async () => {
+        
+        await axios.get('/api/mealsbydate').then(res => {
+            console.log('food log mount response', res)
+            let dates = res.data.map(meal => {
+                return meal.exact_date
+            })
 
-                mealArray.forEach(elem => {
-                    elem.foods = []
-                    axios.post('/api/food', elem).then(res => {
-                        elem.foods = res.data
-                        this.setState({
-                            meals: mealArray
-                        })
-                        this.props.setMealsArray(this.state.meals)
-                    })
-                })
-        }
-        this.setState({
-            meals: []
-        })
-    }
+            dates = Array.from(new Set(dates.map(date => new Date(date).toDateString())))
 
-    deleteMeal = (meal_id) => {
-        axios.delete(`/api/meal/${meal_id}`).then(res => {
-            // alert('meal deleted')
-            console.log('response from the db after delete', res)
-            this.getFoodByMeal(res)
-        }).catch(err => console.log('error in the food log', err))
+            let meals = dates.map(date => {
+                let dateTotals = {
+                    date, 
+                    meal_id: 0,
+                    calories: 0,
+                    protein: 0,
+                    carbs: 0,
+                    fat: 0,
+                    sugar: 0,
+                    fiber: 0
+                }
+                return res.data.reduce((acc, meal) => {
+                    return (date === meal.date_created) 
+                    ? dateTotals = {
+                        ...dateTotals,
+                        meal_id: meal.meal_id,
+                        calories: dateTotals.calories + +meal.calories,
+                        protein: dateTotals.protein + +meal.protein,
+                        carbs: dateTotals.carbs + +meal.carbs,
+                        fat: dateTotals.fat + +meal.fat,
+                        sugar: dateTotals.sugar + +meal.sugar,
+                        fiber: dateTotals.fiber + +meal.fiber
+                    }
+                    : acc
+                }, 0)
+            })
+
+
+            this.setState({
+                meals
+            })
+        }).catch(err => console.log('error in main food log', err))
     }
 
     editMeal = id => {
@@ -67,16 +76,9 @@ class FoodLog extends Component {
     deleteFood = (id) => {
         axios.delete(`/api/food/${id}`).then(res => {
             console.log(7489123847, res)
-        })
+        }).catch(err => console.log('error in main food log', err))
     }
-
-      toggleAddMealForm = () => {
-        let { mealForm } = this.state
-        this.setState({
-          mealForm: !mealForm
-        })
-      }
-
+   
     render() {
 
         if (this.state.redirectToEdit) {
@@ -97,53 +99,29 @@ class FoodLog extends Component {
                         <AddButton to='addmeal' onClick={this.props.clearCurrentMeal}>+</AddButton>
                     </TopSection>
 
-                    {this.state.mealForm && 
-                        <div>
-                            <button onClick={this.toggleAddMealForm}>cancel</button>
-                            <AddMealForm toggleAddMealForm={this.toggleAddMealForm}/>
-                        </div>}
-
+                    
                     {this.state.meals.length !== 0 && 
 
-                    this.state.meals.map((meal, i) => {
 
-                        let calories = 0
-                        let protein = 0
-                        let fat = 0
-                        let carbs = 0
-                        let fiber = 0
-                        let sugar = 0
-            
-                        this.state.meals[i].foods.forEach(food => {
-                            calories += +food.calories
-                            protein += +food.protein
-                            fat += +food.fat
-                            carbs += +food.carbs
-                            fiber += +food.fiber
-                            sugar += +food.sugar
-                        })
-            
+                    this.state.meals.map(meal => {
                         return (
                             <Meal key={meal.meal_id} >
                                 <MealHeader>
-                                    <MealLink to='/meallog' onClick={() => this.props.setCurrentMeal(meal)}>{meal.date_created} Meal {meal.meal_number}</MealLink>
-                                    <ImageContainer>
-                                        <Image src={pencilLight} alt='' onClick={() => this.editMeal(meal.meal_id)}/>
-                                        <Image src={trashLight} alt='' onClick={() => this.deleteMeal(meal.meal_id)}/>
-                                    </ImageContainer>
+                                    <MealLink to='/dayview' onClick={() => this.props.setCurrentMeal(meal)}>{meal.date}</MealLink>
                                 </MealHeader>
                                 <Nutrients>
-                                    <p><span>calories</span><br/>{calories.toFixed(2)}</p>
-                                    <p><span>protein</span><br/>{protein.toFixed(2)} g</p>
-                                    <p><span>fat</span><br/>{fat.toFixed(2)} g</p>
-                                    <p><span>carbs</span><br/>{carbs.toFixed(2)} g</p>
-                                    <p><span>fiber</span><br/>{fiber.toFixed(2)} g</p>
-                                    <p><span>sugar</span><br/>{sugar.toFixed(2)} g</p>
+                                    <p><span>calories</span><br/>{meal.calories.toFixed(2)}</p>
+                                    <p><span>protein</span><br/>{meal.protein.toFixed(2)} g</p>
+                                    <p><span>fat</span><br/>{meal.fat.toFixed(2)} g</p>
+                                    <p><span>carbs</span><br/>{meal.carbs.toFixed(2)} g</p>
+                                    <p><span>fiber</span><br/>{meal.fiber.toFixed(2)} g</p>
+                                    <p><span>sugar</span><br/>{meal.sugar.toFixed(2)} g</p>
                                 </Nutrients>
                             </Meal>
-                        )
+                        )})
                     
-                    })}
+                    
+                    }
                 </Body>
             </div>
         )
@@ -181,6 +159,10 @@ const TopSection = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media(min-width: 500px) {
+        width: 80vw;
+    }
 `
 
 const Title = styled.h3`
@@ -206,6 +188,40 @@ const AddButton = styled(Link)`
     font-weight: bold;
 `
 
+const Meal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100vw;
+`
+
+const MealHeader = styled.div`
+    width: 95vw;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    padding: 0 10px;
+    color: ${darkBlue};
+    border-bottom: 1px solid ${orange};
+
+    @media(min-width: 500px) {
+        width: 250px;
+    }
+`
+
+const MealLink = styled(Link)`
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: ${lightBlue}
+
+    :hover {
+        color: ${darkAccent}
+    }
+`
+
 const Nutrients = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -220,45 +236,8 @@ const Nutrients = styled.div`
     > p > span {
         font-weight: bold;
     }
-`
 
-const Meal = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
-const MealHeader = styled.div`
-    width: 95vw;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 5px;
-    padding: 0 10px;
-    color: ${darkBlue};
-    border-bottom: 1px solid ${orange};
-`
-
-const MealLink = styled(Link)`
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    color: ${lightBlue}
-
-    :hover {
-        color: ${darkAccent}
+    @media(min-width: 500px) {
+        width: 250px;
     }
-`
-
-const ImageContainer = styled.div`
-    display: flex;
-    align-items: center;
-`
-
-
-const Image = styled.img`
-    height: 25px;
-    width: 25px;
-    margin: 0px 5px;
 `

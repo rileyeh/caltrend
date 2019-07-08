@@ -96,7 +96,7 @@ class EditFoodForm extends Component {
                 quantity: this.props.quantity,
                 unit: this.props.unit
             })
-        })
+        }).catch(err => console.log('error in update food', err))
        
     }
 
@@ -182,6 +182,8 @@ class EditFoodForm extends Component {
         let quantity = +this.state.quantity
         let unit = this.state.unit
         let id = this.props.id
+
+        console.log('this should be a food id', id)
 
         axios.put(`/api/food/${id}`, 
             {food_name, 

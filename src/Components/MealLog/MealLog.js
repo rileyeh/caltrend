@@ -11,17 +11,15 @@ class MealLog extends Component {
         super(props)
 
         this.state = {
-            foods: [],
-            rerender: false
+            foods: []
         }
     }
 
     componentDidMount() {
-        let meal_id = this.props.id
-        axios.post('api/food', {meal_id}).then(res => {
+        let {id} = this.props
+        axios.get(`api/food/${id}`).then(res => {
             this.setState({
-                foods: res.data,
-                rerender: true
+                foods: res.data
             })
         }).catch(err => {
             console.log('error in the meal log', err)
@@ -39,8 +37,7 @@ class MealLog extends Component {
             }
         }).then(res => {
             this.setState({
-                foods: res.data,
-                rerender: true
+                foods: res.data
             })
         }).catch(err => {
             console.log('error in the meal log', err)
@@ -56,7 +53,7 @@ class MealLog extends Component {
                 <Nav/>
 
                 <TopBar>
-                    <label onClick={() => this.props.history.push('/foodlog')}>&#60;</label>
+                    <label onClick={() => this.props.history.push('/dayview')}>&#60;</label>
                     <h3>Meal Log</h3>
                 </TopBar>
 
@@ -64,10 +61,10 @@ class MealLog extends Component {
 
                 <h3>{this.props.date} Meal {this.props.number}</h3>
 
-                <StyledLink to='foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</StyledLink>
+                <StyledLink to='/foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</StyledLink>
 
 
-                {this.state.rerender &&
+                {this.state.foods.length !== 0 &&
 
                     this.state.foods.map((food, i) => {
                         console.log('foods mapped in the food log', food)
@@ -96,6 +93,8 @@ class MealLog extends Component {
                         )
                     })
                 }
+
+                {/* add in a totals here, and then i think we can send that back to the day view */}
                 </Body>
 
             </div>
