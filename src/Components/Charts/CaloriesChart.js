@@ -24,30 +24,25 @@ class CaloriesChart extends Component {
 
         const myChartRef = this.chartRef.current.getContext('2d')
 
-        await axios.get('/api/meals').then(res => {
 
+        await axios.get('/api/mealsbydate').then(res => {
             let dates = res.data.map(meal => {
                 return meal.exact_date
             })
 
             dates = Array.from(new Set(dates.sort().map(date => new Date(date).toDateString())))
-        
-            this.setState({
-                dates
-            })
-        })
 
-        await axios.get('/api/mealsbydate').then(res => {
             this.setState({
+                dates,
                 meals: res.data
             })
-        })
+        }).catch(err => console.log('error in the calories chart', err))
 
         await axios.get('/api/weight').then(res => {
             this.setState({
                 weightLogs: res.data
             })
-        })
+        }).catch(err => console.log('error in the calories chart', err))
 
         let {dates, meals, weightLogs} = this.state
 
@@ -98,7 +93,7 @@ class CaloriesChart extends Component {
     render() {
         return(
             <div>
-                <canvas id='myChart' ref={this.chartRef} style={{'display': 'block', 'height': 300, 'width': 300}}/>
+                <canvas id='myChart' ref={this.chartRef} style={{'display': 'block', 'minHeight': 300, 'maxWidth': '75vw'}}/>
             </div>
         )
     }

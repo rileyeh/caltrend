@@ -5,4 +5,5 @@ delete from meals
 where meal_id = ${meal_id};
 
 select * from meals
-where user_id = ${user_id};
+where user_id = ${user_id}
+and date_created = ${date_created};

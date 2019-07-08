@@ -18,12 +18,11 @@ class ViewWeightLog extends Component {
 
     componentDidMount() {
         axios.get('/api/weight').then(res => {
-            console.log('getting weight logs', res)
             this.setState({
                 weights: res.data,
                 rerender: true
             })
-        })
+        }).catch(err => console.log('error in view weight log', err))
     }
 
     deleteLog = async id => {
@@ -31,7 +30,7 @@ class ViewWeightLog extends Component {
             this.setState({
                 weights: res.data
             })
-        })
+        }).catch(err => console.log('error in view weight log', err))
     }
 
     render() {

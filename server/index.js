@@ -15,7 +15,7 @@ const { SERVER_PORT, SESSION_SECRET, CONNECTION_STRING } = process.env
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db)
     console.log('db is connected')
-})
+}).catch(err => console.log('cannot connect to database', err))
 
 app.use(express.json())
 app.use(session({
@@ -38,11 +38,11 @@ app.get('/api/meals', MealCtrl.getMealsByUser)
 app.get('/api/meal/:id', MealCtrl.getOneMeal)
 app.get('/api/mealsbydate', MealCtrl.getMealsByDate)
 app.post('/api/meals', MealCtrl.createMeal)
-app.delete('/api/meal/:meal_id', MealCtrl.deleteMeal)
+app.delete('/api/meal', MealCtrl.deleteMeal)
 app.put('/api/meal/:id', MealCtrl.updateMeal)
 
 // foods
-app.post('/api/food', FoodCtrl.getFoodByMeal)
+app.get('/api/food/:id', FoodCtrl.getFoodByMeal)
 app.post('/api/newFood', FoodCtrl.createFood)
 app.delete('/api/food/:id', FoodCtrl.deleteFood)
 app.put('/api/food/:id', FoodCtrl.updateFood)

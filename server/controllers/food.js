@@ -2,8 +2,8 @@ module.exports = {
     getFoodByMeal: async (req, res) => {
         try {
             const db = req.app.get('db')
-            const { meal_id } = req.body
-            let foods = await db.food.getFoodByMeal([meal_id])
+            const { id } = req.params
+            let foods = await db.food.getFoodByMeal(id)
             res.status(200).send(foods)   
         } catch (error) {
             console.log('you have a read error in the food controller', error)

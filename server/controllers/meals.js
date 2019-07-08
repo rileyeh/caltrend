@@ -48,9 +48,9 @@ module.exports = {
     deleteMeal: async (req, res) => {
         try {
             const db= req.app.get('db')
-            const { meal_id } = req.params
+            const { meal_id, date_created } = req.body
             const { user_id } = req.session.user
-            let meals = await db.meals.deleteMeal({meal_id, user_id})
+            let meals = await db.meals.deleteMeal({meal_id, user_id, date_created})
             res.status(200).send(meals)
         } catch (error) {
             console.log('error deleting meal in the meals controller', error)                                     
@@ -74,21 +74,3 @@ module.exports = {
         }
     }
 }
-
-
-
-// createBot: async (req, res) => {
-//     const db = req.app.get("db");
-//     const { name, attack, health } = req.body;
-//     const { user_id } = req.session.user;
-//     console.log(user_id);
-
-//     let bots = await db.bots.create_bot({
-//       user_id,
-//       bot_name: name,
-//       attack,
-//       health
-//     });
-
-//     res.status(200).send(bots);
-//   },

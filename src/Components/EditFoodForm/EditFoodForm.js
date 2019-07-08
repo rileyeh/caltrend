@@ -207,7 +207,7 @@ class EditFoodForm extends Component {
         })
         .then(res => {
           console.log('response from the edit food form', res)
-        })
+        }).catch(err => console.log('error in edit food form', err))
 
         this.props.clearFoodSearch()
 
