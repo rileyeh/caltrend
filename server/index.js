@@ -26,6 +26,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24* 365
     }
 }))
+app.use(express.static( `${__dirname}/../build` ))
 
 // auth
 app.post('/auth/register', AuthCtrl.register)

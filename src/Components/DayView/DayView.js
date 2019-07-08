@@ -19,27 +19,63 @@ class FoodLog extends Component {
         }
     }
 
-    // app.get('/api/mealsbydate', MealCtrl.getMealsByDate)
-
     componentDidMount() {
         if (this.props.currentMeal.date) {
         this.setState({
             date: this.props.currentMeal.date
-        })}
-
-        if (this.props.currentMeal.date_created) {
+        })} else if (this.props.currentMeal.date_created) {
             this.setState({
                 date: this.props.currentMeal.date_created
-            })}
+        })} else {
+            this.setState({
+                date: 'no date'
+            })
+        }
 
         axios.get('/api/mealsbydate').then(res => {
-            let meals = res.data.filter(meal => {
+            console.log('the original response', res)
+            let initialMeals = res.data.filter(meal => {
                 return meal.date_created === this.state.date
             })
-            console.log('the meals that should be mapped', meals)
+
+            let mealNumbers = Array.from(new Set(initialMeals.map(meal => meal.meal_number)))
+
+
+            let meals = mealNumbers.map(number => {
+                let meal = {
+                    date_created: initialMeals[0].date_created,
+                    exact_date: initialMeals[0].exact_date,
+                    meal_id: initialMeals[0].meal_id,
+                    user_id: initialMeals[0].user_id,
+                    meal_number: number,
+                    calories: 0,
+                    protein: 0,
+                    carbs: 0,
+                    fat: 0,
+                    sugar: 0,
+                    fiber: 0
+                }
+                return initialMeals.reduce((acc, item) => {
+                    return (number === +item.meal_number) ? 
+                    meal = {
+                        ...meal,
+                        calories: meal.calories + +item.calories,
+                        protein: meal.protein + +item.protein,
+                        carbs: meal.carbs + +item.carbs,
+                        fat: meal.fat + +item.fat,
+                        sugar: meal.sugar + +item.sugar,
+                        fiber: meal.fiber + +item.fiber
+                    }
+                    :
+                    acc
+                }, 0)
+            })
+            console.log('final result', meals)
+
             this.setState({
                 meals
             })
+
         }).catch(err => console.log('error in the food log', err))
     }
 
@@ -103,12 +139,20 @@ class FoodLog extends Component {
                 <Nav />
 
                 <Body>
-                    
+
+                    {this.state.date === 'no date' ?
+                    <div>
+                        <p>hmmm...no date selected<span onClick={() => this.props.history.push('/foodlog')}>head back to the food log</span></p>
+
+                    </div>
+                :
                     <TopSection>
                         <label onClick={() => this.props.history.push('/foodlog')}>&lt;</label>
                         <Title>{this.state.date}</Title>
                         <AddButton to='addmeal'>+</AddButton>
                     </TopSection>
+                }
+                    
                     
 
                     {this.state.meals.length !== 0 && 
@@ -124,12 +168,12 @@ class FoodLog extends Component {
                                     </ImageContainer>
                                 </MealHeader>
                                 <Nutrients>
-                                    <p><span>calories</span><br/>{+meal.calories}</p>
-                                    <p><span>protein</span><br/>{+meal.protein} g</p>
-                                    <p><span>fat</span><br/>{+meal.fat} g</p>
-                                    <p><span>carbs</span><br/>{+meal.carbs} g</p>
-                                    <p><span>fiber</span><br/>{+meal.fiber} g</p>
-                                    <p><span>sugar</span><br/>{+meal.sugar} g</p>
+                                    <p><span>calories</span><br/>{+meal.calories.toFixed(2)}</p>
+                                    <p><span>protein</span><br/>{+meal.protein.toFixed(2)} g</p>
+                                    <p><span>fat</span><br/>{+meal.fat.toFixed(2)} g</p>
+                                    <p><span>carbs</span><br/>{+meal.carbs.toFixed(2)} g</p>
+                                    <p><span>fiber</span><br/>{+meal.fiber.toFixed(2)} g</p>
+                                    <p><span>sugar</span><br/>{+meal.sugar.toFixed(2)} g</p>
                                 </Nutrients>
                             </Meal>
                         )
