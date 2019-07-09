@@ -11,7 +11,8 @@ class MealLog extends Component {
         super(props)
 
         this.state = {
-            foods: []
+            foods: [],
+            render: false
         }
     }
 
@@ -19,7 +20,8 @@ class MealLog extends Component {
         let {id} = this.props
         axios.get(`api/food/${id}`).then(res => {
             this.setState({
-                foods: res.data
+                foods: res.data,
+                render: true
             })
         }).catch(err => {
             console.log('error in the meal log', err)
@@ -53,33 +55,36 @@ class MealLog extends Component {
                 <Nav/>
 
                 <TopBar>
-                    <label onClick={() => this.props.history.push('/dayview')}>&#60;</label>
-                    <h3>Meal Log</h3>
+                    <TopBarText>
+                        <label onClick={() => this.props.history.push('/dayview')}>&#60;</label>
+                        <div>
+                            <h2>Meal {this.props.number}</h2>
+                            <h5>{this.props.date} </h5>
+                        </div>
+                    </TopBarText>
+                    <StyledLink to='/foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>+</StyledLink>
                 </TopBar>
 
                 <Body>
 
-                <h3>{this.props.date} Meal {this.props.number}</h3>
-
-                <StyledLink to='/foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>add foods</StyledLink>
-
-
-                {this.state.foods.length !== 0 &&
+                {this.state.render &&
 
                     this.state.foods.map((food, i) => {
                         console.log('foods mapped in the food log', food)
                         return (
                             <MealCard key={i}>
                                 <CardHeader>
-                                    <h5>{food.food_name}</h5>
-                                    <div style={ {'display' : 'flex'} }>
-                                        <p>{food.quantity}</p>
-                                        <p>{food.unit}</p>
-                                    </div>
-                                    <div>
-                                        <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
-                                        <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
-                                    </div>
+                                    <h4>{food.food_name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</h4>
+                                    <HeaderBottom>
+                                        <div style={ {'display' : 'flex'} }>
+                                            <p>{food.quantity} </p>
+                                            <p>{food.unit}</p>
+                                        </div>
+                                        <Buttons>
+                                            <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
+                                            <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
+                                        </Buttons>
+                                    </HeaderBottom>
                                 </CardHeader>
                                 <Nutrients>
                                     <p><span>calories</span><br/>{food.calories}</p>
@@ -119,7 +124,7 @@ export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLo
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-// let mediumBlue = '#4BA9AD'
+let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
 // let orange = '#FF6830'
 
@@ -128,11 +133,19 @@ const TopBar = styled.div`
     height: 45px;
     display: flex;
     align-items: center;
-    padding-left: 10px;
-    background: ${darkAccent};
-    color: ${whiteAccent};
+    justify-content: space-between;
+    padding: 20px 10px;
+    background: ${whiteAccent};
+`
 
-    > h3 {
+const TopBarText = styled.div`
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    color: ${mediumBlue};
+
+    > div {
         padding-left: 10px;
     }
 `
@@ -148,7 +161,7 @@ const Body = styled.div`
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    width: 150px;
+    width: 25px;
     height: 25px;
     background: ${darkBlue};
     color: ${whiteAccent};
@@ -157,6 +170,8 @@ const StyledLink = styled(Link)`
     align-items: center;
     border-radius: 4px;
     margin: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
 
     &:hover {
         background: ${darkAccent};
@@ -173,6 +188,14 @@ const CardHeader = styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
+`
+
+const HeaderBottom = styled.div`
+    display: flex;
+`
+
+const Buttons = styled.div`
+    display: flex;
 `
 
 const Nutrients = styled.div`

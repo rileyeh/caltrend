@@ -160,7 +160,7 @@ class AddFoodForm extends Component {
                       this.state.foodList.map((food, i) => {
                           return (
                           <List key={i}>
-                            <h4>{food.food_name}</h4>
+                            <h4>{food.food_name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</h4>
                             <p>{food.calories} calories</p>
                           </List>
                         )

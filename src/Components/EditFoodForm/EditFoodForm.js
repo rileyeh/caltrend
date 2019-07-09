@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import { clearFoodSearch } from '../../ducks/reducers/meals'
 import styled from 'styled-components'
+import pencil from '../../assets/PencilDark.svg'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -36,14 +37,21 @@ class EditFoodForm extends Component {
     }
 
     componentDidMount() {
+        let calories, protein, fat, carbs, fiber, sugar
+        {this.props.calories ? calories = this.props.calories : calories = 0.00}
+        {this.props.protein ? protein = this.props.protein : protein = 0.00}
+        {this.props.fat ? fat = this.props.fat : fat = 0.00}
+        {this.props.carbs ? carbs = this.props.carbs : carbs = 0.00}
+        {this.props.fiber ? fiber = this.props.fiber : fiber = 0.00}
+        {this.props.sugar ? sugar = this.props.sugar : sugar = 0.00}
         this.setState({
             name: this.props.name,
-            calories: this.props.calories,
-            protein: this.props.protein,
-            fat: this.props.fat,
-            carbs: this.props.carbs,
-            fiber: this.props.fiber,
-            sugar: this.props.sugar,
+            calories,
+            protein,
+            fat,
+            carbs,
+            fiber,
+            sugar,
             quantity: this.props.quantity,
             unit: this.props.label,
             ndbno: this.props.ndbno
@@ -245,7 +253,7 @@ class EditFoodForm extends Component {
                 <Body>
 
                 <TopSection>
-                    <label onClick={() => this.props.history.push('foodsform')}>&#60;</label>
+                    <label onClick={() => this.props.history.push('/foodsform')}>&#60;</label>
                     <Title>{this.props.name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</Title>
                 </TopSection>
 
@@ -277,8 +285,10 @@ class EditFoodForm extends Component {
                 </EditSection>
                 :
                 <EditSection>
-                    {this.state.quantity} {this.state.unit}
-                    <Button onClick={this.toggleEdit}>pencil</Button>
+                    <div>
+                        {this.state.quantity} {this.state.unit}
+                        <Image src={pencil} alt='edit' onClick={this.toggleEdit}/>
+                    </div>
                     <Button onClick={this.addToDatabase}>add</Button>
                 </EditSection>
                 }
@@ -415,5 +425,20 @@ const Nutrients = styled.div`
 
     > p > span {
         font-weight: normal;
+    }
+`
+
+const Image = styled.img`
+    height: 25px;
+    margin-left: 10px;
+    position: relative;
+    top: 5px;
+
+    :hover{
+        transform: translateY(-3px);
+        height: 28px;
+    }
+    :active {
+        transform: translateY(-1px);
     }
 `

@@ -41,8 +41,10 @@ class ViewWeightLog extends Component {
             <div>
                 <Nav />
                 <Body>
-                    <Title>Weight Log</Title>
-                    <StyledLink to='/addweight'>Log New Weight</StyledLink>
+                    <TopSection>
+                        <Title>Weight Log</Title>
+                        <StyledLink to='/addweight'>+</StyledLink>
+                    </TopSection>
                     <CardHolder>
                     {this.state.rerender &&
                         this.state.weights.map((weight, i) => {
@@ -54,8 +56,8 @@ class ViewWeightLog extends Component {
                                         {weight.pounds} pounds
                                         <label>&hellip;</label>
                                         <Buttons>
-                                            <button><Link onClick={() => this.props.setCurrentWeight(weight)} to='/editweight'>edit</Link></button>
-                                            <button onClick={() => this.deleteLog(weight.weight_id)}>delete</button>
+                                            <button><Link onClick={() => this.props.setCurrentWeight(weight)} to='/editweight' style={{'textDecoration':'none', 'textAlign':'center', 'color':'#F8F8F8'}}>edit</Link></button>
+                                            <button onClick={() => this.deleteLog(weight.weight_id)} style={{'textAlign':'center'}}>delete</button>
                                         </Buttons>
                                     </WeightCard>
                             )
@@ -77,15 +79,17 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, { setCurrentWeight })(ViewWeightLog)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
+let shadow = '#787878'
+let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
-let shadow = '#a3a3a3'
+let whiteAccent = '#F8F8F8'
+let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const Body = styled.div`
-    background: linear-gradient(to right bottom, ${darkAccent}, ${shadow});
+    background: ${whiteAccent};
     min-height: 90vh;
     box-sizing: border-box;
     display: flex;
@@ -93,8 +97,19 @@ const Body = styled.div`
     align-items: center;
 `
 
+const TopSection = styled.div`
+    width: 90vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media(min-width: 500px) {
+        width: 80vw;
+    }
+`
+
 const Title = styled.h3`
-    color: ${lightAccent};
+    color: ${darkBlue};
     font-size: 24px;
     text-align: center;
     padding-top: 10px;
@@ -102,18 +117,20 @@ const Title = styled.h3`
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    width: 150px;
+    width: 25px;
     height: 25px;
-    background: ${greenBlue};
-    color: ${lightAccent};
+    background: ${mediumBlue};
+    color: ${whiteAccent};
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 4px;
     margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
 
     &:hover {
-        background: ${lightAccent};
+        background: ${whiteAccent};
         color: ${darkAccent};
     }
 `
@@ -127,22 +144,24 @@ const CardHolder = styled.div`
 const WeightCard = styled.div`
     width: 40vw;
     height: 35vw;
-    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    border-bottom: 1px solid ${orange};
     font-size: 18px;
     padding: 0 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: ${lightAccent};
+    color: ${lightBlue};
     position: relative;
+    padding-top: 10px;
+    margin: 0 5px;
 
     > label {
         position: absolute;
         bottom: 4px;
         right: 4px;
         font-size: 24px;
-        color: rgba(255, 255, 255, .5);
+        color: rgba(0, 0, 0, .4);
     }
 `
 //  technically, this hover stuff is for desktop, not mobile. so. gotta change that up in the media queries.
@@ -150,32 +169,35 @@ const Buttons = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
+    text-align: center;
 
     > button {
         display: none;
-        text-align: center;
+        border: none;
+        
     }
     
     &:hover {
-        background: rgba(255, 255, 255, .8);
+        background: rgba(92, 92, 92, .5);
         display: flex;
         align-items: center;
         justify-content: space-evenly;
 
         > button {
             display: flex;
-            background: ${greenBlue};
-            width: 40px;
-            height: 20px;
+            justify-content: center;
+            background: ${mediumBlue};
+            width: 50px;
+            height: 25px;
             border-radius: 4px;
-            color: ${lightAccent};
+            color: ${whiteAccent};
 
             :hover {
-                background: ${darkAccent};
+                background: ${orange};
             }
 
             :active {
-                background: ${lightAccent};
+                background: ${whiteAccent};
                 color: ${darkAccent};
             }
         }

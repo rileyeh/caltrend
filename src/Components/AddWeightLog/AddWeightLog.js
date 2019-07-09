@@ -43,6 +43,10 @@ class AddWeightLog extends Component {
         }).catch(err => console.log('error adding weight log', err))
     }
 
+    handleCancel = () => {
+        this.props.history.push('/weightlog')
+    }
+
     render() {
         if (this.state.redirect) {
             return <Redirect to='/weightlog' />
@@ -53,19 +57,23 @@ class AddWeightLog extends Component {
         return (
             <div>
                 <Nav />
-                <h4>Add Weight Log</h4>
-                <StyledDatePicker 
-                    selected={this.state.date}
-                    onChange={this.handleDateChange}
-                />
-                <Input 
-                    name='pounds'
-                    placeholder='enter weight here'
-                    value={this.state.pounds}
-                    onChange={this.handleChange}
-                />
-                <button onClick={this.handleSubmit}>submit</button>
-
+                <Body>
+                    <Title>Add Weight Log</Title>
+                    <StyledDatePicker 
+                        selected={this.state.date}
+                        onChange={this.handleDateChange}
+                    />
+                    <Input 
+                        name='pounds'
+                        placeholder='enter weight here'
+                        value={this.state.pounds}
+                        onChange={this.handleChange}
+                    />
+                <ButtonsContainer>
+                    <Button onClick={this.handleCancel}>cancel</Button>
+                    <Button onClick={this.handleSubmit}>submit</Button>
+                </ButtonsContainer>
+                </Body>
             </div>
         )
     }
@@ -80,12 +88,42 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(AddWeightLog)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-// let greenBlue ='#28b485'
 let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
-// let shadow = '#a3a3a3'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+// let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+// let orange = '#FF6830'
+
+const Body = styled.div`
+    background: ${whiteAccent};
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+
+    @media(min-width: 500px) {
+        width: 90vw;
+    }
+`
+
+const Title = styled.h3`
+    color: ${darkAccent};
+    font-weight: bold;
+    font-size: 30px;
+    padding: 20px 0;
+
+    @media(min-width: 500px) {
+    margin-left: 60px;
+    padding-top: 40px;
+    }
+
+    @media(min-width: 1000px) {
+    padding-top: 60px;
+    }
+`
 
 const Input = styled.input`
     border: none;
@@ -102,7 +140,31 @@ const StyledDatePicker = styled(DatePicker)`
     border: none;
     border-bottom: 1px solid ${darkAccent};
     border-radius: 0;
-    background: ${lightAccent}
+    background: ${whiteAccent};
     width: 60vw;
     padding-top: 30px;
+`
+
+const ButtonsContainer = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    padding-top: 30px;
+`
+
+const Button = styled.button`
+    background: ${darkBlue}
+    border: none;
+    width: 95px;
+    height: 40px;
+    border-radius: 8px;
+    color: ${whiteAccent};
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    :hover {
+        background: ${darkAccent}
+    }
 `
