@@ -30,7 +30,7 @@ class Dashboard extends Component {
 
             <Body>
                 {this.props.user && <Greeting>Welcome, {this.props.user.name}</Greeting>}
-                <StyledCaloriesChart />
+                <CaloriesChart />
                 <ButtonContainer>
                   <ButtonLink to='addmeal' onClick={this.props.clearCurrentMeal}>Add<br/>Meal</ButtonLink>
                   <ButtonLink to='/addweight'>Log<br/>Weight</ButtonLink>
@@ -49,12 +49,14 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, { getUser, logout, clearCurrentMeal })(Dashboard)
 
-// let darkAccent = '#5C5C5C'
+let shadow = '#787878'
+let mediumShadow = '#636363'
+let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-// let mediumBlue = '#4BA9AD'
+let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 
 const Body = styled.div`
   text-align: center;
@@ -63,6 +65,15 @@ const Body = styled.div`
   align-items: center;
   min-height: 100vh;
   background: ${whiteAccent};
+
+  @media(min-width: 500px) {
+    margin-left: 120px;
+    justify-content: space-evenly;
+  }
+
+  @media(min-width: 1000px) {
+    margin-left: 160px;
+  }
 `
 
 const Greeting = styled.h1`
@@ -80,16 +91,13 @@ const Greeting = styled.h1`
     font-size: 36px;
   }
 `
-const StyledCaloriesChart = styled(CaloriesChart)`
-  padding: 10px 0;
-`
 
 const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
-  padding: 40px 20px 0 20px;
+  padding: 20px 20px 0 20px;
 
   @media(min-width: 500px) {
     width: 60%;
@@ -110,7 +118,14 @@ const ButtonLink = styled(Link)`
   text-decoration: none;
 
   :hover {
-    background: ${orange};
+    background: ${red};
+    transform: translateY(-3px);
+    box-shadow: 0px 10px 16px ${shadow};
+  }
+
+  :active {
+    transform: translateY(-1px);
+    box-shadow: 0px 5px 8px ${mediumShadow};
   }
 
 `

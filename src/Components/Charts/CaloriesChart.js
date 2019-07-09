@@ -71,7 +71,7 @@ class CaloriesChart extends Component {
                     {
                         label: 'calories',
                         data: this.state.calories,
-                        borderColor: orange,
+                        borderColor: red,
                         fill: false
                     },
                     {
@@ -93,7 +93,7 @@ class CaloriesChart extends Component {
     render() {
         return(
             <div>
-                <canvas id='myChart' ref={this.chartRef} style={{'display': 'block', 'minHeight': 300, 'maxWidth': '75vw'}}/>
+                <canvas id='myChart' ref={this.chartRef} style={{'display': 'block', 'minHeight': 325, 'maxWidth': '75vw'}}/>
             </div>
         )
     }
@@ -106,5 +106,5 @@ export default CaloriesChart
 // let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 // let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 

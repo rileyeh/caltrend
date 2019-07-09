@@ -364,21 +364,46 @@ let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
-// let darkBlue = '#45969B'
-let orange = '#FF6830'
+let darkBlue = '#45969B'
+let red = '#FF5757'
 
 const Body = styled.div`
-    width: 100vw;
+    max-width: 100vw;
     background: ${whiteAccent};
-    height: 95vh;
+    min-height: 95vh;
+
+    @media(min-width: 500px) {
+        margin-left: 120px;
+        padding-top: 20px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
+    }
 `
 
 const TopSection = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     padding-top: 20px;
     margin-bottom: 20px;
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: ${darkBlue};
+    position: relative;
+
+    @media(min-width: 500px) {
+        justify-content: center;
+
+        > label {
+            position: absolute;
+            top: -5px;
+            left: 15px;
+            font-size: 20px;
+        }
+    }
 `
 
 const Title = styled.h2`
@@ -391,6 +416,22 @@ const EditSection = styled.div`
     justify-content: space-evenly;
     align-items: center;
     margin-bottom: 20px;
+    font-size: 16px;
+
+    > input {
+        border: none;
+        background: none;
+        border-radius: 0;
+        border-bottom: 1px solid ${darkAccent};
+        width: 75px;
+        text-align: center;
+    }
+
+    > select {
+        background: none;
+        border: none;
+        border-radius: 0;
+    }
 `
 
 const Button = styled.button`
@@ -405,6 +446,10 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 16px;
+
+  :hover {
+    background: ${red};
+  }
 
   @media(min-width: 500px) {
     margin: 0 20px;

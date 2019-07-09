@@ -81,7 +81,7 @@ let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 // let darkBlue = '#45969B'
-// let orange = '#FF6830'
+// let red = '#FF5757'
 
 const Body = styled.div`
     height: 90vh;
@@ -114,6 +114,14 @@ const TopBar = styled.div`
     align-items: center;
     padding: 0 20px;
     margin-bottom: 30px;
+
+    > h4 {
+        color: ${whiteAccent};
+    }
+
+    > label {
+        color: ${whiteAccent};
+    }
 `
 
 const LoginInput = styled.input`

@@ -76,7 +76,7 @@ let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 
 const Header = styled.div`
     background: linear-gradient(to right bottom, ${lightBlue}, ${mediumBlue}, ${darkBlue});
@@ -100,17 +100,19 @@ const Logo = styled(Link)`
     align-items: center;
     float: left;
     text-decoration: none;
+    z-index: 5;
 
     @media(min-width: 500px) {
         width: 120px;
         background: ${darkAccent}
         flex-direction: column;
-        padding-top: 20px;
+        position: fixed;
+        top: 20px;
     }
 
     @media(min-width: 1000px) {
         width: 160px;
-        padding-top: 40px;
+        padding-top: 25px;
     }
 `
 
@@ -128,7 +130,7 @@ const LogoText = styled.h1`
     font-size: 24px;
 
     :hover {
-        color: ${orange};
+        color: ${red};
     }
 
     @media(min-width: 500px) {
@@ -147,17 +149,19 @@ const Menu = styled.div`
     display: flex;
     flex-direction: column;
     color: ${whiteAccent};
-    z-index: 4;
-    padding-top: 60px;
+    z-index: 3;
+    padding-top: 80px;
     position: absolute;
     top:0
 
     @media(min-width: 500px) {
         background: ${darkAccent};
-        float: left;
         width: 120px;
         padding-top: 120px;
-        position: static;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 3;
         height: 100%;
     }
 
@@ -176,7 +180,11 @@ const StyledLink = styled(Link)`
     border-bottom: 1px solid ${whiteAccent}
 
     :hover {
-        color: ${orange}
+        color: ${red}
+    }
+
+    :active {
+        color: ${shadow};
     }
 
     @media(min-width: 500px) {
@@ -198,7 +206,7 @@ const Ham = styled.label`
     z-index: 5;
 
     :hover {
-        color: ${orange};
+        color: ${red};
     }
 
     @media(min-width: 500px) {

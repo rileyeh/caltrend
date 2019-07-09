@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import { setCurrentFood, setCurrentMeal } from '../../ducks/reducers/meals'
 import { Link, Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
-import axios from 'axios';
+import axios from 'axios'
+import pencil from '../../assets/PencilRed.svg'
+import trash from '../../assets/TrashRed.svg'
 
 class MealLog extends Component {
     constructor(props) {
@@ -54,6 +56,7 @@ class MealLog extends Component {
             <div>
                 <Nav/>
 
+                <Body>
                 <TopBar>
                     <TopBarText>
                         <label onClick={() => this.props.history.push('/dayview')}>&#60;</label>
@@ -65,7 +68,6 @@ class MealLog extends Component {
                     <StyledLink to='/foodsform' onClick={() => this.props.setCurrentMeal(this.props.currentMeal)}>+</StyledLink>
                 </TopBar>
 
-                <Body>
 
                 {this.state.render &&
 
@@ -74,16 +76,13 @@ class MealLog extends Component {
                         return (
                             <MealCard key={i}>
                                 <CardHeader>
-                                    <h4>{food.food_name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</h4>
+                                    <span>{food.food_name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</span>
                                     <HeaderBottom>
-                                        <div style={ {'display' : 'flex'} }>
-                                            <p>{food.quantity} </p>
-                                            <p>{food.unit}</p>
-                                        </div>
-                                        <Buttons>
-                                            <Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'>edit</Link>
-                                            <button onClick={() => this.deleteFood(food.food_id)}>delete</button>
-                                        </Buttons>
+                                        <p>{food.quantity} {food.unit}</p>
+                                    <Buttons>
+                                        <Button><Link onClick={() => this.props.setCurrentFood(food)} to='/updatefood'><img src={pencil} alt='edit' style={{'height':25}}/></Link></Button>
+                                        <Button onClick={() => this.deleteFood(food.food_id)}><img src={trash} alt='edit' style={{'height':25}}/></Button>
+                                    </Buttons>
                                     </HeaderBottom>
                                 </CardHeader>
                                 <Nutrients>
@@ -121,21 +120,40 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal})(MealLog)
 
+let shadow = '#787878'
+let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-// let orange = '#FF6830'
+let red = '#FF5757'
+
+const Body = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: ${whiteAccent};
+    min-height: 90vh;
+
+    @media(min-width: 500px) {
+        margin-left: 120px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
+    }
+`
 
 const TopBar = styled.div`
-    width: 100vw;
-    height: 45px;
+    width: 100%;
+    height: 55px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 10px;
     background: ${whiteAccent};
+
 `
 
 const TopBarText = styled.div`
@@ -148,54 +166,116 @@ const TopBarText = styled.div`
     > div {
         padding-left: 10px;
     }
-`
 
-const Body = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0;
-    background: ${whiteAccent};
-    min-height: 90vh;
+    > label {
+        color: ${darkAccent};
+        font-weight: bold;
+        font-size: 20px;
+
+        :hover {
+            color: ${red};
+          }
+    }
 `
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     background: ${darkBlue};
     color: ${whiteAccent};
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 8px;
     margin: 10px 0;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
 
-    &:hover {
-        background: ${darkAccent};
+    :hover {
+        background: ${red};
+        transform: translateY(-3px);
+        box-shadow: 0px 10px 16px ${shadow};
+    }
+
+    :active {
+        transform: translateY(-1px);
+        box-shadow: 0px 5px 8px ${mediumShadow};
     }
 `
 
 const MealCard = styled.div`
     background: ${whiteAccent};
+    padding-top: 10px;
 `
 
 const CardHeader = styled.div`
     background: ${lightBlue};
     color: ${whiteAccent};
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
     text-align: center;
+    height: 55px;
+
+    > span {
+        width: 60%;
+        font-weight: bold;
+        padding-left: 5px;
+        color: ${whiteAccent};
+    }
+
+    @media(min-width: 500px) {
+        background: ${whiteAccent};
+        border-bottom: 1px solid ${darkBlue};
+
+        > span {
+            color: ${lightBlue};
+        }
+    }
+   
 `
 
 const HeaderBottom = styled.div`
     display: flex;
+    width: 40%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+
+     > p {
+        color: ${whiteAccent};
+    }
+
+    @media(min-width: 500px) {
+
+        > p {
+            color: ${lightBlue};
+        }
+    }
 `
 
 const Buttons = styled.div`
+    width: 40%;
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+`
+
+const Button = styled.button`
+    background: none;
+    border: none;
+    margin: 0px 5px;
+
+    :hover {
+        transform: translateY(-3px);
+        height: 28px;
+        width: 28px;
+    }
+
+    :active {
+        transform: translateY(-1px);
+    }
 `
 
 const Nutrients = styled.div`

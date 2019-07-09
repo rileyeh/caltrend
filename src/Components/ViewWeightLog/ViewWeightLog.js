@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setCurrentWeight } from '../../ducks/reducers/weight'
+import pencil from '../../assets/PencilRed.svg'
+import trash from '../../assets/TrashRed.svg'
 
 class ViewWeightLog extends Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class ViewWeightLog extends Component {
 
         this.state = {
             weights: [],
-            rerender: false
+            rerender: false,
+            buttons: false
         }
     }
 
@@ -23,6 +26,21 @@ class ViewWeightLog extends Component {
                 rerender: true
             })
         }).catch(err => console.log('error in view weight log', err))
+
+        this.setButtonsTrue()
+        window.addEventListener('resize', this.setButtonsTrue)
+    }
+
+    setButtonsTrue = () => {
+        if (window.innerWidth < 500) {
+            return this.setState({
+                buttons: true
+            })
+        } else {
+            return this.setState({
+                buttons: false
+            })
+        }
     }
 
     deleteLog = async id => {
@@ -50,16 +68,20 @@ class ViewWeightLog extends Component {
                         this.state.weights.map((weight, i) => {
                             console.log('what the weights look like', weight)
                             return (
-                                    <WeightCard key={i}>
-                                        {weight.date_created}
-                                        <br />
-                                        {weight.pounds} pounds
-                                        <label>&hellip;</label>
-                                        <Buttons>
-                                            <button><Link onClick={() => this.props.setCurrentWeight(weight)} to='/editweight' style={{'textDecoration':'none', 'textAlign':'center', 'color':'#F8F8F8'}}>edit</Link></button>
-                                            <button onClick={() => this.deleteLog(weight.weight_id)} style={{'textAlign':'center'}}>delete</button>
-                                        </Buttons>
-                                    </WeightCard>
+                                <WeightCard key={i}>
+                                    <h4>{weight.date_created}</h4>
+                                    <p>{weight.pounds} pounds</p>
+                                    <Buttons>
+                                        <button><Link onClick={() => this.props.setCurrentWeight(weight)} to='/editweight' style={{'textDecoration':'none', 'textAlign':'center', 'color':'#F8F8F8'}}>edit</Link></button>
+                                        <button onClick={() => this.deleteLog(weight.weight_id)} style={{'textAlign':'center'}}>delete</button>
+                                    </Buttons>
+                                    {this.state.buttons &&
+                                    <MobileButtons>
+                                        <button><Link onClick={() => this.props.setCurrentWeight(weight)} to='/editweight'><img style={{'height':25}} src={pencil} alt='edit'/></Link></button>
+                                        <button onClick={() => this.deleteLog(weight.weight_id)}><img style={{'height':25}} src={trash} alt='delete'/></button>
+                                    </MobileButtons>
+                                    }
+                                </WeightCard>
                             )
                         })
                     }
@@ -86,16 +108,25 @@ let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 
 const Body = styled.div`
     background: ${whiteAccent};
-    min-height: 90vh;
+    min-height: 100vh;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media(min-width: 500px) {
+        margin-left: 120px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
+    }
 `
+
 
 const TopSection = styled.div`
     width: 90vw;
@@ -104,34 +135,42 @@ const TopSection = styled.div`
     align-items: center;
 
     @media(min-width: 500px) {
-        width: 80vw;
+        width: 75vw;
+        padding-left: 20px;
+        padding: 20px 0;
     }
 `
 
 const Title = styled.h3`
-    color: ${darkBlue};
-    font-size: 24px;
-    text-align: center;
-    padding-top: 10px;
+    color: ${lightBlue};
+    font-weight: bold;
+    font-size: 30px;
+    padding: 20px 0;
 `
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    width: 25px;
-    height: 25px;
-    background: ${mediumBlue};
+    width: 30px;
+    height: 30px;
+    background: ${darkBlue};
     color: ${whiteAccent};
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
-    margin-top: 10px;
-    font-size: 20px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 28px;
     font-weight: bold;
 
-    &:hover {
-        background: ${whiteAccent};
-        color: ${darkAccent};
+    :hover {
+        background: ${red};
+        transform: translateY(-3px);
+        box-shadow: 0px 10px 16px ${shadow};
+    }
+
+    :active {
+        transform: translateY(-1px);
+        box-shadow: 0px 5px 8px ${mediumShadow};
     }
 `
 
@@ -142,64 +181,77 @@ const CardHolder = styled.div`
 `
 
 const WeightCard = styled.div`
-    width: 40vw;
-    height: 35vw;
-    border-bottom: 1px solid ${orange};
+    width: 150px;
+    height: 150px;
+    border-bottom: 1px solid ${red};
     font-size: 18px;
-    padding: 0 5px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: ${lightBlue};
     position: relative;
-    padding-top: 10px;
     margin: 0 5px;
 
-    > label {
-        position: absolute;
-        bottom: 4px;
-        right: 4px;
-        font-size: 24px;
-        color: rgba(0, 0, 0, .4);
+    @media(min-width: 500px) {
+        width: 40vw;
+        height: 100px;
+        margin: 10px;
+        flex-direction: row;
+        justify-content: space-evenly;
     }
 `
-//  technically, this hover stuff is for desktop, not mobile. so. gotta change that up in the media queries.
-const Buttons = styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    text-align: center;
 
+const Buttons = styled.div`
     > button {
         display: none;
-        border: none;
-        
+        border: none; 
     }
     
-    &:hover {
-        background: rgba(92, 92, 92, .5);
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
+    @media(min-width: 500px) {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        text-align: center;
 
-        > button {
+        
+        &:hover {
+            background: rgba(92, 92, 92, .6);
             display: flex;
-            justify-content: center;
-            background: ${mediumBlue};
-            width: 50px;
-            height: 25px;
-            border-radius: 4px;
-            color: ${whiteAccent};
+            align-items: center;
+            justify-content: space-evenly;
 
-            :hover {
-                background: ${orange};
-            }
+            > button {
+                display: flex;
+                justify-content: center;
+                background: ${mediumBlue};
+                width: 50px;
+                height: 25px;
+                border-radius: 4px;
+                color: ${whiteAccent};
 
-            :active {
-                background: ${whiteAccent};
-                color: ${darkAccent};
+                :hover {
+                    background: ${red};
+                }
+
+                :active {
+                    background: ${whiteAccent};
+                    color: ${darkAccent};
+                }
             }
         }
     }
 `
+
+const MobileButtons = styled.div`
+    width: 100%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+
+    > button {
+        background: none;
+        border: none;
+    }
+`   

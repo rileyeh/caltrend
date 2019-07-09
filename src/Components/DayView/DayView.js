@@ -113,7 +113,6 @@ class FoodLog extends Component {
         this.setState({
             redirectToEdit: true
         })
-        // thinking we import setmeal from the redux state, and then we set the redux state using what we have here on state, finding the meal by the id which is omcing from the map, becasue thats wehre this function gets called
     }
 
 
@@ -200,12 +199,14 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal})(FoodLog)
 
+let shadow = '#787878'
+let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'
-// let mediumBlue = '#4BA9AD'
+let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 
 const Body = styled.div`
     display: flex;
@@ -214,17 +215,35 @@ const Body = styled.div`
     background: ${whiteAccent};
     min-height: 100vh;
     position: relative;
+    max-width: 100vw;
+
+    @media(min-width: 500px) {
+        margin-left: 120px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
+    }
 `
 const TopSection = styled.div`
-    width: 90vw;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 20px;
 
     > label {
         color: ${darkBlue};
         font-weight: bold;
         font-size: 20px;
+
+        :hover {
+            color: ${red};
+          }
+    }
+
+    @media(min-width: 500px) {
+        width: 95%;
     }
 `
 
@@ -249,6 +268,17 @@ const AddButton = styled(Link)`
     justify-content: center;
     font-size: 28px;
     font-weight: bold;
+
+    :hover {
+        background: ${red};
+        transform: translateY(-3px);
+        box-shadow: 0px 10px 16px ${shadow};
+    }
+
+    :active {
+        transform: translateY(-1px);
+        box-shadow: 0px 5px 8px ${mediumShadow};
+    }
 `
 
 const Nutrients = styled.div`
@@ -271,6 +301,10 @@ const Meal = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media(min-width: 500px) {
+        width: 400px;
+    }
 `
 
 const MealHeader = styled.div`
@@ -282,7 +316,11 @@ const MealHeader = styled.div`
     padding-top: 5px;
     padding: 0 10px;
     color: ${darkBlue};
-    border-bottom: 1px solid ${orange};
+    border-bottom: 1px solid ${red};
+
+    @media(min-width: 500px) {
+        width: 400px;
+    }
 `
 
 const MealLink = styled(Link)`

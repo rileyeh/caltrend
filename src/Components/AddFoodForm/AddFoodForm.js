@@ -185,10 +185,10 @@ class AddFoodForm extends Component {
                       name = name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})
 
                         return (
-                          <List key={i} onClick={() => this.handleAddFood(food.ndbno)}>
+                          <ResultList key={i} onClick={() => this.handleAddFood(food.ndbno)}>
                                 <p>{name}</p>
                                 <button>></button>
-                            </List>
+                            </ResultList>
                         )
                       })  
                     }
@@ -216,14 +216,14 @@ let mapStateToProps = state => {
 
 export default connect(mapStateToProps, { setCurrentFood, setFoodSearch, clearCurrentMeal })(AddFoodForm)
 
-// let shadow = '#787878'
+let shadow = '#787878'
 // let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 // let darkBlue = '#45969B'
-let orange = '#FF6830'
+let red = '#FF5757'
 
 const Body = styled.div`
   background: ${whiteAccent}
@@ -234,9 +234,12 @@ const Body = styled.div`
   align-items: center;
 
   @media(min-width: 500px) {
-    position: absolute;
-    left: 120px;
+    margin-left: 120px;
     align-items: flex-start;
+  }
+
+  @media(min-width: 1000px) {
+    margin-left: 160px;
   }
 `
 
@@ -262,6 +265,10 @@ const ButtonLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  :hover {
+    background: ${red};
+  }
 `
 
 const Button = styled.button`
@@ -276,6 +283,10 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 16px;
+
+  :hover {
+    background: ${red};
+  }
 
   @media(min-width: 500px) {
     margin: 0 20px;
@@ -310,7 +321,7 @@ const List = styled.div`
   padding: 0 10px;
   justify-content: space-evenly;
   text-align: center;
-  border-bottom: 1px solid ${orange};
+  border-bottom: 1px solid ${red};
   width: 90vw;
   padding: 5px 0;
   margin-bottom: 5px;
@@ -341,4 +352,50 @@ const List = styled.div`
       margin-left: 10px;
     }
   }
+`
+
+const ResultList = styled.div`
+background: ${whiteAccent};
+display: flex;
+align-items: center;
+margin: 0 15px;
+padding: 0 10px;
+justify-content: space-evenly;
+text-align: center;
+border-bottom: 1px solid ${red};
+width: 90vw;
+padding: 5px 0;
+margin-bottom: 5px;
+color: ${darkAccent};
+
+
+:hover {
+  background: rgba(92, 92, 92, .3);
+}
+
+> h4 {
+  font-size: 14px;
+}
+
+> p {
+  color: ${darkAccent};
+}
+
+> button {
+  background: none;
+  border: none;
+  color: ${mediumBlue};
+  font-size: 20px;
+}
+
+@media(min-width: 500px) {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 60vw;
+  margin-left: 40px;
+
+  > button {
+    margin-left: 10px;
+  }
+}
 `

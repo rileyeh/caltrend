@@ -122,7 +122,7 @@ let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 // let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-// let orange = '#FF6830'
+// let orange = '#FF5757'
 
 const Body = styled.div`
     background: ${whiteAccent};
@@ -134,7 +134,11 @@ const Body = styled.div`
     padding: 20px 0;
 
     @media(min-width: 500px) {
-        width: 90vw;
+        padding-left: 120px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
     }
 `
 
@@ -162,6 +166,10 @@ const Input = styled.input`
     background: none;
     width: 60vw;
     padding-top: 30px;
+
+    @media(min-width: 500px) {
+        font-size: 22px;
+    }
 `
 
 const StyledDatePicker = styled(DatePicker)`
@@ -173,6 +181,10 @@ const StyledDatePicker = styled(DatePicker)`
     background: ${whiteAccent};
     width: 60vw;
     padding-top: 30px;
+
+     @media(min-width: 500px) {
+        font-size: 22px;
+    }
 `
 
 const ButtonsContainer = styled.div`

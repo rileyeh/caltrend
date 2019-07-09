@@ -70,7 +70,7 @@ let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-// let orange = '#FF6830'
+// let red = '#FF5757'
 
 const Body = styled.div`
     min-height: 100vh;
@@ -125,8 +125,15 @@ const Welcome = styled.div`
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: ${whiteAccent};
     font-size: 20px;
+
+    > h1 {
+        color: ${whiteAccent};
+    }
+
+    > p {
+        color: ${whiteAccent};
+    }
 
 
     @media(min-width: 500px) {

@@ -144,7 +144,7 @@ let whiteAccent = '#F8F8F8'
 // let lightBlue = '#50B6BB'
 // let mediumBlue = '#4BA9AD'
 let darkBlue = '#45969B'
-// let orange = '#FF6830'
+// let red = '#FF5757'
 
 const Page = styled.div`
     @media(min-width: 500px) {
@@ -162,7 +162,11 @@ const Body = styled.div`
     padding: 20px 0;
 
     @media(min-width: 500px) {
-        width: 90vw;
+        margin-left: 120px;
+    }
+
+    @media(min-width: 1000px) {
+        margin-left: 160px;
     }
 `
 
