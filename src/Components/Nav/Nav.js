@@ -158,6 +158,7 @@ const Menu = styled.div`
         width: 120px;
         padding-top: 120px;
         position: static;
+        height: 100%;
     }
 
     @media(min-width: 1000px) {

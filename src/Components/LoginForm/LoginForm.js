@@ -39,7 +39,7 @@ class LoginForm extends Component {
     render() {
         return (
             <div>
-                {this.state.register ? <Register /> :
+                {this.state.register ? <Register closeLogin={this.props.closeLogin}/> :
                     <Body>
                         <TopBar>
                             <h4>log in</h4>
@@ -74,13 +74,14 @@ class LoginForm extends Component {
 
 export default connect(null, { login })(LoginForm)
 
-// let darkGreen = '#219653'
-// let mediumGreen = '#2DB969'
-// let lightGreen = '#36D97C'
-let greenBlue ='#28b485'
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
-// let lightShadow = '#f0f0f0'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+// let darkBlue = '#45969B'
+// let orange = '#FF6830'
 
 const Body = styled.div`
     height: 90vh;
@@ -88,13 +89,26 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: absolute;
+    top: 60px;
+    background: ${whiteAccent};
+
+    @media(min-width: 500px) {
+        position: absolute;
+        top: 350px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 400px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+    }
 `
 
 const TopBar = styled.div`
     width: 100%;
     height: 50px;
     background: ${darkAccent};
-    color: ${lightAccent};
+    color: ${whiteAccent};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,15 +120,15 @@ const LoginInput = styled.input`
     border: none;
     border-radius: 0;
     border-bottom: 1px solid ${darkAccent};
-    background: ${lightAccent};
+    background: ${whiteAccent};
     width: 70%;
     margin: 30px 0;
     font-size: 16px;
 `
 
 const AuthButton = styled.button`
-    background: ${lightAccent};
-    color: ${greenBlue};
+    background: ${whiteAccent};
+    color: ${mediumBlue};
     width: 75px;
     height: 30px;
     border: none;
@@ -123,7 +137,7 @@ const AuthButton = styled.button`
     &:hover {
         border-radius: 8px;
         background: ${darkAccent};
-        color: ${lightAccent}
+        color: ${whiteAccent}
     }
 `
 

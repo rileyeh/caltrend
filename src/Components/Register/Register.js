@@ -3,10 +3,11 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { getUser } from '../../ducks/reducers/user'
 import LoginForm from '../LoginForm/LoginForm'
+import styled from 'styled-components'
 
 class Register extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
         name: '',
@@ -32,7 +33,7 @@ class Register extends Component {
         this.props.history.push('/dashboard');
       })
       .catch(err => {
-        alert('User Already Exist Try Logging In');
+        console.log(err)
       })
   }
 
@@ -50,40 +51,40 @@ class Register extends Component {
     return (
       <div>
         {this.state.login ? <LoginForm /> :
-            <div style={styles.formBody}>
-            <input
+            <Body>
+              <TopBar>
+                  <h4>register</h4>
+                  <label onClick={this.props.closeLogin}>X</label>
+              </TopBar>
+
+            <LoginInput
                 type="text"
                 placeholder="name"
                 name="name"
                 onChange={this.handleInput}
                 value={this.state.name}
-                style={styles.emailInput}
                 />
-            <input
+            <LoginInput
                 type="text"
-                placeholder="Email"
+                placeholder="mail"
                 name="email"
                 onChange={this.handleInput}
                 value={this.state.email}
-                style={styles.passwordInput}
                 />
-            <input
+            <LoginInput
                 type="password"
-                placeholder="Password"
+                placeholder="password"
                 name="password"
                 onChange={this.handleInput}
                 value={this.state.password}
-                style={styles.passwordInput}
                 />
-            <button onClick={() => this.register()}>Register</button>
+            <AuthButton onClick={() => this.register()}>register</AuthButton>
             
-            <div>
-                <p>
-                    Already have an account?
-                    <button onClick={this.toggleLogin}>Login</button>
-                </p>
-            </div>
-        </div>
+                <RegisterQ>
+                    already have an account?
+                    <AuthButton onClick={this.toggleLogin}>login</AuthButton>
+                </RegisterQ>
+        </Body>
     }
       </div>
     );
@@ -102,28 +103,74 @@ export default connect(
 )(Register);
 
 
-let styles = {
-    formBody: {
-        width: '40vw',
-        height: '60vh',
-        margin: '5% auto',
-        borderRadius: 10,
-        boxShadow: '10px 10px 30px #636363',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        lineHeight: 2,
-        fontFamily: 'Raleway, sans-serif'
-    },
-    emailInput: {
-        width: '60%',
-        marginTop: '40%',
-        border: 'none',
-        borderBottom: '1px solid grey'
-    },
-    passwordInput: {
-        width: '60%',
-        border: 'none',
-        borderBottom: '1px solid grey'
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+// let darkBlue = '#45969B'
+// let orange = '#FF6830'
+
+const Body = styled.div`
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 60px;
+    background: ${whiteAccent};
+
+    @media(min-width: 500px) {
+        position: absolute;
+        top: 350px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 450px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
     }
-}
+`
+
+const TopBar = styled.div`
+    width: 100%;
+    height: 50px;
+    background: ${darkAccent};
+    color: ${whiteAccent};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 30px;
+`
+
+const LoginInput = styled.input`
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid ${darkAccent};
+    background: ${whiteAccent};
+    width: 70%;
+    margin: 30px 0;
+    font-size: 16px;
+`
+
+const AuthButton = styled.button`
+    background: ${whiteAccent};
+    color: ${mediumBlue};
+    width: 75px;
+    height: 30px;
+    border: none;
+    font-size: 16px;
+    
+    &:hover {
+        border-radius: 8px;
+        background: ${darkAccent};
+        color: ${whiteAccent}
+    }
+`
+
+const RegisterQ = styled.p`
+    font-size: 16px;
+    margin-top: 20px;
+`

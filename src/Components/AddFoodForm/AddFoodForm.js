@@ -216,36 +216,48 @@ let mapStateToProps = state => {
 
 export default connect(mapStateToProps, { setCurrentFood, setFoodSearch, clearCurrentMeal })(AddFoodForm)
 
-// let darkGreen = '#219653'
-let mediumGreen = '#2DB969'
-let greenBlue ='#28b485'
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
-// let shadow = '#a3a3a3'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+// let darkBlue = '#45969B'
+let orange = '#FF6830'
 
 const Body = styled.div`
-  background: ${lightAccent}
+  background: ${whiteAccent}
   min-height: 100vh;
   min-width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media(min-width: 500px) {
+    position: absolute;
+    left: 120px;
+    align-items: flex-start;
+  }
 `
 
 const MealTitle = styled.h1`
-  color: ${greenBlue};
+  color: ${mediumBlue};
   font-weight: bold;
   font-size: 30px;
   padding: 20px 0;
+
+  @media(min-width: 500px) {
+    margin-left: 40px;
+  }
 `
 
 const ButtonLink = styled(Link)`
-  background: ${greenBlue}
+  background: ${mediumBlue}
   border: none;
   width: 75px;
   height: 40px;
   border-radius: 8px;
-  color: ${lightAccent};
+  color: ${whiteAccent};
   text-decoration: none;
   display: flex;
   justify-content: center;
@@ -253,17 +265,21 @@ const ButtonLink = styled(Link)`
 `
 
 const Button = styled.button`
-  background: ${greenBlue}
+  background: ${mediumBlue}
   border: none;
   width: 75px;
   height: 40px;
   border-radius: 8px;
-  color: ${lightAccent};
+  color: ${whiteAccent};
   text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 16px;
+
+  @media(min-width: 500px) {
+    margin: 0 20px;
+  }
 `
 
 const Search = styled.div`
@@ -271,24 +287,30 @@ const Search = styled.div`
   justify-content: space-evenly;
   width: 100vw;
   padding-bottom: 10px;
+
+  @media(min-width: 500px) {
+    width: 60vw;
+    margin-left: 40px;
+    justify-content: flex-start;
+  }
 `
 const SearchBar = styled.input`
   border: none;
   border-radius: 0px;
   border-bottom: 1px solid ${darkAccent};
   width: 40%;
-  background: ${lightAccent};
+  background: ${whiteAccent};
 `
 
 const List = styled.div`
-  background: ${lightAccent};
+  background: ${whiteAccent};
   display: flex;
   align-items: center;
   margin: 0 15px;
   padding: 0 10px;
   justify-content: space-evenly;
   text-align: center;
-  border-bottom: 1px solid ${mediumGreen};
+  border-bottom: 1px solid ${orange};
   width: 90vw;
   padding: 5px 0;
   margin-bottom: 5px;
@@ -305,7 +327,18 @@ const List = styled.div`
   > button {
     background: none;
     border: none;
-    color: ${greenBlue};
+    color: ${mediumBlue};
     font-size: 20px;
+  }
+
+  @media(min-width: 500px) {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 60vw;
+    margin-left: 40px;
+
+    > button {
+      margin-left: 10px;
+    }
   }
 `

@@ -85,11 +85,15 @@ const StyledCaloriesChart = styled(CaloriesChart)`
 `
 
 const ButtonContainer = styled.div`
-  min-width: 100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 10px 0;
   padding: 40px 20px 0 20px;
+
+  @media(min-width: 500px) {
+    width: 60%;
+  }
 `
 
 const ButtonLink = styled(Link)`
@@ -109,7 +113,4 @@ const ButtonLink = styled(Link)`
     background: ${orange};
   }
 
-  @media(min-width: 500px) {
-    margin: 0 30px;
-  }
 `

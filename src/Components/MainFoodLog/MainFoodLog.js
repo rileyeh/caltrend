@@ -5,8 +5,6 @@ import Nav from '../Nav/Nav'
 import {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal} from '../../ducks/reducers/meals'
 import { Redirect, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import pencilLight from '../../assets/PencilDark.svg'
-import trashLight from '../../assets/TrashDark.svg'
 
 class FoodLog extends Component {
     constructor(props) {
@@ -102,7 +100,7 @@ class FoodLog extends Component {
                     </TopSection>
 
                     
-                    {this.state.meals[0] !== 0 ?
+                    {this.state.meals[0] !== 0 &&
 
 
                     this.state.meals.map(meal => {
@@ -121,10 +119,6 @@ class FoodLog extends Component {
                                 </Nutrients>
                             </Meal>
                         )})
-                    :
-
-                    <h4>Click the "+" button above to start tracking!</h4>
-                    
                     }
                 </Body>
             </div>
@@ -143,6 +137,8 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {setCurrentFood, setCurrentMeal, setMealsArray, clearCurrentMeal})(FoodLog)
 
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
 let darkAccent = '#5C5C5C'
 let whiteAccent = '#F8F8F8'
 let lightBlue = '#50B6BB'

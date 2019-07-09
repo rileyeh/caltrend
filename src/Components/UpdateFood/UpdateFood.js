@@ -184,22 +184,6 @@ class EditFoodForm extends Component {
         let id = this.props.id
         let meal_id = this.props.currentMeal.meal_id
 
-        console.log('whats the state were trying to pull from', this.state)
-
-        let updatedObj = {
-            food_name, 
-            calories, 
-            carbs, 
-            protein, 
-            fat, 
-            fiber, 
-            sugar, 
-            quantity, 
-            unit,
-            meal_id
-        }
-
-
         axios.put(`/api/food/${id}`, {
             food_name, 
             calories, 

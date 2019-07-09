@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import { clearFoodSearch } from '../../ducks/reducers/meals'
+import styled from 'styled-components'
 
 class EditFoodForm extends Component {
     constructor(props) {
@@ -240,12 +241,17 @@ class EditFoodForm extends Component {
         return (
             <div>
                 <Nav />
-                
-                <h4>{this.props.name}</h4>
+
+                <Body>
+
+                <TopSection>
+                    <label onClick={() => this.props.history.push('foodsform')}>&#60;</label>
+                    <Title>{this.props.name.slice(0, -19).replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()})}</Title>
+                </TopSection>
 
                 {this.state.edit
                 ?
-                <span>
+                <EditSection>
                 <input 
                 name='quantity'
                 placeholder={this.state.quantity}
@@ -265,107 +271,54 @@ class EditFoodForm extends Component {
                     <option>cups</option>
                     <option>T</option>
                     <option>t</option>
-
-                    {/* {this.props.unit == 'g' 
-                    ? 
-                    <span>
-                        <option>g</option>
-                        <option>oz</option>
-                        <option>lbs</option>
-                    </span>
-                    : 
-                    <span>
-                        <option>ml</option>
-                        <option>cups</option>
-                    </span>
-                    } */}
-                    
-                    
                 </select>
-                <button onClick={this.toggleEdit}>cancel</button>
-                <button onClick={this.updateNutrientInfo}>update</button>
-                </span>
+                <Button onClick={this.toggleEdit}>cancel</Button>
+                <Button onClick={this.updateNutrientInfo}>update</Button>
+                </EditSection>
                 :
-                <span>
+                <EditSection>
                     {this.state.quantity} {this.state.unit}
-                    <button onClick={() => this.props.history.push('foodsform')}>back to search</button>
-                    <button onClick={this.toggleEdit}>pencil</button>
-                    <button onClick={this.addToDatabase}>add</button>
-                </span>
+                    <Button onClick={this.toggleEdit}>pencil</Button>
+                    <Button onClick={this.addToDatabase}>add</Button>
+                </EditSection>
                 }
         
 
-                <div>
-                    <p>calories:</p>
-                    
-                    {this.state.calories 
-                        ? 
-                        <div>
-                            {this.state.calories.value} {this.state.calories.unit}
-                        </div>
-                        : 
-                        0.00}
-                </div>
+                <Nutrients>
+                <p>calories:<br/>
+                {this.state.calories ? 
+                    <span>{this.state.calories.value} {this.state.calories.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                <p>protein:<br/>
+                {this.state.protein ? 
+                    <span>{this.state.protein.value} {this.state.protein.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                <p>carbs:<br/>
+                {this.state.carbs ? 
+                    <span>{this.state.carbs.value} {this.state.carbs.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                <p>fat:<br/>
+                {this.state.fat ? 
+                    <span>{this.state.fat.value} {this.state.fat.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                <p>sugar:<br/>
+                {this.state.sugar ? 
+                    <span>{this.state.sugar.value} {this.state.sugar.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                <p>fiber:<br/>
+                {this.state.fiber ? 
+                    <span>{this.state.fiber.value} {this.state.fiber.unit}</span>
+                    : <span>0.00 {this.state.sugar.unit}</span>}
+                </p>
+                </Nutrients>
 
-                <div>
-                    <p>protein:</p>
-                    
-                    {this.state.protein 
-                        ? 
-                        <div>
-                            {this.state.protein.value} {this.state.protein.unit} 
-                        </div>
-                        : 
-                        0.00}
-                </div>
-
-                <div>
-                    <p>carbs:</p> 
-                    
-                    {this.state.carbs 
-                        ? 
-                        <div>
-                            {this.state.carbs.value} {this.state.carbs.unit} 
-                        </div>
-                        : 
-                        0.00}
-                </div>
-
-                <div>
-                    <p>fat:</p> 
-                    
-                    {this.state.fat 
-                        ? 
-                        <div>
-                            {this.state.fat.value} {this.state.fat.unit}
-                        </div>
-                        : 
-                        0.00}
-                </div>
-
-                <div>
-                    <p>sugar:</p> 
-                    
-                    {this.state.sugar 
-                        ? 
-                        <div>
-                            {this.state.sugar.value} {this.state.sugar.unit}
-                        </div>
-                        : 
-                        0.00}
-                </div>
-
-                <div>
-                    <p>fiber:</p>
-                    
-                    {this.state.fiber 
-                        ? 
-                        <div>
-                            {this.state.fiber.value} {this.state.fiber.unit} 
-                        </div>
-                        : 
-                        0.00}
-                </div>
+                
+            </Body>
             </div>
         )
     }
@@ -394,3 +347,73 @@ let mapStateToProps = state => {
 }
  
 export default connect(mapStateToProps, { clearFoodSearch })(EditFoodForm)
+
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
+let darkAccent = '#5C5C5C'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+// let darkBlue = '#45969B'
+let orange = '#FF6830'
+
+const Body = styled.div`
+    width: 100vw;
+    background: ${whiteAccent};
+    height: 95vh;
+`
+
+const TopSection = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 20px;
+    margin-bottom: 20px;
+`
+
+const Title = styled.h2`
+    text-align: center;
+    color: ${mediumBlue};
+`
+
+const EditSection = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 20px;
+`
+
+const Button = styled.button`
+  background: ${mediumBlue}
+  border: none;
+  width: 75px;
+  height: 40px;
+  border-radius: 8px;
+  color: ${whiteAccent};
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+
+  @media(min-width: 500px) {
+    margin: 0 20px;
+  }
+`
+
+const Nutrients = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    > p {
+        width: 100px;
+        text-align: center;
+        margin: 5px;
+        font-weight: bold;
+    }
+
+    > p > span {
+        font-weight: normal;
+    }
+`

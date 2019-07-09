@@ -189,6 +189,10 @@ const Input = styled.input`
     background: none;
     width: 60vw;
     padding-top: 30px;
+
+    @media(min-width: 500px) {
+        font-size: 22px;
+    }
 `
 const ButtonsContainer = styled.div`
     display: flex;
@@ -240,4 +244,8 @@ const StyledDatePicker = styled(DatePicker)`
     background: ${whiteAccent}
     width: 60vw;
     padding-top: 30px;
+
+    @media(min-width: 500px) {
+        font-size: 22px;
+    }
 `

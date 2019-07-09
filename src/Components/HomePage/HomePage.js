@@ -4,7 +4,8 @@ import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
 import LoginForm from '../LoginForm/LoginForm'
-import logo from '../../assets/Logo.svg'
+import blueLogo from '../../assets/LogoBlue.svg'
+import citrus from '../../assets/bluecitrus.PNG'
 
 class HomePage extends Component {
     constructor(props) {
@@ -35,13 +36,18 @@ class HomePage extends Component {
               <Body >
                 <Header>
                     <Logo>
-                        <LogoImage src={logo} alt='cal logo'/>
+                        <LogoImage src={blueLogo} alt='cal logo'/>
                         <LogoText>caltrend</LogoText>
                     </Logo>
                     
                     <Button onClick={this.openLogin} >login/register</Button>
                     
                 </Header>
+
+                <Welcome>
+                    <h1>WELCOME</h1>
+                    <p>login or register to use caltrend's health tracking tools</p>
+                </Welcome>
 
                 {this.state.loginForm && <LoginForm closeLogin={this.closeLogin}/>}
             </Body>
@@ -57,16 +63,19 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(HomePage)
 
-
-
-let darkGreen = '#219653'
-let mediumGreen = '#2DB969'
-// let lightGreen = '#36D97C'
+// let shadow = '#787878'
+// let mediumShadow = '#636363'
 // let darkAccent = '#5C5C5C'
-let lightAccent = '#F8F8F8'
+let whiteAccent = '#F8F8F8'
+// let lightBlue = '#50B6BB'
+let mediumBlue = '#4BA9AD'
+let darkBlue = '#45969B'
+// let orange = '#FF6830'
 
 const Body = styled.div`
-    background: ${lightAccent};
+    min-height: 100vh;
+    min-width: 100vw;
+    background: ${whiteAccent};
 `
 
 const Header = styled.div`
@@ -86,100 +95,45 @@ const LogoImage = styled.img`
 `
 
 const LogoText = styled.h1`
-    color: ${darkGreen};
+    color: ${darkBlue};
 `
 
 const Button = styled.button`
     height: 40px;
     width: 120px;
-    background: ${lightAccent};
-    color: ${mediumGreen};
-    border: 1px solid ${darkGreen};
+    background: ${whiteAccent};
+    color: ${mediumBlue};
+    border: 1px solid ${darkBlue};
     margin-right: 10px;
     border: none;
     font-size: 16px;
 
     &:hover {
-        background: ${mediumGreen};
-        color: ${lightAccent};
+        background: ${mediumBlue};
+        color: ${whiteAccent};
         border-radius: 8px;
     }
 `
+const Welcome = styled.div`
+    height: 95vh;
+    background-image: url(${citrus});
+    background-size: cover;
+    background-position: top;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: ${whiteAccent};
+    font-size: 20px;
 
 
+    @media(min-width: 500px) {
+        font-size: 30px;
+    }
 
-
-
-
-
-
-
-
-
-//         return (
-//             <div style={styles.body}>
-//                 <div style={styles.header} >
-//                     <div style={styles.logo}>
-//                         <img src={logo} alt='cal logo' style={styles.logoImage}/>
-//                         <h1 style={styles.title}>caltrend</h1>
-//                     </div>
-//                     <div>
-//                         <button onClick={this.openLogin} style={styles.button}>login/register</button>
-//                     </div>
-//                 </div>
-
-//                 {this.state.loginForm && <LoginForm />}
-
-//                 <div style={styles.main} onClick={this.closeLogin}>
-                    
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
-
-// function mapStateToProps(state) {
-//     console.log(state)
-//     return {
-//         user_id: state.user.data
-//       }
-//   }
-
-
-// export default connect(mapStateToProps)(HomePage)
-
-
-// let styles = {
-//     body: {
-//         width: '100vw',
-//         height: '100vh',
-//         margin: 0,
-//         padding: 0
-//     },
-//     header: {
-//         display: 'flex',
-//         alignItems: 'center',
-//         justifyContent: 'space-between'
-//     },
-//     logo: {
-//         display: 'flex',
-//         alignItems: 'center',
-//         marginLeft: 10
-//     },
-//     logoImage: {
-//         height: 45,
-//         marginRight: 5
-//     },
-//     title: {
-//         color: '#219653'
-//     },
-//     button: {
-//         borderRadius: 8,
-//         border: 'none',
-//         marginRight: 10,
-//         background: '#2DB969',
-//         color: 'white',
-//         height: 25,
-//         width: 90
-//     }
-// }
+    @media(min-width: 1000px) {
+        font-size: 35px;
+    }
+`
