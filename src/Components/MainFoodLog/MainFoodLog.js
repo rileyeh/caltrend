@@ -19,7 +19,6 @@ class FoodLog extends Component {
     componentDidMount = async () => {
         
         await axios.get('/api/mealsbydate').then(res => {
-            console.log('food log mount response', res)
             let dates = res.data.map(meal => {
                 return meal.exact_date
             })
@@ -72,7 +71,6 @@ class FoodLog extends Component {
 
     deleteFood = (id) => {
         axios.delete(`/api/food/${id}`).then(res => {
-            console.log(7489123847, res)
         }).catch(err => console.log('error in main food log', err))
     }
    
@@ -86,7 +84,6 @@ class FoodLog extends Component {
             return <Redirect to='/' />
           }
 
-          console.log('the state in main food log', this.state)
 
         return (
             <div>

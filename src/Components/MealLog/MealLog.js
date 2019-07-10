@@ -72,7 +72,6 @@ class MealLog extends Component {
                 {this.state.render &&
 
                     this.state.foods.map((food, i) => {
-                        console.log('foods mapped in the food log', food)
                         return (
                             <MealCard key={i}>
                                 <CardHeader>
@@ -107,7 +106,6 @@ class MealLog extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state in the meal log', state)
     let { data: user } = state.user
     return {
         date: state.meals.currentMeal.date_created,

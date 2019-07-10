@@ -32,7 +32,6 @@ class EditFoodForm extends Component {
         this.setState({
             [name]: value
         })
-        console.log(10439532, this.state)
 
     }
 
@@ -370,7 +369,7 @@ let red = '#FF5757'
 const Body = styled.div`
     max-width: 100vw;
     background: ${whiteAccent};
-    min-height: 95vh;
+    min-height: 100vh;
 
     @media(min-width: 500px) {
         margin-left: 120px;

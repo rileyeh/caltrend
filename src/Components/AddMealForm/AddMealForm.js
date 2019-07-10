@@ -57,7 +57,6 @@ class AddMealForm extends Component {
         let date_created = date.toDateString()
         let exact_date = date
         axios.post('/api/meals', { date_created, meal, exact_date }).then(res => {
-            console.log(999999, res)
             let meal_id = +res.data[0].meal_id
             let date_created = res.data[0].date_created
             let meal_number = +res.data[0].meal_number
@@ -80,7 +79,6 @@ class AddMealForm extends Component {
     updateMeal = id => {
         let {date, meal} = this.state
         axios.put(`/api/meal/${id}`, { date, meal }).then(res => {
-            console.log('the response from updating', res)
         }).catch(err => console.log('error in add meal form', err))
     }
 
@@ -129,7 +127,6 @@ class AddMealForm extends Component {
 }
 
 let mapStateToProps = state => {
-    console.log('redux state in add meal', state)
   let { data: user } = state.user
     return {
         meal: state.meals.currentMeal,

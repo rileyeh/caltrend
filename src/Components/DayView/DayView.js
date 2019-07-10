@@ -33,7 +33,6 @@ class FoodLog extends Component {
         }
 
         axios.get('/api/mealsbydate').then(res => {
-            console.log('the original response', res)
             let initialMeals = res.data.filter(meal => {
                 return meal.date_created === this.state.date
             })
@@ -70,7 +69,6 @@ class FoodLog extends Component {
                     acc
                 }, 0)
             })
-            console.log('final result', meals)
 
             this.setState({
                 meals
@@ -81,7 +79,6 @@ class FoodLog extends Component {
 
     deleteMeal = async (meal_id) => {
         let date_created = this.state.date
-        console.log('the date sent to the db', date_created)
         await axios({
             method: 'DELETE',
             url: '/api/meal',
@@ -90,14 +87,12 @@ class FoodLog extends Component {
                 date_created
             }
         }).then(res => {
-            console.log('the delete response',res.data)
         }).catch(err => {
             console.log('error deleting in day view', err)
         })
 
 
         axios.get('/api/mealsbydate').then(res => {
-            console.log('response in day view', res)
             let meals = res.data.filter(meal => {
                 return meal.date_created === this.state.date
             })
@@ -119,7 +114,6 @@ class FoodLog extends Component {
     deleteFood = () => {
         let id = this.props.currentMeal.meal_id
         axios.delete(`/api/food/${id}`).then(res => {
-            console.log(7489123847, res)
         }).catch(err => console.log('error in the food log', err))
     }
 
@@ -187,7 +181,6 @@ class FoodLog extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state in the day view', state)
     let { data: user } = state.user
     return {
         currentMeal: state.meals.currentMeal,

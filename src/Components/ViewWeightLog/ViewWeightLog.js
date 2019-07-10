@@ -66,7 +66,6 @@ class ViewWeightLog extends Component {
                     <CardHolder>
                     {this.state.rerender &&
                         this.state.weights.map((weight, i) => {
-                            console.log('what the weights look like', weight)
                             return (
                                 <WeightCard key={i}>
                                     <h4>{weight.date_created}</h4>

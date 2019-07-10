@@ -27,10 +27,8 @@ class AddFoodForm extends Component {
 
 
     componentDidMount() {
-      console.log('the props on add food', this.props)
       if(this.props.id) {
       let {id} = this.props
-      console.log('are we getting the right id', id)
        axios.get(`/api/meal/${id}`).then(res => {
         let currentMeal = res.data[0]
         axios.get(`/api/food/${currentMeal.meal_id}`).then(res => {
@@ -68,7 +66,6 @@ class AddFoodForm extends Component {
     addToState = async (ndbno) => {
       const res = await axios.get(`https://api.nal.usda.gov/ndb/V2/reports?ndbno=${ndbno}&type=b&format=json&api_key=ypLihhr1bxOT6RSZHDLPLbxzMVleTd0VaWKV9a8h`).catch(err => console.log('error in add food form', err))
       const result = res.data.foods[0]
-      console.log(555, result)
 
       let name = result.food.desc.name
       let dbnum = +result.food.desc.ndbno
@@ -203,7 +200,6 @@ class AddFoodForm extends Component {
 }
 
 let mapStateToProps = state => {
-  console.log('redux state in add food', state)
   let { data: user } = state.user
   return {
       id: state.meals.currentMeal.meal_id,

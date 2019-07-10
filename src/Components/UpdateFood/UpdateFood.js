@@ -319,7 +319,6 @@ class EditFoodForm extends Component {
 }
 
 let mapStateToProps = state => {
-    console.log('state in update food', state)
     let { data: user } = state.user
     return {
         currentMeal: state.meals.currentMeal,
@@ -449,9 +448,6 @@ const Nutrients = styled.div`
         font-weight: normal;
     }
 
-    @media(min-width: 500px) {
-        flex-direction: column;
-    }
 `
 
 const Image = styled.img`

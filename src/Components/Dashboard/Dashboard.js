@@ -96,7 +96,6 @@ const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
   padding: 20px 20px 0 20px;
 
   @media(min-width: 500px) {

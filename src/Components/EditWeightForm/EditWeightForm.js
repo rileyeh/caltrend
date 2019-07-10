@@ -126,7 +126,7 @@ let darkBlue = '#45969B'
 
 const Body = styled.div`
     background: ${whiteAccent};
-    width: 100vw;
+    max-width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
