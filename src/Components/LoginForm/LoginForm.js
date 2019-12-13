@@ -26,6 +26,7 @@ class LoginForm extends Component {
 
     handleSubmit = () => {
         let { email, password } = this.state
+        console.log('info to log in with:', email, password)
         this.props.login({ email, password })
     }
 

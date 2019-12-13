@@ -22,6 +22,7 @@ module.exports = {
             delete newUser.password
     
             req.session.user = newUser
+            console.log('register user:', req.session.user)
             res.send(req.session.user)
         } catch (error) {
             console.log('there was an error', error)
@@ -51,6 +52,8 @@ module.exports = {
             delete user.password 
             
             req.session.user = user 
+            console.log('login user:', req.session.user)
+
             res.send(req.session.user)
 
         } catch (error) {

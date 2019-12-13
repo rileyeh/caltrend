@@ -199,6 +199,7 @@ class EditFoodForm extends Component {
         let quantity = this.state.quantity
         let unit = this.state.unit
         let meal_id = this.props.id
+
   
         axios.post('/api/newFood', {
           food_name, 
