@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import styled from 'styled-components'
 
 import LoginForm from '../LoginForm/LoginForm'
 import blueLogo from '../../assets/LogoBlue.svg'
-import citrus from '../../assets/bluecitrus.PNG'
+import { Body, Header, Logo, LogoImage, LogoText, Button, Welcome } from './styles'
 
 class HomePage extends Component {
     constructor(props) {
@@ -62,85 +61,3 @@ function mapStateToProps(state) {
   }
 
 export default connect(mapStateToProps)(HomePage)
-
-// let shadow = '#787878'
-// let mediumShadow = '#636363'
-// let darkAccent = '#5C5C5C'
-let whiteAccent = '#F8F8F8'
-// let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
-let darkBlue = '#45969B'
-// let red = '#FF5757'
-
-const Body = styled.div`
-    min-height: 100vh;
-    min-width: 100vw;
-    background: ${whiteAccent};
-`
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
-const Logo = styled.div`
-    width: 50%;
-    display: flex;
-    align-items: center;
-`
-
-const LogoImage = styled.img`
-    width: 45px;
-    margin: 8px;
-`
-
-const LogoText = styled.h1`
-    color: ${darkBlue};
-`
-
-const Button = styled.button`
-    height: 40px;
-    width: 120px;
-    background: ${whiteAccent};
-    color: ${mediumBlue};
-    border: 1px solid ${darkBlue};
-    margin-right: 10px;
-    border: none;
-    font-size: 16px;
-
-    &:hover {
-        background: ${mediumBlue};
-        color: ${whiteAccent};
-        border-radius: 8px;
-    }
-`
-const Welcome = styled.div`
-    height: 95vh;
-    background-image: url(${citrus});
-    background-size: cover;
-    background-position: top;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 20px;
-
-    > h1 {
-        color: ${whiteAccent};
-    }
-
-    > p {
-        color: ${whiteAccent};
-    }
-
-
-    @media(min-width: 500px) {
-        font-size: 30px;
-    }
-
-    @media(min-width: 1000px) {
-        font-size: 35px;
-    }
-`

@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import Nav from '../Nav/Nav'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import styled from 'styled-components'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Body, Title, Input, StyledDatePicker, Button, ButtonsContainer } from './styles'
  
 
 class EditWeightForm extends Component {
@@ -116,97 +114,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(EditWeightForm)
-
-let darkAccent = '#5C5C5C'
-let whiteAccent = '#F8F8F8'
-// let lightBlue = '#50B6BB'
-// let mediumBlue = '#4BA9AD'
-let darkBlue = '#45969B'
-// let orange = '#FF5757'
-
-const Body = styled.div`
-    background: ${whiteAccent};
-    max-width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-
-    @media(min-width: 500px) {
-        padding-left: 120px;
-    }
-
-    @media(min-width: 1000px) {
-        margin-left: 160px;
-    }
-`
-
-
-const Title = styled.h3`
-    color: ${darkAccent};
-    font-weight: bold;
-    font-size: 30px;
-    padding: 20px 0;
-
-    @media(min-width: 500px) {
-    margin-left: 60px;
-    padding-top: 40px;
-    }
-
-    @media(min-width: 1000px) {
-    padding-top: 60px;
-    }
-`
-
-const Input = styled.input`
-    border: none;
-    border-bottom: 1px solid ${darkAccent};
-    border-radius: 0;
-    background: none;
-    width: 60vw;
-    padding-top: 30px;
-
-    @media(min-width: 500px) {
-        font-size: 22px;
-    }
-`
-
-const StyledDatePicker = styled(DatePicker)`
-    margin: 0 auto;
-    color: ${darkAccent};
-    border: none;
-    border-bottom: 1px solid ${darkAccent};
-    border-radius: 0;
-    background: ${whiteAccent};
-    width: 60vw;
-    padding-top: 30px;
-
-     @media(min-width: 500px) {
-        font-size: 22px;
-    }
-`
-
-const ButtonsContainer = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-    width: 80%;
-    padding-top: 30px;
-`
-
-const Button = styled.button`
-    background: ${darkBlue}
-    border: none;
-    width: 95px;
-    height: 40px;
-    border-radius: 8px;
-    color: ${whiteAccent};
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    :hover {
-        background: ${darkAccent}
-    }
-`

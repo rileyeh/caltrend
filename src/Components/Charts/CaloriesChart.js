@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Chart from 'chart.js'
 import axios from 'axios'
+import { mediumBlue, red } from '../../colors'
 
 Chart.defaults.global.defaultFontFamily = "'Raleway', sans-serif"
 
@@ -100,11 +101,3 @@ class CaloriesChart extends Component {
 }
 
 export default CaloriesChart
-
-// let darkAccent = '#5C5C5C'
-// let whiteAccent = '#F8F8F8'
-// let lightBlue = '#50B6BB'
-let mediumBlue = '#4BA9AD'
-// let darkBlue = '#45969B'
-let red = '#FF5757'
-

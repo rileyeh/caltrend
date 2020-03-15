@@ -39,15 +39,15 @@ module.exports = {
             let users = await db.findUserByEmail(email)
             let user = users[0]
     
-            if (!user) {
-                return res.status(401).send('email or password incorrect')
-            } 
+            // if (!user) {
+            //     return res.status(401).send('email or password incorrect')
+            // } 
 
             let isAuthenticated = bcrypt.compareSync(password, user.password)
 
-            if (!isAuthenticated) {
-                return res.status(401).send('email or password incorrect')
-            }
+            // if (!isAuthenticated) {
+            //     return res.status(401).send('email or password incorrect')
+            // }
 
             delete user.password 
             
