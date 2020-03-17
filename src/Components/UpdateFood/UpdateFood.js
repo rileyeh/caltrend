@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
-import { clearFoodSearch, setCurrentFood } from '../../ducks/reducers/meals'
+import { clearFoodSearch, setCurrentFood } from '../../redux/reducers/meals'
 import pencil from '../../assets/PencilDark.svg'
 import { Body, TopSection, Title, EditSection, Button, Nutrients, Image } from './styles'
 

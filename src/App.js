@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import { connect } from 'react-redux'
-import { getUser } from './ducks/reducers/user'
+import { getUser } from './redux/reducers/user'
 import routes from './routes'
 
 class App extends Component {

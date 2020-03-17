@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentFood, setCurrentMeal } from '../../ducks/reducers/meals'
+import { setCurrentFood, setCurrentMeal } from '../../redux/reducers/meals'
 import { Link, Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import axios from 'axios'

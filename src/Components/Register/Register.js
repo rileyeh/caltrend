@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { getUser } from '../../ducks/reducers/user'
+import { getUser } from '../../redux/reducers/user'
 import LoginForm from '../LoginForm/LoginForm'
 import { Body, TopBar, LoginInput, AuthButton, RegisterQ } from './styles'
 

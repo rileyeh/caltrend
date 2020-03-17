@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Register from '../Register/Register'
-import { login } from '../../ducks/reducers/user'
+import { login } from '../../redux/reducers/user'
 import { Body, TopBar, LoginInput, AuthButton, RegisterQ } from './styles'
 
 class LoginForm extends Component {

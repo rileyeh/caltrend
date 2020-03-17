@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { setCurrentMeal, clearCurrentMeal } from '../../ducks/reducers/meals'
+import { setCurrentMeal, clearCurrentMeal } from '../../redux/reducers/meals'
 import { Redirect, withRouter } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import { Page, Body, Title, Input, ButtonsContainer, Button, ButtonLink, StyledDatePicker } from './styles'

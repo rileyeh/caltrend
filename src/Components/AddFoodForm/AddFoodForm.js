@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
-import { setCurrentFood, setFoodSearch, clearCurrentMeal } from '../../ducks/reducers/meals'
+import { setCurrentFood, setFoodSearch, clearCurrentMeal } from '../../redux/reducers/meals'
 import { Redirect } from 'react-router-dom'
 import Nav from '../Nav/Nav'
 import {Body, MealTitle, ButtonLink, Button, Search, SearchBar, List, ResultList } from './styles'

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logout } from '../../ducks/reducers/user'
+import { logout } from '../../redux/reducers/user'
 import whiteLogo from '../../assets/WhiteLogo.svg'
 import blueLogo from '../../assets/LogoBlue.svg'
 import { Header, Logo, LogoImage, LogoText, Menu, StyledLink, Ham } from './styles'
