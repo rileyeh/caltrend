@@ -1,0 +1,9 @@
+[
+    {
+        "weight_id" : 1, 
+        "pounds" : 150, 
+        "date_created" : "some date", 
+        "exact_date" : "a date object", 
+        "user_id" : 1
+    }
+]
